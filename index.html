@@ -3,13 +3,20 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
-<title>805 Car Guy — your local car buying guy on the Central Coast</title>
-<meta name="description" content="I help Central Coast folks find the right car — new or used — and I show up at the dealership with you. Based in San Luis Obispo. DM @805carguy on Instagram."/>
-<meta property="og:title" content="805 Car Guy"/>
-<meta property="og:description" content="Your local car-buying guy on the Central Coast. I show up at the dealership with you."/>
+<title>805 Car Guy — your local car connection on the Central Coast</title>
+<meta name="description" content="Your local car connection in the 805. New or used, I help Central Coast folks find the right car and show up at the dealership with you. SLO, Paso, Atascadero, Santa Maria and beyond."/>
+<meta name="theme-color" content="#b85c3a"/>
+<meta name="robots" content="index, follow"/>
+<link rel="canonical" href="https://www.805carguy.com"/>
+<meta property="og:title" content="805 Car Guy — Your Local Car Connection"/>
+<meta property="og:description" content="I help Central Coast folks buy the right car and show up at the dealership with you. No kickbacks. No nonsense."/>
 <meta property="og:type" content="website"/>
 <meta property="og:url" content="https://www.805carguy.com"/>
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:title" content="805 Car Guy — Your Local Car Connection"/>
+<meta name="twitter:description" content="I help Central Coast folks buy the right car and show up at the dealership with you."/>
 <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🚗</text></svg>"/>
+<script defer data-domain="805carguy.com" src="https://plausible.io/js/script.js"></script>
 <style>
   :root {
     --cream-50:  #fbf7ef;
@@ -62,23 +69,11 @@
     pointer-events: none;
   }
   .hero-inner { position: relative; max-width: 720px; margin: 0 auto; }
-  .handle-chip {
-    display: inline-flex; align-items: center; gap: 6px;
-    background: rgba(255,255,255,.7);
-    border: 1px solid var(--sand-300);
-    padding: 6px 14px;
-    border-radius: 999px;
-    font-size: 13px;
-    font-weight: 600;
-    color: var(--sand-700);
-    margin-bottom: 22px;
-    backdrop-filter: blur(8px);
-    letter-spacing: .02em;
-  }
-  .handle-chip .dot {
-    width: 6px; height: 6px; border-radius: 50%;
-    background: var(--rust);
-    box-shadow: 0 0 0 3px rgba(184, 92, 58, .2);
+  .hero-logo {
+    height: 64px;
+    width: auto;
+    margin: 0 auto 28px;
+    display: block;
   }
   h1 {
     font-size: clamp(34px, 5.6vw, 52px);
@@ -263,6 +258,59 @@
   }
   .svc-card.featured .svc-cta:hover { background: var(--rust-dk); color: #fff; }
 
+  /* ─── ABOUT ─── */
+  .about-section {
+    background: linear-gradient(160deg, var(--cream-100) 0%, var(--cream-50) 60%);
+    border-top: 1px solid var(--cream-200);
+    border-bottom: 1px solid var(--cream-200);
+  }
+  .about-layout {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 52px;
+    align-items: center;
+    margin-top: 28px;
+  }
+  .about-bio p {
+    font-size: 16px;
+    color: var(--ink-soft);
+    line-height: 1.75;
+    margin-bottom: 16px;
+  }
+  .about-bio p:last-child { margin-bottom: 0; }
+  .about-stats {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+  .stat-chip {
+    background: #fff;
+    border: 1px solid var(--cream-200);
+    border-left: 3px solid var(--rust);
+    border-radius: 14px;
+    padding: 18px 24px;
+    box-shadow: var(--shadow-sm);
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    transition: box-shadow .15s, transform .15s;
+  }
+  .stat-chip:hover { box-shadow: var(--shadow-md); transform: translateY(-2px); }
+  .stat-num {
+    font-size: 36px;
+    font-weight: 800;
+    color: var(--rust);
+    letter-spacing: -.03em;
+    min-width: 72px;
+    line-height: 1;
+  }
+  .stat-label {
+    font-size: 14.5px;
+    color: var(--ink-soft);
+    font-weight: 600;
+    line-height: 1.35;
+  }
+
   /* ─── WHY ME ─── */
   .why {
     background: var(--cream-100);
@@ -275,7 +323,14 @@
     gap: 28px;
     margin-top: 14px;
   }
-  .why-item { }
+  .why-item {
+    background: #fff;
+    border: 1px solid var(--cream-200);
+    border-radius: 16px;
+    padding: 24px 22px;
+    transition: box-shadow .18s, transform .18s;
+  }
+  .why-item:hover { box-shadow: var(--shadow-md); transform: translateY(-2px); }
   .why-num {
     display: inline-flex;
     align-items: center;
@@ -315,7 +370,6 @@
   .step {
     padding: 28px 24px;
     border-right: 1px solid var(--cream-200);
-    position: relative;
   }
   .step:last-child { border-right: none; }
   .step-num {
@@ -335,6 +389,62 @@
     font-size: 14px;
     color: var(--ink-soft);
     line-height: 1.55;
+  }
+
+  /* ─── FAQ ─── */
+  .faq {
+    background: var(--cream-100);
+    border-top: 1px solid var(--cream-200);
+    border-bottom: 1px solid var(--cream-200);
+  }
+  .faq-list {
+    margin-top: 28px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    max-width: 720px;
+  }
+  .faq-item {
+    background: #fff;
+    border: 1px solid var(--cream-200);
+    border-radius: 14px;
+    overflow: hidden;
+    transition: box-shadow .15s;
+  }
+  .faq-item[open] {
+    box-shadow: var(--shadow-sm);
+    border-color: var(--sand-300);
+  }
+  .faq-q {
+    padding: 18px 22px;
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--ink);
+    cursor: pointer;
+    list-style: none;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    user-select: none;
+  }
+  .faq-q::-webkit-details-marker { display: none; }
+  .faq-q::after {
+    content: '+';
+    font-size: 22px;
+    font-weight: 300;
+    color: var(--rust);
+    flex-shrink: 0;
+    transition: transform .2s ease;
+    line-height: 1;
+  }
+  .faq-item[open] .faq-q::after { transform: rotate(45deg); }
+  .faq-a {
+    padding: 14px 22px 18px;
+    font-size: 15px;
+    color: var(--ink-soft);
+    line-height: 1.65;
+    border-top: 1px solid var(--cream-200);
   }
 
   /* ─── BOOK CTA ─── */
@@ -376,6 +486,7 @@
     .hero { padding: 60px 20px 70px; }
     section { padding: 56px 20px; }
     .services, .why-grid, .steps { grid-template-columns: 1fr; }
+    .about-layout { grid-template-columns: 1fr; gap: 32px; }
     .steps { border-radius: 18px; }
     .step { border-right: none; border-bottom: 1px solid var(--cream-200); }
     .step:last-child { border-bottom: none; }
@@ -383,7 +494,7 @@
     .btn { padding: 13px 22px; font-size: 15px; }
   }
 
-  /* Little entrance animation */
+  /* Entrance animation */
   .fade-in {
     opacity: 0;
     transform: translateY(10px);
@@ -402,9 +513,9 @@
 <!-- ═══════════ HERO ═══════════ -->
 <section class="hero">
   <div class="hero-inner">
-    <div class="handle-chip fade-in"><span class="dot"></span> @805carguy · San Luis Obispo</div>
-    <h1 class="fade-in d1">Your local guy for <span class="accent">buying your next car</span> — who actually shows up.</h1>
-    <p class="hero-sub fade-in d2">New or used, I help Central Coast folks find the right car and I meet you at the dealership to walk the lot, kick the tires, and negotiate with you in person. No kickbacks. No nonsense.</p>
+    <img src="logo.png" alt="805 Car Guy" class="hero-logo fade-in" onerror="this.style.display='none'"/>
+    <h1 class="fade-in d1">Your <span class="accent">local car connection</span> in the 805.</h1>
+    <p class="hero-sub fade-in d2">New or used, I help Central Coast folks find the right car and show up at the dealership to walk the lot, kick the tires, and negotiate in person. No kickbacks. No nonsense.</p>
     <div class="cta-row fade-in d3">
       <a class="btn btn-primary" href="https://ig.me/m/805carguy" target="_blank" rel="noopener">DM me on Instagram →</a>
       <a class="btn btn-ghost" href="#services">See what I do</a>
@@ -470,6 +581,35 @@
   </div>
 </section>
 
+<!-- ═══════════ ABOUT ═══════════ -->
+<section class="about-section">
+  <div class="container">
+    <div class="section-kicker">Who I am</div>
+    <h2>Not a dealer. Just a car guy.</h2>
+
+    <div class="about-layout">
+      <div class="about-bio">
+        <p>I've spent years in and around the automotive world — working at dealerships, buying and selling cars privately, and learning exactly how the game is played from the inside. I know what a fair deal looks like, what warning signs to watch for, and when to walk away.</p>
+        <p>When you DM me, you're not getting a call center or a form. You're getting me — someone born and raised in the 805, who knows these local lots and these sales managers by name. I treat your money like it's my own because I've been in your seat.</p>
+      </div>
+      <div class="about-stats">
+        <div class="stat-chip">
+          <span class="stat-num">50+</span>
+          <span class="stat-label">Cars helped purchase on the Central Coast</span>
+        </div>
+        <div class="stat-chip">
+          <span class="stat-num">10+</span>
+          <span class="stat-label">Years in the automotive world</span>
+        </div>
+        <div class="stat-chip">
+          <span class="stat-num">805</span>
+          <span class="stat-label">Born, raised, and still here</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
 <!-- ═══════════ WHY ME ═══════════ -->
 <section class="why">
   <div class="container">
@@ -518,6 +658,33 @@
         <div class="step-h">I show up.</div>
         <p class="step-p">I meet you at the lot (or head there solo for a Drive-By). We walk the car, I talk you through what I see, and we decide together.</p>
       </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ FAQ ═══════════ -->
+<section class="faq">
+  <div class="container">
+    <div class="section-kicker">Quick answers</div>
+    <h2>Common questions.</h2>
+
+    <div class="faq-list">
+      <details class="faq-item">
+        <summary class="faq-q">Do you work with new cars, not just used?</summary>
+        <p class="faq-a">Yes — new, used, certified pre-owned, private sellers. If there's a car and a deal to be made, I can help you navigate it.</p>
+      </details>
+      <details class="faq-item">
+        <summary class="faq-q">I'm not ready to buy yet. Can you still help?</summary>
+        <p class="faq-a">Absolutely. DM me with what you're thinking — even vague is fine. I can help you figure out what you actually need before you're ready to pull the trigger.</p>
+      </details>
+      <details class="faq-item">
+        <summary class="faq-q">How does payment work?</summary>
+        <p class="faq-a">After we agree on a service, I send you a secure payment link. Once that's squared away, we make a plan and get to work. No hidden fees, no surprises.</p>
+      </details>
+      <details class="faq-item">
+        <summary class="faq-q">Do you cover my area?</summary>
+        <p class="faq-a">I cover SLO County and surrounding areas — San Luis Obispo, Paso Robles, Atascadero, Santa Maria, Arroyo Grande, Pismo, Morro Bay, Nipomo, Templeton, and Los Osos. DM me your zip if you're not sure.</p>
+      </details>
     </div>
   </div>
 </section>
