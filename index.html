@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
 <title>805 Car Guy — your local car connection on the Central Coast</title>
 <meta name="description" content="Your local car connection in the 805. New or used, I help Central Coast folks find the right car and show up at the dealership with you. SLO, Paso, Atascadero, Santa Maria and beyond."/>
-<meta name="theme-color" content="#1d6b6b"/>
+<meta name="theme-color" content="#2a7a7a"/>
 <meta name="robots" content="index, follow"/>
 <link rel="canonical" href="https://www.805carguy.com"/>
 <meta property="og:title" content="805 Car Guy — Your Local Car Connection"/>
@@ -19,21 +19,29 @@
 <script defer data-domain="805carguy.com" src="https://plausible.io/js/script.js"></script>
 <style>
   :root {
-    --cream-50:  #fbf7ef;
-    --cream-100: #f6efdf;
-    --cream-200: #ecdfc2;
-    --sand-300:  #d6c7a8;
-    --sand-500:  #8b7a5f;
-    --sand-700:  #5a4a34;
-    --ink:       #1f1a12;
-    --ink-soft:  #3a2f1f;
-    --rust:      #1d6b6b;
-    --rust-dk:   #145252;
-    --rust-soft: #d4eaea;
-    --sunset:    #e89352;
-    --shadow-sm: 0 1px 2px rgba(20, 82, 82, .08);
-    --shadow-md: 0 8px 28px rgba(20, 82, 82, .15);
-    --shadow-lg: 0 24px 48px rgba(20, 82, 82, .18);
+    /* coastal SLO palette — pulled directly from logo */
+    --cream-50:  #f6e8cc;   /* matches logo background */
+    --cream-100: #faeed6;
+    --cream-200: #f0d9b0;
+    --sand-300:  #d6bb8a;   /* Bishop Peak sand */
+    --sand-500:  #a88757;
+    --sand-700:  #6b4a2a;
+    --ink:       #2d1f12;
+    --ink-soft:  #4a3626;
+    --teal:      #2a7a7a;
+    --teal-dk:   #1d5e5e;
+    --teal-soft: #cfe4e4;
+    --sunset:    #e27742;   /* logo sun */
+    --sunset-dk: #c45a28;
+    --gold:      #f0a843;
+    --brown:     #a77040;   /* wordmark rust-brown */
+    /* legacy aliases (CTAs still reference these) */
+    --rust:      var(--teal);
+    --rust-dk:   var(--teal-dk);
+    --rust-soft: var(--teal-soft);
+    --shadow-sm: 0 1px 2px rgba(45, 31, 18, .08);
+    --shadow-md: 0 8px 28px rgba(45, 31, 18, .14);
+    --shadow-lg: 0 24px 48px rgba(45, 31, 18, .18);
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
   html { scroll-behavior: smooth; }
@@ -54,27 +62,40 @@
   /* ─── HERO ─── */
   .hero {
     position: relative;
-    padding: 80px 24px 90px;
+    padding: 80px 24px 110px;
     text-align: center;
     background:
-      radial-gradient(ellipse at 50% 0%, rgba(29, 107, 107, .18), transparent 55%),
-      linear-gradient(180deg, var(--cream-50) 0%, var(--cream-100) 100%);
+      radial-gradient(circle at 50% 10%, rgba(240, 168, 67, .28), transparent 45%),
+      radial-gradient(ellipse at 50% 100%, rgba(42, 122, 122, .12), transparent 60%),
+      linear-gradient(180deg, var(--cream-100) 0%, var(--cream-50) 100%);
     overflow: hidden;
   }
+  /* sun rays radiating from behind the logo */
   .hero::before {
     content: '';
     position: absolute;
-    inset: 0;
-    background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 200"><g opacity=".06" fill="%235a4a34"><path d="M0 150 Q 100 120 200 140 T 400 130 L 400 200 L 0 200 Z"/></g></svg>') center bottom / cover no-repeat;
+    top: -60px; left: 50%;
+    width: 680px; height: 680px;
+    margin-left: -340px;
+    background: radial-gradient(circle, rgba(240, 168, 67, .18) 0%, rgba(226, 119, 66, .06) 35%, transparent 60%);
+    pointer-events: none;
+  }
+  /* wave divider at bottom of hero */
+  .hero::after {
+    content: '';
+    position: absolute;
+    left: 0; right: 0; bottom: -1px;
+    height: 56px;
+    background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 80" preserveAspectRatio="none"><path d="M0 40 Q 150 10 300 35 T 600 40 T 900 35 T 1200 40 L 1200 80 L 0 80 Z" fill="%232a7a7a" opacity=".9"/><path d="M0 55 Q 200 25 400 50 T 800 55 T 1200 50 L 1200 80 L 0 80 Z" fill="%231d5e5e" opacity=".75"/></svg>') center / 100% 100% no-repeat;
     pointer-events: none;
   }
   .hero-inner { position: relative; max-width: 720px; margin: 0 auto; }
   .hero-logo {
-    height: 96px;
+    height: 180px;
     width: auto;
-    margin: 0 auto 24px;
+    margin: -8px auto 8px;
     display: block;
-    filter: drop-shadow(0 4px 12px rgba(20, 82, 82, .12));
+    filter: drop-shadow(0 6px 18px rgba(45, 31, 18, .14));
   }
   h1 {
     font-size: clamp(34px, 5.6vw, 52px);
@@ -145,7 +166,7 @@
     font-weight: 700;
     letter-spacing: .12em;
     text-transform: uppercase;
-    color: var(--rust);
+    color: var(--sunset-dk);
     margin-bottom: 10px;
   }
   .section-intro {
@@ -177,14 +198,14 @@
     border-color: var(--sand-300);
   }
   .svc-card.featured {
-    border: 2px solid var(--rust);
-    background: linear-gradient(180deg, #fff 0%, var(--rust-soft) 140%);
+    border: 2px solid var(--sunset);
+    background: linear-gradient(180deg, #fff 0%, rgba(240, 168, 67, .15) 140%);
   }
   .svc-badge {
     position: absolute;
     top: -12px;
     right: 20px;
-    background: var(--rust);
+    background: var(--sunset);
     color: #fff;
     font-size: 11px;
     font-weight: 800;
@@ -514,7 +535,7 @@
 <!-- ═══════════ HERO ═══════════ -->
 <section class="hero">
   <div class="hero-inner">
-    <img src="logo.svg" alt="805 Car Guy" class="hero-logo fade-in" onerror="this.style.display='none'"/>
+    <img src="logo.jpg" alt="805 Car Guy" class="hero-logo fade-in" onerror="this.style.display='none'"/>
     <h1 class="fade-in d1">Your <span class="accent">local car connection</span> in the 805.</h1>
     <p class="hero-sub fade-in d2">New or used, I help Central Coast folks find the right car and show up at the dealership to walk the lot, kick the tires, and negotiate in person. No kickbacks. No nonsense.</p>
     <div class="cta-row fade-in d3">
@@ -590,21 +611,21 @@
 
     <div class="about-layout">
       <div class="about-bio">
-        <p>I've spent years in and around the automotive world — working at dealerships, buying and selling cars privately, and learning exactly how the game is played from the inside. I know what a fair deal looks like, what warning signs to watch for, and when to walk away.</p>
-        <p>When you DM me, you're not getting a call center or a form. You're getting me — someone born and raised in the 805, who knows these local lots and these sales managers by name. I treat your money like it's my own because I've been in your seat.</p>
+        <p>I've been a car guy since childhood and working in the automotive industry since 2000. That's a quarter century of lots, deals, listings, paperwork, and the negotiation patterns that come with all of it.</p>
+        <p>I've called the Central Coast home for 12 years. When you DM, you're not getting a call center or a form — you're getting me. Flat fee, no kickbacks, no hidden incentive to push you toward one car over another.</p>
       </div>
       <div class="about-stats">
         <div class="stat-chip">
-          <span class="stat-num">50+</span>
-          <span class="stat-label">Cars helped purchase on the Central Coast</span>
+          <span class="stat-num">2000</span>
+          <span class="stat-label">In the automotive industry since</span>
         </div>
         <div class="stat-chip">
-          <span class="stat-num">10+</span>
-          <span class="stat-label">Years in the automotive world</span>
+          <span class="stat-num">12</span>
+          <span class="stat-label">Years on the Central Coast</span>
         </div>
         <div class="stat-chip">
           <span class="stat-num">805</span>
-          <span class="stat-label">Born, raised, and still here</span>
+          <span class="stat-label">The only area code I work in</span>
         </div>
       </div>
     </div>
@@ -626,7 +647,7 @@
       <div class="why-item">
         <div class="why-num">2</div>
         <div class="why-h">I'm actually local.</div>
-        <p class="why-p">San Luis Obispo County is home. I know the lots, I know the sales managers, I know which dealers play games.</p>
+        <p class="why-p">San Luis Obispo County is home. I know the lots from Paso to Pismo, which ones are a drive worth making, and which ones to skip.</p>
       </div>
       <div class="why-item">
         <div class="why-num">3</div>
