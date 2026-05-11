@@ -387,6 +387,179 @@
     border-radius: 3px;
   }
   .svc-cta:hover { background: var(--navy); color: var(--ivory); }
+  .svc-guarantee {
+    margin-top: 14px;
+    padding: 12px 14px;
+    background: rgba(200, 155, 90, .12);
+    border-left: 2px solid var(--gold);
+    font-size: 13px;
+    color: var(--ink-soft);
+    line-height: 1.55;
+  }
+  .svc-card.featured .svc-guarantee {
+    background: rgba(200, 155, 90, .18);
+    border-left-color: var(--gold);
+    color: rgba(250, 248, 243, .9);
+  }
+  .svc-guarantee strong { color: var(--gold-dk); font-weight: 600; }
+  .svc-card.featured .svc-guarantee strong { color: var(--gold); }
+
+  /* ─── BRAND STRIP ─── */
+  .brand-strip {
+    padding: 36px 28px;
+    background: var(--ivory);
+    border-top: 1px solid var(--rule);
+    border-bottom: 1px solid var(--rule);
+  }
+  .brand-strip-inner {
+    max-width: 1180px;
+    margin: 0 auto;
+    text-align: center;
+  }
+  .brand-strip-label {
+    font-size: 11.5px;
+    font-weight: 600;
+    letter-spacing: .22em;
+    text-transform: uppercase;
+    color: var(--ink-mute);
+    margin-bottom: 24px;
+  }
+  .brand-marks {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 56px;
+  }
+  .brand-mark-name {
+    font-family: var(--serif);
+    font-size: 22px;
+    font-weight: 500;
+    color: var(--navy);
+    letter-spacing: .04em;
+    opacity: .65;
+    transition: opacity .15s;
+  }
+  .brand-mark-name:hover { opacity: 1; }
+  .brand-mark-name.italic { font-style: italic; }
+  .brand-mark-amp {
+    font-family: var(--serif);
+    font-style: italic;
+    color: var(--gold-dk);
+    font-size: 20px;
+    opacity: .5;
+  }
+  @media (max-width: 640px) {
+    .brand-marks { gap: 28px; }
+    .brand-mark-name { font-size: 18px; }
+  }
+
+  /* ─── DEAL REVIEW (lead magnet) ─── */
+  .deal-review {
+    background: var(--ivory-100);
+    border-top: 1px solid var(--rule);
+    border-bottom: 1px solid var(--rule);
+    padding: 80px 28px;
+  }
+  .deal-review-inner {
+    max-width: 980px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 48px;
+    align-items: center;
+  }
+  .deal-review-text { max-width: 620px; }
+  .deal-review .kicker { color: var(--gold-dk); margin-bottom: 14px; }
+  .deal-review h3 {
+    font-family: var(--serif);
+    font-size: clamp(24px, 3vw, 32px);
+    font-weight: 500;
+    color: var(--navy);
+    line-height: 1.2;
+    letter-spacing: -.01em;
+    margin-bottom: 14px;
+  }
+  .deal-review h3 em { font-style: italic; color: var(--gold-dk); font-weight: 500; }
+  .deal-review p {
+    font-size: 16px;
+    color: var(--ink-soft);
+    line-height: 1.7;
+  }
+  .deal-review .btn { white-space: nowrap; }
+  @media (max-width: 760px) {
+    .deal-review-inner { grid-template-columns: 1fr; gap: 28px; }
+  }
+
+  /* ─── ONGOING / SERVICE COORDINATION ─── */
+  .ongoing {
+    background: var(--ivory);
+    padding: 96px 28px;
+  }
+  .ongoing-inner {
+    max-width: 1180px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 80px;
+    align-items: center;
+  }
+  .ongoing-text .kicker { color: var(--gold-dk); }
+  .ongoing-text h2 { margin-bottom: 18px; }
+  .ongoing-text p {
+    font-size: 16px;
+    color: var(--ink-soft);
+    line-height: 1.75;
+    margin-bottom: 16px;
+  }
+  .ongoing-list {
+    background: var(--ivory-100);
+    border: 1px solid var(--rule);
+    padding: 32px;
+    list-style: none;
+  }
+  .ongoing-list li {
+    padding: 12px 0 12px 22px;
+    border-bottom: 1px solid var(--rule);
+    position: relative;
+    font-size: 14.5px;
+    color: var(--ink-soft);
+    line-height: 1.5;
+  }
+  .ongoing-list li:last-child { border-bottom: none; }
+  .ongoing-list li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 21px;
+    width: 12px;
+    height: 1px;
+    background: var(--gold);
+  }
+  .ongoing-pricing {
+    margin-top: 24px;
+    padding: 18px 22px;
+    background: var(--navy);
+    color: var(--ivory);
+    border-radius: 3px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+  .ongoing-pricing-label {
+    font-family: var(--serif);
+    font-size: 18px;
+    color: var(--gold);
+  }
+  .ongoing-pricing-note {
+    font-size: 13px;
+    color: rgba(250, 248, 243, .75);
+  }
+  @media (max-width: 880px) {
+    .ongoing-inner { grid-template-columns: 1fr; gap: 36px; }
+  }
 
   /* ─── ABOUT ─── */
   .about-section { background: var(--ivory); }
@@ -685,7 +858,23 @@
       <a class="btn btn-primary" href="https://ig.me/m/805carguy" target="_blank" rel="noopener">Get in touch →</a>
       <a class="btn btn-ghost" href="#services">View services</a>
     </div>
-    <div class="hero-trust fade-in d4"><strong>25+ years</strong> in the industry · <strong>12+ dealerships</strong> · <strong>Honda → Porsche</strong></div>
+    <div class="hero-trust fade-in d4"><strong>25+ years</strong> in the industry · <strong>12+ dealerships</strong> · <strong>Savings guarantee</strong> on full-concierge service</div>
+  </div>
+</section>
+
+<!-- ═══════════ BRAND STRIP ═══════════ -->
+<section class="brand-strip" aria-label="Dealership experience">
+  <div class="brand-strip-inner">
+    <div class="brand-strip-label">Twelve-plus dealerships, including</div>
+    <div class="brand-marks">
+      <span class="brand-mark-name">HONDA</span>
+      <span class="brand-mark-amp">·</span>
+      <span class="brand-mark-name">VOLKSWAGEN</span>
+      <span class="brand-mark-amp">·</span>
+      <span class="brand-mark-name">AUDI</span>
+      <span class="brand-mark-amp">·</span>
+      <span class="brand-mark-name italic">Porsche</span>
+    </div>
   </div>
 </section>
 
@@ -700,18 +889,34 @@
 
     <div class="services">
 
-      <!-- Pre-Purchase Inspection -->
+      <!-- On-Site Inspection -->
       <div class="svc-card">
-        <div class="svc-num">01 · Inspection</div>
-        <div class="svc-name">Pre-Purchase Inspection</div>
+        <div class="svc-num">01 · Look</div>
+        <div class="svc-name">On-Site Inspection</div>
         <div class="svc-price">$99<span class="per">per vehicle</span></div>
-        <p class="svc-desc">Send a listing. I drive to the car, inspect it in person, and deliver a clear verdict before you commit a dollar.</p>
+        <p class="svc-desc">Send a listing. I drive to the car, walk it, test-drive it, and send back photos, video, and a clear buy / negotiate / walk verdict.</p>
         <ul class="svc-includes">
-          <li>Thorough in-person inspection</li>
-          <li>Detailed photo and video walkaround</li>
-          <li>Mechanical, cosmetic, and paperwork review</li>
-          <li>Buy / negotiate / walk recommendation</li>
+          <li>In-person visual inspection</li>
+          <li>Full test drive with notes</li>
+          <li>Photo and video walkaround</li>
+          <li>Paperwork and listing review</li>
           <li>Delivered within 24–48 hours</li>
+        </ul>
+        <a class="svc-cta" href="https://ig.me/m/805carguy" target="_blank" rel="noopener">Request inspection</a>
+      </div>
+
+      <!-- Mechanical Inspection -->
+      <div class="svc-card">
+        <div class="svc-num">02 · Inspect</div>
+        <div class="svc-name">Mechanical Inspection</div>
+        <div class="svc-price">From $199<span class="per">at my shop</span></div>
+        <p class="svc-desc">A real pre-purchase inspection on a lift. I bring the car to my repair shop and have it evaluated mechanically — not just visually.</p>
+        <ul class="svc-includes">
+          <li>Everything in the On-Site Inspection</li>
+          <li>Full mechanical inspection on a lift</li>
+          <li>Brakes, suspension, fluids, undercarriage</li>
+          <li>Diagnostic scan and code review</li>
+          <li>Written report with photos</li>
         </ul>
         <a class="svc-cta" href="https://ig.me/m/805carguy" target="_blank" rel="noopener">Request inspection</a>
       </div>
@@ -719,9 +924,9 @@
       <!-- Dealer Negotiation (featured) -->
       <div class="svc-card featured">
         <div class="svc-badge">Most requested</div>
-        <div class="svc-num">02 · Negotiation</div>
+        <div class="svc-num">03 · Negotiate</div>
         <div class="svc-name">Dealer Negotiation</div>
-        <div class="svc-price">$249<span class="per">per visit</span></div>
+        <div class="svc-price">$349<span class="per">per visit</span></div>
         <p class="svc-desc">I meet you at the dealership and handle the deal. Walkaround, test-drive coaching, live negotiation — until you sign or we walk.</p>
         <ul class="svc-includes">
           <li>Up to two hours on-site at the dealership</li>
@@ -733,39 +938,60 @@
         <a class="svc-cta" href="https://ig.me/m/805carguy" target="_blank" rel="noopener">Book a visit</a>
       </div>
 
-      <!-- Find & Buy -->
+      <!-- Full Concierge -->
       <div class="svc-card">
-        <div class="svc-num">03 · Sourcing</div>
-        <div class="svc-name">Find &amp; Buy</div>
-        <div class="svc-price">$495<span class="per">end-to-end</span></div>
-        <p class="svc-desc">Tell me what you want. I source, vet, and shortlist the right vehicles from across the region, then walk the deal through to signature.</p>
+        <div class="svc-num">04 · Concierge</div>
+        <div class="svc-name">Full Concierge</div>
+        <div class="svc-price">From $1,000<span class="per">end-to-end</span></div>
+        <p class="svc-desc">Hand off the entire process. I source, vet, inspect, negotiate, and close — from your first message to the keys in your hand.</p>
         <ul class="svc-includes">
           <li>Tailored shortlist of three to five vehicles</li>
           <li>Dealer vetting and out-the-door pricing</li>
-          <li>On-site inspection and negotiation</li>
+          <li>On-site mechanical inspection</li>
+          <li>Full negotiation and paperwork review</li>
           <li>End-to-end purchase support</li>
-          <li>Thirty-day satisfaction guarantee</li>
         </ul>
-        <a class="svc-cta" href="https://ig.me/m/805carguy" target="_blank" rel="noopener">Start a search</a>
-      </div>
-
-      <!-- Service Coordination -->
-      <div class="svc-card">
-        <div class="svc-num">04 · Ownership</div>
-        <div class="svc-name">Service Coordination</div>
-        <div class="svc-price">Custom<span class="per">hourly or retainer</span></div>
-        <p class="svc-desc">Ongoing support after the keys are in your hand. Service planning, repair quote review, warranty navigation, and trustworthy local shop recommendations.</p>
-        <ul class="svc-includes">
-          <li>Repair quote review and second opinions</li>
-          <li>Warranty and recall navigation</li>
-          <li>Vetted local shop recommendations</li>
-          <li>Scheduled maintenance planning</li>
-          <li>Hourly engagements or monthly retainer</li>
-        </ul>
-        <a class="svc-cta" href="https://ig.me/m/805carguy" target="_blank" rel="noopener">Inquire about availability</a>
+        <div class="svc-guarantee"><strong>Savings guarantee.</strong> If I don't save you more on the deal than the service costs, I refund the difference.</div>
+        <a class="svc-cta" href="https://ig.me/m/805carguy" target="_blank" rel="noopener" style="margin-top: 18px;">Start a search</a>
       </div>
 
     </div>
+  </div>
+</section>
+
+<!-- ═══════════ FREE DEAL REVIEW ═══════════ -->
+<section class="deal-review">
+  <div class="deal-review-inner">
+    <div class="deal-review-text">
+      <span class="kicker">Complimentary</span>
+      <h3>Have a dealer offer in hand? <em>Send it over — I'll review it free.</em></h3>
+      <p>If you have an out-the-door quote or a finance worksheet you're about to sign, message it to me before you put pen to paper. I'll flag the line items worth questioning and tell you whether the numbers add up. No charge, no obligation, no upsell.</p>
+    </div>
+    <a class="btn btn-primary" href="https://ig.me/m/805carguy" target="_blank" rel="noopener">Send the offer →</a>
+  </div>
+</section>
+
+<!-- ═══════════ ONGOING / SERVICE COORDINATION ═══════════ -->
+<section class="ongoing">
+  <div class="ongoing-inner">
+    <div class="ongoing-text">
+      <span class="kicker">After the sale</span>
+      <h2>Service Coordination <em>for ongoing ownership.</em></h2>
+      <p>The buy is one decision. The next ten years of service, repairs, warranty work, and recall navigation is another. Many clients keep me on after the purchase as a layer of advocacy between them and the service writer.</p>
+      <p>I don't perform the repair work. I help you evaluate it, route it to a trustworthy shop, and ensure the quotes you're given reflect what the car actually needs.</p>
+      <div class="ongoing-pricing">
+        <div class="ongoing-pricing-label">Hourly or monthly retainer</div>
+        <div class="ongoing-pricing-note">Scoped to your vehicle and usage</div>
+      </div>
+    </div>
+    <ul class="ongoing-list">
+      <li>Repair quote review and second opinions</li>
+      <li>Warranty and recall navigation</li>
+      <li>Vetted local shop recommendations</li>
+      <li>Scheduled maintenance planning</li>
+      <li>Service writer communication on your behalf</li>
+      <li>Trade-in or sell-it-yourself guidance when the time comes</li>
+    </ul>
   </div>
 </section>
 
