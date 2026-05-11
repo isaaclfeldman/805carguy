@@ -3,753 +3,898 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
-<title>805 Car Guy — your local car connection on the Central Coast</title>
-<meta name="description" content="Your local car connection in the 805. New or used, I help Central Coast folks find the right car and show up at the dealership with you. SLO, Paso, Atascadero, Santa Maria and beyond."/>
-<meta name="theme-color" content="#2a7a7a"/>
+<title>805 Car Guy — Central Coast automotive concierge</title>
+<meta name="description" content="Independent automotive concierge serving the Central Coast. Pre-purchase inspection, dealer negotiation, end-to-end vehicle sourcing, and ongoing service coordination. No dealer incentives. No commissions."/>
+<meta name="theme-color" content="#1a2942"/>
 <meta name="robots" content="index, follow"/>
 <link rel="canonical" href="https://www.805carguy.com"/>
-<meta property="og:title" content="805 Car Guy — Your Local Car Connection"/>
-<meta property="og:description" content="I help Central Coast folks buy the right car and show up at the dealership with you. No kickbacks. No nonsense."/>
+<meta property="og:title" content="805 Car Guy — Central Coast Automotive Concierge"/>
+<meta property="og:description" content="Independent automotive concierge serving the Central Coast. Pre-purchase inspection, dealer negotiation, end-to-end sourcing, and ongoing service coordination."/>
 <meta property="og:type" content="website"/>
 <meta property="og:url" content="https://www.805carguy.com"/>
 <meta name="twitter:card" content="summary_large_image"/>
-<meta name="twitter:title" content="805 Car Guy — Your Local Car Connection"/>
-<meta name="twitter:description" content="I help Central Coast folks buy the right car and show up at the dealership with you."/>
-<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🚗</text></svg>"/>
+<meta name="twitter:title" content="805 Car Guy — Central Coast Automotive Concierge"/>
+<meta name="twitter:description" content="Independent automotive concierge. No dealer incentives. No commissions."/>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><rect width=%22100%22 height=%22100%22 fill=%22%231a2942%22/><text x=%2250%22 y=%2266%22 text-anchor=%22middle%22 font-family=%22Georgia%22 font-size=%2244%22 font-style=%22italic%22 fill=%22%23c89b5a%22>8</text></svg>"/>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,500&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <script defer data-domain="805carguy.com" src="https://plausible.io/js/script.js"></script>
 <style>
   :root {
-    /* coastal SLO palette — pulled directly from logo */
-    --cream-50:  #f8dfb7;   /* matches logo background exactly so logo blends */
-    --cream-100: #faeac8;
-    --cream-200: #eecf9a;
-    --sand-300:  #d6bb8a;   /* Bishop Peak sand */
-    --sand-500:  #a88757;
-    --sand-700:  #6b4a2a;
-    --ink:       #2d1f12;
-    --ink-soft:  #4a3626;
-    --teal:      #2a7a7a;
-    --teal-dk:   #1d5e5e;
-    --teal-soft: #cfe4e4;
-    --sunset:    #e27742;   /* logo sun */
-    --sunset-dk: #c45a28;
-    --gold:      #f0a843;
-    --brown:     #a77040;   /* wordmark rust-brown */
-    /* legacy aliases (CTAs still reference these) */
-    --rust:      var(--teal);
-    --rust-dk:   var(--teal-dk);
-    --rust-soft: var(--teal-soft);
-    --shadow-sm: 0 1px 2px rgba(45, 31, 18, .08);
-    --shadow-md: 0 8px 28px rgba(45, 31, 18, .14);
-    --shadow-lg: 0 24px 48px rgba(45, 31, 18, .18);
+    /* coastal navy palette */
+    --ivory:     #faf8f3;
+    --ivory-100: #f3eee2;
+    --ivory-200: #e8e0cc;
+    --rule:      #e0d8c5;
+    --navy:      #1a2942;
+    --navy-dk:   #0f1a30;
+    --navy-soft: #e4e7ee;
+    --gold:      #c89b5a;
+    --gold-dk:   #a87d3f;
+    --gold-soft: #f0e6d2;
+    --ink:       #1f1f1f;
+    --ink-soft:  #4a4a4a;
+    --ink-mute:  #8a8478;
+    --shadow-sm: 0 1px 2px rgba(15, 26, 48, .06);
+    --shadow-md: 0 8px 28px rgba(15, 26, 48, .10);
+    --shadow-lg: 0 20px 48px rgba(15, 26, 48, .14);
+    --serif: 'Cormorant Garamond', 'Playfair Display', Georgia, 'Times New Roman', serif;
+    --sans:  'Inter', -apple-system, BlinkMacSystemFont, 'Helvetica Neue', system-ui, sans-serif;
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
   html { scroll-behavior: smooth; }
   body {
-    font-family: -apple-system, BlinkMacSystemFont, 'Helvetica Neue', 'Segoe UI', Roboto, Arial, sans-serif;
+    font-family: var(--sans);
     color: var(--ink);
-    background: var(--cream-50);
-    line-height: 1.55;
+    background: var(--ivory);
+    line-height: 1.6;
     font-size: 16px;
     -webkit-font-smoothing: antialiased;
     min-height: 100dvh;
     overflow-x: hidden;
   }
   img { max-width: 100%; display: block; }
-  a { color: var(--rust-dk); text-decoration: none; }
-  a:hover { color: var(--rust); }
+  a { color: var(--navy); text-decoration: none; transition: color .15s; }
+  a:hover { color: var(--gold-dk); }
+
+  /* ─── HEADER ─── */
+  .site-header {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    background: rgba(250, 248, 243, .92);
+    backdrop-filter: saturate(1.2) blur(10px);
+    -webkit-backdrop-filter: saturate(1.2) blur(10px);
+    border-bottom: 1px solid var(--rule);
+  }
+  .site-header-inner {
+    max-width: 1180px;
+    margin: 0 auto;
+    padding: 14px 28px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+  }
+  .brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .brand-mark {
+    height: 44px;
+    width: auto;
+  }
+  .brand-name {
+    font-family: var(--serif);
+    font-size: 22px;
+    font-weight: 600;
+    color: var(--navy);
+    letter-spacing: -.005em;
+    line-height: 1;
+  }
+  .brand-name .amp {
+    color: var(--gold-dk);
+    font-style: italic;
+    font-weight: 500;
+  }
+  .nav-links {
+    display: flex;
+    gap: 28px;
+    align-items: center;
+  }
+  .nav-links a {
+    font-size: 14px;
+    color: var(--ink-soft);
+    font-weight: 500;
+    letter-spacing: .01em;
+  }
+  .nav-links a:hover { color: var(--navy); }
+  .nav-cta {
+    background: var(--navy);
+    color: var(--ivory) !important;
+    padding: 9px 18px;
+    border-radius: 4px;
+    font-weight: 600;
+    font-size: 13.5px;
+    letter-spacing: .02em;
+    transition: background .15s;
+  }
+  .nav-cta:hover { background: var(--navy-dk); color: var(--ivory) !important; }
+  @media (max-width: 760px) {
+    .nav-links .nav-link-text { display: none; }
+    .site-header-inner { padding: 12px 20px; }
+    .brand-name { font-size: 19px; }
+    .brand-mark { height: 38px; }
+  }
 
   /* ─── HERO ─── */
   .hero {
-    position: relative;
-    padding: 56px 24px 110px;
+    padding: 96px 28px 88px;
     text-align: center;
-    background:
-      /* sunset sky fading down into warm sand */
-      linear-gradient(180deg, #f4b07a 0%, #f5c592 14%, #f8d5a8 28%, var(--cream-50) 55%),
-      var(--cream-50);
-    overflow: hidden;
+    background: var(--ivory);
+    position: relative;
   }
-  /* sun glow radiating from behind the logo */
-  .hero::before {
-    content: '';
-    position: absolute;
-    top: -120px; left: 50%;
-    width: 900px; height: 900px;
-    margin-left: -450px;
-    background: radial-gradient(circle, rgba(242, 160, 72, .35) 0%, rgba(226, 119, 66, .10) 30%, transparent 55%);
-    pointer-events: none;
-    z-index: 0;
+  .hero-inner {
+    max-width: 820px;
+    margin: 0 auto;
   }
-  /* wave divider at bottom of hero */
-  .hero::after {
-    content: '';
-    position: absolute;
-    left: 0; right: 0; bottom: -1px;
-    height: 72px;
-    background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 90" preserveAspectRatio="none"><path d="M0 50 Q 150 20 300 45 T 600 50 T 900 45 T 1200 50 L 1200 90 L 0 90 Z" fill="%232a7a7a" opacity=".92"/><path d="M0 65 Q 200 35 400 60 T 800 65 T 1200 60 L 1200 90 L 0 90 Z" fill="%231d5e5e" opacity=".78"/><path d="M0 78 Q 250 58 500 75 T 1000 78 T 1200 74 L 1200 90 L 0 90 Z" fill="%23fbf7ef" opacity=".35"/></svg>') center / 100% 100% no-repeat;
-    pointer-events: none;
-    z-index: 1;
-  }
-  /* palm silhouettes flanking the hero */
-  .hero .palm {
-    position: absolute;
-    bottom: 0;
-    height: 360px;
-    opacity: .28;
-    pointer-events: none;
-    z-index: 0;
-  }
-  .hero .palm.left  { left: -40px; transform: scaleX(-1); }
-  .hero .palm.right { right: -40px; }
-  @media (max-width: 900px) { .hero .palm { height: 240px; opacity: .18; } }
-  @media (max-width: 640px) { .hero .palm { display: none; } }
-  .hero-inner { position: relative; max-width: 720px; margin: 0 auto; z-index: 2; }
-  .hero-logo {
-    height: clamp(260px, 38vw, 360px);
-    width: auto;
-    margin: -24px auto -8px;
-    display: block;
+  .hero-eyebrow {
+    font-size: 12.5px;
+    font-weight: 600;
+    letter-spacing: .22em;
+    text-transform: uppercase;
+    color: var(--gold-dk);
+    margin-bottom: 28px;
   }
   h1 {
-    font-size: clamp(34px, 5.6vw, 52px);
-    font-weight: 800;
-    line-height: 1.08;
-    letter-spacing: -.02em;
-    color: var(--ink);
-    margin-bottom: 18px;
+    font-family: var(--serif);
+    font-size: clamp(40px, 6.2vw, 68px);
+    font-weight: 500;
+    line-height: 1.05;
+    letter-spacing: -.015em;
+    color: var(--navy);
+    margin-bottom: 24px;
   }
-  h1 .accent {
-    color: var(--sunset-dk);
-    font-family: 'Georgia', 'Playfair Display', 'Times New Roman', serif;
+  h1 em {
     font-style: italic;
-    font-weight: 700;
-    letter-spacing: -.01em;
+    color: var(--gold-dk);
+    font-weight: 500;
   }
   .hero-sub {
-    font-size: clamp(16px, 2.4vw, 19px);
+    font-size: clamp(16px, 1.8vw, 19px);
     color: var(--ink-soft);
-    max-width: 540px;
-    margin: 0 auto 32px;
-    line-height: 1.55;
+    max-width: 600px;
+    margin: 0 auto 36px;
+    line-height: 1.65;
+  }
+  .hero-rule {
+    width: 64px;
+    height: 1px;
+    background: var(--gold);
+    margin: 0 auto 36px;
   }
   .cta-row {
     display: flex;
-    gap: 12px;
+    gap: 14px;
     justify-content: center;
     flex-wrap: wrap;
-    margin-bottom: 10px;
   }
   .btn {
-    display: inline-flex; align-items: center; gap: 8px;
-    padding: 14px 26px;
-    border-radius: 999px;
-    font-size: 15.5px;
-    font-weight: 700;
-    letter-spacing: .01em;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 14px 28px;
+    border-radius: 4px;
+    font-size: 14.5px;
+    font-weight: 600;
+    letter-spacing: .03em;
     cursor: pointer;
-    border: none;
-    transition: transform .15s ease, box-shadow .15s ease, background .15s ease;
+    border: 1px solid transparent;
+    transition: all .15s ease;
     text-decoration: none;
+    font-family: var(--sans);
   }
   .btn-primary {
-    background: var(--rust);
-    color: #fff;
+    background: var(--navy);
+    color: var(--ivory);
+    border-color: var(--navy);
+  }
+  .btn-primary:hover {
+    background: var(--navy-dk);
+    color: var(--ivory);
+    transform: translateY(-1px);
     box-shadow: var(--shadow-md);
   }
-  .btn-primary:hover { background: var(--rust-dk); color: #fff; transform: translateY(-1px); box-shadow: var(--shadow-lg); }
   .btn-ghost {
-    background: rgba(255,255,255,.8);
-    color: var(--ink);
-    border: 1px solid var(--sand-300);
+    background: transparent;
+    color: var(--navy);
+    border-color: var(--navy);
   }
-  .btn-ghost:hover { background: #fff; color: var(--ink); transform: translateY(-1px); }
-  .hero-note {
+  .btn-ghost:hover {
+    background: var(--navy);
+    color: var(--ivory);
+  }
+  .hero-trust {
+    margin-top: 48px;
     font-size: 13px;
-    color: var(--sand-500);
-    margin-top: 14px;
+    color: var(--ink-mute);
+    letter-spacing: .04em;
   }
+  .hero-trust strong { color: var(--ink-soft); font-weight: 600; }
 
   /* ─── SECTION WRAPPER ─── */
-  section { padding: 72px 24px; }
-  .container { max-width: 1040px; margin: 0 auto; }
-  h2 {
-    font-size: clamp(26px, 3.6vw, 34px);
-    font-weight: 800;
-    letter-spacing: -.01em;
-    margin-bottom: 8px;
-    color: var(--ink);
-  }
-  .section-kicker {
-    display: inline-block;
-    font-size: 12.5px;
-    font-weight: 700;
-    letter-spacing: .12em;
+  section { padding: 96px 28px; }
+  .container { max-width: 1180px; margin: 0 auto; }
+  .section-head { max-width: 720px; margin-bottom: 56px; }
+  .section-head.center { margin-left: auto; margin-right: auto; text-align: center; }
+  .kicker {
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: .22em;
     text-transform: uppercase;
-    color: var(--sunset-dk);
-    margin-bottom: 10px;
+    color: var(--gold-dk);
+    margin-bottom: 18px;
+    display: block;
   }
-  .section-intro {
+  h2 {
+    font-family: var(--serif);
+    font-size: clamp(30px, 4.2vw, 42px);
+    font-weight: 500;
+    letter-spacing: -.01em;
+    line-height: 1.15;
+    color: var(--navy);
+    margin-bottom: 16px;
+  }
+  h2 em { font-style: italic; color: var(--gold-dk); font-weight: 500; }
+  .lede {
     font-size: 17px;
     color: var(--ink-soft);
-    max-width: 580px;
-    margin-bottom: 36px;
+    line-height: 1.7;
+    max-width: 620px;
   }
 
   /* ─── SERVICES ─── */
+  .services-section {
+    background: var(--ivory-100);
+    border-top: 1px solid var(--rule);
+    border-bottom: 1px solid var(--rule);
+  }
   .services {
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-    gap: 18px;
-    margin-top: 8px;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
   }
   .svc-card {
-    background: #fff;
-    border: 1px solid var(--cream-200);
-    border-radius: 18px;
-    padding: 26px 24px 28px;
+    background: var(--ivory);
+    border: 1px solid var(--rule);
+    padding: 36px 32px;
     position: relative;
-    transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease;
-    box-shadow: var(--shadow-sm);
+    transition: border-color .2s, box-shadow .2s, transform .2s;
+    display: flex;
+    flex-direction: column;
   }
   .svc-card:hover {
-    transform: translateY(-3px);
+    border-color: var(--gold);
     box-shadow: var(--shadow-md);
-    border-color: var(--sand-300);
+    transform: translateY(-2px);
   }
   .svc-card.featured {
-    border: 2px solid var(--sunset);
-    background: linear-gradient(180deg, #fff 0%, rgba(240, 168, 67, .15) 140%);
+    border: 1px solid var(--navy);
+    background: var(--navy);
+    color: var(--ivory);
   }
+  .svc-card.featured .svc-num,
+  .svc-card.featured .svc-price { color: var(--gold); }
+  .svc-card.featured .svc-name { color: var(--ivory); }
+  .svc-card.featured .svc-desc,
+  .svc-card.featured .svc-includes { color: rgba(250, 248, 243, .85); }
+  .svc-card.featured .svc-includes li::before { color: var(--gold); }
+  .svc-card.featured .svc-cta {
+    background: var(--gold);
+    color: var(--navy);
+    border-color: var(--gold);
+  }
+  .svc-card.featured .svc-cta:hover { background: var(--ivory); color: var(--navy); border-color: var(--ivory); }
+  .svc-card.featured:hover { border-color: var(--gold); }
   .svc-badge {
     position: absolute;
-    top: -12px;
+    top: 20px;
     right: 20px;
-    background: var(--sunset);
-    color: #fff;
-    font-size: 11px;
-    font-weight: 800;
-    letter-spacing: .1em;
+    background: var(--gold);
+    color: var(--navy);
+    font-size: 10.5px;
+    font-weight: 700;
+    letter-spacing: .12em;
     text-transform: uppercase;
-    padding: 5px 12px;
-    border-radius: 999px;
-    box-shadow: var(--shadow-sm);
+    padding: 4px 10px;
+    border-radius: 2px;
   }
-  .svc-icon {
-    font-size: 28px;
-    margin-bottom: 12px;
+  .svc-num {
+    font-family: var(--serif);
+    font-style: italic;
+    font-size: 13px;
+    letter-spacing: .08em;
+    color: var(--gold-dk);
+    margin-bottom: 6px;
   }
   .svc-name {
-    font-size: 19px;
-    font-weight: 800;
-    color: var(--ink);
-    margin-bottom: 4px;
+    font-family: var(--serif);
+    font-size: 26px;
+    font-weight: 600;
+    color: var(--navy);
+    margin-bottom: 12px;
+    letter-spacing: -.005em;
+    line-height: 1.15;
   }
   .svc-price {
-    font-size: 26px;
-    font-weight: 800;
-    color: var(--rust);
-    letter-spacing: -.02em;
-    margin-bottom: 12px;
+    font-family: var(--serif);
+    font-size: 22px;
+    font-weight: 600;
+    color: var(--navy);
+    margin-bottom: 18px;
+    letter-spacing: -.01em;
   }
-  .svc-price .per { font-size: 13px; font-weight: 600; color: var(--sand-500); }
+  .svc-price .per {
+    font-family: var(--sans);
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--ink-mute);
+    letter-spacing: .04em;
+    text-transform: uppercase;
+    margin-left: 4px;
+  }
   .svc-desc {
-    font-size: 14.5px;
+    font-size: 15px;
     color: var(--ink-soft);
-    line-height: 1.6;
-    margin-bottom: 16px;
+    line-height: 1.65;
+    margin-bottom: 22px;
   }
   .svc-includes {
     list-style: none;
-    margin: 0 0 20px;
+    margin: 0 0 28px;
     padding: 0;
-    font-size: 13.5px;
+    font-size: 14px;
     color: var(--ink-soft);
+    flex-grow: 1;
   }
   .svc-includes li {
-    padding: 4px 0 4px 22px;
+    padding: 5px 0 5px 22px;
     position: relative;
-    line-height: 1.5;
+    line-height: 1.55;
   }
   .svc-includes li::before {
-    content: '✓';
+    content: '';
     position: absolute;
     left: 0;
-    top: 4px;
-    color: var(--rust);
-    font-weight: 800;
-    font-size: 13px;
+    top: 14px;
+    width: 12px;
+    height: 1px;
+    background: var(--gold);
   }
   .svc-cta {
     display: block;
     text-align: center;
-    padding: 11px 16px;
-    border-radius: 999px;
-    background: var(--cream-100);
-    color: var(--ink);
-    font-weight: 700;
-    font-size: 14px;
-    transition: background .15s;
-    border: 1px solid var(--cream-200);
+    padding: 12px 16px;
+    background: transparent;
+    color: var(--navy);
+    font-weight: 600;
+    font-size: 13.5px;
+    letter-spacing: .04em;
+    transition: all .15s;
+    border: 1px solid var(--navy);
+    border-radius: 3px;
   }
-  .svc-cta:hover { background: var(--cream-200); color: var(--ink); }
-  .svc-card.featured .svc-cta {
-    background: var(--rust);
-    color: #fff;
-    border-color: var(--rust);
-  }
-  .svc-card.featured .svc-cta:hover { background: var(--rust-dk); color: #fff; }
+  .svc-cta:hover { background: var(--navy); color: var(--ivory); }
 
   /* ─── ABOUT ─── */
-  .about-section {
-    background: linear-gradient(160deg, rgba(212, 234, 234, .5) 0%, var(--cream-50) 60%);
-    border-top: 1px solid var(--cream-200);
-    border-bottom: 1px solid var(--cream-200);
-  }
+  .about-section { background: var(--ivory); }
   .about-layout {
     display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 52px;
-    align-items: center;
-    margin-top: 28px;
+    grid-template-columns: 1.2fr 1fr;
+    gap: 80px;
+    align-items: start;
   }
   .about-bio p {
     font-size: 16px;
     color: var(--ink-soft);
-    line-height: 1.75;
-    margin-bottom: 16px;
+    line-height: 1.8;
+    margin-bottom: 18px;
   }
   .about-bio p:last-child { margin-bottom: 0; }
+  .about-bio p:first-of-type::first-letter {
+    font-family: var(--serif);
+    font-size: 56px;
+    font-weight: 500;
+    color: var(--navy);
+    float: left;
+    line-height: 1;
+    margin: 4px 10px 0 -2px;
+  }
   .about-stats {
     display: flex;
     flex-direction: column;
-    gap: 14px;
+    gap: 0;
+    border-top: 1px solid var(--rule);
   }
-  .stat-chip {
-    background: #fff;
-    border: 1px solid var(--cream-200);
-    border-left: 3px solid var(--rust);
-    border-radius: 14px;
-    padding: 18px 24px;
-    box-shadow: var(--shadow-sm);
+  .stat {
+    padding: 24px 0;
+    border-bottom: 1px solid var(--rule);
     display: flex;
-    align-items: center;
-    gap: 18px;
-    transition: box-shadow .15s, transform .15s;
+    align-items: baseline;
+    gap: 20px;
   }
-  .stat-chip:hover { box-shadow: var(--shadow-md); transform: translateY(-2px); }
   .stat-num {
-    font-size: 36px;
-    font-weight: 800;
-    color: var(--rust);
-    letter-spacing: -.03em;
-    min-width: 72px;
+    font-family: var(--serif);
+    font-size: 48px;
+    font-weight: 500;
+    color: var(--gold-dk);
+    letter-spacing: -.02em;
     line-height: 1;
+    min-width: 110px;
   }
   .stat-label {
-    font-size: 14.5px;
+    font-size: 13.5px;
     color: var(--ink-soft);
-    font-weight: 600;
-    line-height: 1.35;
+    line-height: 1.45;
+    text-transform: uppercase;
+    letter-spacing: .08em;
+    font-weight: 500;
   }
 
-  /* ─── WHY ME ─── */
-  .why {
-    background: var(--cream-100);
-    border-top: 1px solid var(--cream-200);
-    border-bottom: 1px solid var(--cream-200);
+  /* ─── PRINCIPLES ─── */
+  .principles {
+    background: var(--navy);
+    color: var(--ivory);
   }
-  .why-grid {
+  .principles h2 { color: var(--ivory); }
+  .principles h2 em { color: var(--gold); }
+  .principles .kicker { color: var(--gold); }
+  .principles .lede { color: rgba(250, 248, 243, .8); }
+  .principles-grid {
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-    gap: 28px;
-    margin-top: 14px;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 48px;
+    margin-top: 48px;
   }
-  .why-item {
-    background: #fff;
-    border: 1px solid var(--cream-200);
-    border-radius: 16px;
-    padding: 24px 22px;
-    transition: box-shadow .18s, transform .18s;
+  .principle-num {
+    font-family: var(--serif);
+    font-style: italic;
+    font-size: 36px;
+    color: var(--gold);
+    margin-bottom: 8px;
+    line-height: 1;
   }
-  .why-item:hover { box-shadow: var(--shadow-md); transform: translateY(-2px); }
-  .why-num {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 38px; height: 38px;
-    border-radius: 50%;
-    background: var(--rust);
-    color: #fff;
-    font-weight: 800;
-    font-size: 16px;
+  .principle-h {
+    font-family: var(--serif);
+    font-size: 22px;
+    font-weight: 500;
+    color: var(--ivory);
     margin-bottom: 12px;
+    letter-spacing: -.005em;
   }
-  .why-h {
-    font-size: 18px;
-    font-weight: 800;
-    margin-bottom: 6px;
-    color: var(--ink);
-  }
-  .why-p {
+  .principle-p {
     font-size: 14.5px;
-    color: var(--ink-soft);
-    line-height: 1.6;
+    color: rgba(250, 248, 243, .75);
+    line-height: 1.7;
   }
 
   /* ─── HOW IT WORKS ─── */
+  .process-section { background: var(--ivory-100); border-top: 1px solid var(--rule); border-bottom: 1px solid var(--rule); }
   .steps {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
     gap: 0;
     margin-top: 24px;
-    background: #fff;
-    border: 1px solid var(--cream-200);
-    border-radius: 18px;
-    overflow: hidden;
-    box-shadow: var(--shadow-sm);
   }
   .step {
-    padding: 28px 24px;
-    border-right: 1px solid var(--cream-200);
+    padding: 32px 28px 32px 0;
+    border-right: 1px solid var(--rule);
+    position: relative;
   }
-  .step:last-child { border-right: none; }
+  .step:last-child { border-right: none; padding-right: 0; }
+  .step:not(:first-child) { padding-left: 32px; }
   .step-num {
-    font-size: 11px;
-    font-weight: 800;
-    letter-spacing: .15em;
-    text-transform: uppercase;
-    color: var(--rust);
-    margin-bottom: 8px;
+    font-family: var(--serif);
+    font-style: italic;
+    font-size: 13px;
+    letter-spacing: .12em;
+    color: var(--gold-dk);
+    margin-bottom: 10px;
   }
   .step-h {
-    font-size: 17px;
-    font-weight: 800;
-    margin-bottom: 6px;
+    font-family: var(--serif);
+    font-size: 22px;
+    font-weight: 500;
+    margin-bottom: 10px;
+    color: var(--navy);
+    line-height: 1.2;
   }
   .step-p {
-    font-size: 14px;
+    font-size: 14.5px;
     color: var(--ink-soft);
-    line-height: 1.55;
+    line-height: 1.65;
   }
 
   /* ─── FAQ ─── */
-  .faq {
-    background: var(--cream-100);
-    border-top: 1px solid var(--cream-200);
-    border-bottom: 1px solid var(--cream-200);
-  }
+  .faq-section { background: var(--ivory); }
   .faq-list {
-    margin-top: 28px;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    max-width: 720px;
+    margin-top: 12px;
+    max-width: 820px;
   }
   .faq-item {
-    background: #fff;
-    border: 1px solid var(--cream-200);
-    border-radius: 14px;
-    overflow: hidden;
-    transition: box-shadow .15s;
+    border-bottom: 1px solid var(--rule);
+    transition: background .15s;
   }
-  .faq-item[open] {
-    box-shadow: var(--shadow-sm);
-    border-color: var(--sand-300);
-  }
+  .faq-item[open] { background: rgba(200, 155, 90, .04); }
   .faq-q {
-    padding: 18px 22px;
-    font-size: 16px;
-    font-weight: 700;
-    color: var(--ink);
+    padding: 22px 4px;
+    font-family: var(--serif);
+    font-size: 20px;
+    font-weight: 500;
+    color: var(--navy);
     cursor: pointer;
     list-style: none;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    gap: 12px;
+    gap: 16px;
     user-select: none;
+    letter-spacing: -.005em;
   }
   .faq-q::-webkit-details-marker { display: none; }
   .faq-q::after {
     content: '+';
-    font-size: 22px;
+    font-family: var(--sans);
+    font-size: 24px;
     font-weight: 300;
-    color: var(--rust);
+    color: var(--gold-dk);
     flex-shrink: 0;
-    transition: transform .2s ease;
+    transition: transform .25s ease;
     line-height: 1;
   }
   .faq-item[open] .faq-q::after { transform: rotate(45deg); }
   .faq-a {
-    padding: 14px 22px 18px;
-    font-size: 15px;
+    padding: 0 4px 24px;
+    font-size: 15.5px;
     color: var(--ink-soft);
-    line-height: 1.65;
-    border-top: 1px solid var(--cream-200);
+    line-height: 1.75;
+    max-width: 720px;
   }
 
   /* ─── BOOK CTA ─── */
   .book {
     text-align: center;
-    padding: 90px 24px 100px;
-    background:
-      radial-gradient(ellipse at 50% 100%, rgba(29, 107, 107, .15), transparent 55%),
-      linear-gradient(180deg, var(--cream-50) 0%, var(--cream-100) 100%);
+    padding: 110px 28px 120px;
+    background: var(--navy);
+    color: var(--ivory);
   }
-  .book h2 { margin-bottom: 12px; }
+  .book h2 { color: var(--ivory); margin-bottom: 16px; }
+  .book h2 em { color: var(--gold); }
+  .book .kicker { color: var(--gold); }
+  .book-rule {
+    width: 64px;
+    height: 1px;
+    background: var(--gold);
+    margin: 0 auto 32px;
+  }
   .book-sub {
     font-size: 17px;
-    color: var(--ink-soft);
-    max-width: 480px;
-    margin: 0 auto 26px;
+    color: rgba(250, 248, 243, .8);
+    max-width: 520px;
+    margin: 0 auto 36px;
+    line-height: 1.65;
   }
+  .book .btn-primary {
+    background: var(--gold);
+    color: var(--navy);
+    border-color: var(--gold);
+  }
+  .book .btn-primary:hover {
+    background: var(--ivory);
+    color: var(--navy);
+    border-color: var(--ivory);
+  }
+  .book .btn-ghost {
+    color: var(--ivory);
+    border-color: rgba(250, 248, 243, .4);
+  }
+  .book .btn-ghost:hover { background: var(--ivory); color: var(--navy); border-color: var(--ivory); }
   .book-coverage {
-    font-size: 13.5px;
-    color: var(--sand-500);
-    margin-top: 20px;
+    margin-top: 48px;
+    font-size: 13px;
+    color: rgba(250, 248, 243, .55);
+    letter-spacing: .04em;
+    max-width: 640px;
+    margin-left: auto;
+    margin-right: auto;
+    line-height: 1.65;
   }
-  .book-coverage strong { color: var(--ink-soft); }
+  .book-coverage strong { color: var(--gold); font-weight: 600; letter-spacing: .08em; text-transform: uppercase; font-size: 11.5px; display: block; margin-bottom: 6px; }
 
   /* ─── FOOTER ─── */
   footer {
-    padding: 28px 24px;
+    padding: 36px 28px;
     text-align: center;
-    color: var(--sand-500);
+    color: var(--ink-mute);
     font-size: 13px;
-    border-top: 1px solid var(--cream-200);
-    background: var(--cream-50);
+    border-top: 1px solid var(--rule);
+    background: var(--ivory);
   }
-  footer a { color: var(--sand-700); font-weight: 600; }
-  footer .sep { margin: 0 8px; opacity: .5; }
+  footer a { color: var(--navy); font-weight: 500; }
+  footer .sep { margin: 0 12px; opacity: .4; }
+  footer .copy { margin-top: 12px; font-size: 12px; opacity: .8; }
 
   /* ─── MOBILE ─── */
-  @media (max-width: 760px) {
-    .hero { padding: 60px 20px 70px; }
-    section { padding: 56px 20px; }
-    .services, .why-grid, .steps { grid-template-columns: 1fr; }
-    .about-layout { grid-template-columns: 1fr; gap: 32px; }
-    .steps { border-radius: 18px; }
-    .step { border-right: none; border-bottom: 1px solid var(--cream-200); }
-    .step:last-child { border-bottom: none; }
-    .book { padding: 70px 20px 80px; }
-    .btn { padding: 13px 22px; font-size: 15px; }
+  @media (max-width: 880px) {
+    .services, .principles-grid, .steps, .about-layout { grid-template-columns: 1fr; }
+    .about-layout { gap: 48px; }
+    .principles-grid { gap: 36px; margin-top: 32px; }
+    .step { border-right: none; border-bottom: 1px solid var(--rule); padding: 24px 0; }
+    .step:not(:first-child) { padding-left: 0; }
+    .step:last-child { border-bottom: none; padding-bottom: 0; }
+  }
+  @media (max-width: 640px) {
+    section { padding: 64px 22px; }
+    .hero { padding: 64px 22px 56px; }
+    .book { padding: 80px 22px 88px; }
+    .svc-card { padding: 28px 24px; }
+    .nav-links { gap: 14px; }
   }
 
   /* Entrance animation */
   .fade-in {
     opacity: 0;
-    transform: translateY(10px);
-    animation: fadeIn .6s ease forwards;
+    transform: translateY(8px);
+    animation: fadeIn .7s cubic-bezier(.2,.7,.2,1) forwards;
   }
   .fade-in.d1 { animation-delay: .08s; }
-  .fade-in.d2 { animation-delay: .16s; }
-  .fade-in.d3 { animation-delay: .24s; }
-  @keyframes fadeIn {
-    to { opacity: 1; transform: translateY(0); }
-  }
+  .fade-in.d2 { animation-delay: .18s; }
+  .fade-in.d3 { animation-delay: .28s; }
+  .fade-in.d4 { animation-delay: .38s; }
+  @keyframes fadeIn { to { opacity: 1; transform: translateY(0); } }
 </style>
 </head>
 <body>
 
+<!-- ═══════════ HEADER ═══════════ -->
+<header class="site-header">
+  <div class="site-header-inner">
+    <a href="#top" class="brand" aria-label="805 Car Guy home">
+      <img src="logo.png" alt="" class="brand-mark"/>
+      <span class="brand-name">805 <em class="amp">Car Guy</em></span>
+    </a>
+    <nav class="nav-links">
+      <a href="#services" class="nav-link-text">Services</a>
+      <a href="#about" class="nav-link-text">About</a>
+      <a href="#faq" class="nav-link-text">FAQ</a>
+      <a href="https://ig.me/m/805carguy" target="_blank" rel="noopener" class="nav-cta">Get in touch →</a>
+    </nav>
+  </div>
+</header>
+
 <!-- ═══════════ HERO ═══════════ -->
-<section class="hero">
-  <!-- palm silhouettes -->
-  <svg class="palm left"  viewBox="0 0 200 400" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-    <g fill="#1d5e5e">
-      <path d="M95 400 Q 90 260 80 160 Q 76 120 72 80 L 80 78 Q 86 120 92 160 Q 100 260 108 400 Z"/>
-      <path d="M82 80 Q 30 50 0 90 Q 10 60 40 45 Q 70 38 82 80 Z"/>
-      <path d="M82 80 Q 120 30 180 60 Q 150 28 110 30 Q 88 40 82 80 Z"/>
-      <path d="M82 80 Q 20 110 0 170 Q 30 110 60 95 Q 78 82 82 80 Z"/>
-      <path d="M82 80 Q 140 120 200 130 Q 150 100 120 90 Q 90 82 82 80 Z"/>
-      <path d="M82 80 Q 70 20 40 0 Q 60 30 70 55 Q 78 70 82 80 Z"/>
-      <path d="M82 80 Q 100 18 140 8 Q 110 25 100 50 Q 86 72 82 80 Z"/>
-    </g>
-  </svg>
-  <svg class="palm right" viewBox="0 0 200 400" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-    <g fill="#1d5e5e">
-      <path d="M95 400 Q 90 260 80 160 Q 76 120 72 80 L 80 78 Q 86 120 92 160 Q 100 260 108 400 Z"/>
-      <path d="M82 80 Q 30 50 0 90 Q 10 60 40 45 Q 70 38 82 80 Z"/>
-      <path d="M82 80 Q 120 30 180 60 Q 150 28 110 30 Q 88 40 82 80 Z"/>
-      <path d="M82 80 Q 20 110 0 170 Q 30 110 60 95 Q 78 82 82 80 Z"/>
-      <path d="M82 80 Q 140 120 200 130 Q 150 100 120 90 Q 90 82 82 80 Z"/>
-      <path d="M82 80 Q 70 20 40 0 Q 60 30 70 55 Q 78 70 82 80 Z"/>
-      <path d="M82 80 Q 100 18 140 8 Q 110 25 100 50 Q 86 72 82 80 Z"/>
-    </g>
-  </svg>
+<section class="hero" id="top">
   <div class="hero-inner">
-    <img src="logo.png" alt="805 Car Guy" class="hero-logo fade-in" onerror="this.style.display='none'"/>
-    <h1 class="fade-in d1">Your <span class="accent">local car connection</span> in the 805.</h1>
-    <p class="hero-sub fade-in d2">New or used, I help Central Coast folks find the right car and show up at the dealership to walk the lot, kick the tires, and negotiate in person. No kickbacks. No nonsense.</p>
+    <div class="hero-eyebrow fade-in">Central Coast · Independent · Established 2026</div>
+    <h1 class="fade-in d1">Your <em>automotive concierge</em><br/>on the Central Coast.</h1>
+    <div class="hero-rule fade-in d2"></div>
+    <p class="hero-sub fade-in d2">An independent advocate for buyers and owners. I find the right vehicle, negotiate the right deal, inspect before you commit, and help you manage what comes after — without dealer incentives or hidden commissions.</p>
     <div class="cta-row fade-in d3">
-      <a class="btn btn-primary" href="https://ig.me/m/805carguy" target="_blank" rel="noopener">DM me on Instagram →</a>
-      <a class="btn btn-ghost" href="#services">See what I do</a>
+      <a class="btn btn-primary" href="https://ig.me/m/805carguy" target="_blank" rel="noopener">Get in touch →</a>
+      <a class="btn btn-ghost" href="#services">View services</a>
     </div>
-    <div class="hero-note fade-in d3">Usually reply same day · SLO · Paso · Atascadero · Santa Maria · AG · Pismo · Morro Bay</div>
+    <div class="hero-trust fade-in d4"><strong>25+ years</strong> in the industry · <strong>12+ dealerships</strong> · <strong>Honda → Porsche</strong></div>
   </div>
 </section>
 
 <!-- ═══════════ SERVICES ═══════════ -->
-<section id="services">
+<section class="services-section" id="services">
   <div class="container">
-    <div class="section-kicker">How I can help</div>
-    <h2>Three ways to work with me.</h2>
-    <p class="section-intro">Start wherever you want. Most folks go with the Ride-Along — that's the sweet spot.</p>
+    <div class="section-head">
+      <span class="kicker">Services</span>
+      <h2>Four ways to <em>work together</em>.</h2>
+      <p class="lede">Whether you're researching a single listing, walking into a dealership tomorrow, or planning a full search — there's a clear way in.</p>
+    </div>
 
     <div class="services">
-      <!-- Drive-By -->
+
+      <!-- Pre-Purchase Inspection -->
       <div class="svc-card">
-        <div class="svc-icon">📸</div>
-        <div class="svc-name">The Drive-By</div>
-        <div class="svc-price">$99</div>
-        <p class="svc-desc">You send me a listing. I go look at the car, send you an honest video walkaround and a verdict.</p>
+        <div class="svc-num">01 · Inspection</div>
+        <div class="svc-name">Pre-Purchase Inspection</div>
+        <div class="svc-price">$99<span class="per">per vehicle</span></div>
+        <p class="svc-desc">Send a listing. I drive to the car, inspect it in person, and deliver a clear verdict before you commit a dollar.</p>
         <ul class="svc-includes">
-          <li>30-minute in-person inspection</li>
-          <li>Walkaround video + photos</li>
-          <li>Red flags + "buy / walk" call</li>
-          <li>Within 24–48 hours</li>
+          <li>Thorough in-person inspection</li>
+          <li>Detailed photo and video walkaround</li>
+          <li>Mechanical, cosmetic, and paperwork review</li>
+          <li>Buy / negotiate / walk recommendation</li>
+          <li>Delivered within 24–48 hours</li>
         </ul>
-        <a class="svc-cta" href="https://ig.me/m/805carguy" target="_blank" rel="noopener">Book via DM →</a>
+        <a class="svc-cta" href="https://ig.me/m/805carguy" target="_blank" rel="noopener">Request inspection</a>
       </div>
 
-      <!-- Ride-Along (featured) -->
+      <!-- Dealer Negotiation (featured) -->
       <div class="svc-card featured">
-        <div class="svc-badge">Most Popular</div>
-        <div class="svc-icon">🤝</div>
-        <div class="svc-name">The Ride-Along</div>
-        <div class="svc-price">$249</div>
-        <p class="svc-desc">I meet you at the dealership. We inspect the car together and I help you negotiate — in person, in real time.</p>
+        <div class="svc-badge">Most requested</div>
+        <div class="svc-num">02 · Negotiation</div>
+        <div class="svc-name">Dealer Negotiation</div>
+        <div class="svc-price">$249<span class="per">per visit</span></div>
+        <p class="svc-desc">I meet you at the dealership and handle the deal. Walkaround, test-drive coaching, live negotiation — until you sign or we walk.</p>
         <ul class="svc-includes">
-          <li>2-hour block at the lot</li>
-          <li>Full walkaround + test-drive feedback</li>
-          <li>Live negotiation coaching</li>
-          <li>I'll tell you to walk if you should</li>
+          <li>Up to two hours on-site at the dealership</li>
+          <li>Inspection and test-drive alongside you</li>
+          <li>Negotiation on price, financing, and add-ons</li>
+          <li>Trade-in valuation support</li>
+          <li>Honest "walk" call if the deal isn't right</li>
         </ul>
-        <a class="svc-cta" href="https://ig.me/m/805carguy" target="_blank" rel="noopener">Book a Ride-Along →</a>
+        <a class="svc-cta" href="https://ig.me/m/805carguy" target="_blank" rel="noopener">Book a visit</a>
       </div>
 
-      <!-- Full Fetch -->
+      <!-- Find & Buy -->
       <div class="svc-card">
-        <div class="svc-icon">🐾</div>
-        <div class="svc-name">The Full Fetch</div>
-        <div class="svc-price">$495</div>
-        <p class="svc-desc">Hand me the keys to the search. I find it, vet it, show up with you, and help close the deal.</p>
+        <div class="svc-num">03 · Sourcing</div>
+        <div class="svc-name">Find &amp; Buy</div>
+        <div class="svc-price">$495<span class="per">end-to-end</span></div>
+        <p class="svc-desc">Tell me what you want. I source, vet, and shortlist the right vehicles from across the region, then walk the deal through to signature.</p>
         <ul class="svc-includes">
-          <li>Custom shortlist of 3–5 cars</li>
-          <li>Dealer vetting + OTD pricing</li>
-          <li>In-person visit + negotiation</li>
-          <li>30-day money-back guarantee</li>
+          <li>Tailored shortlist of three to five vehicles</li>
+          <li>Dealer vetting and out-the-door pricing</li>
+          <li>On-site inspection and negotiation</li>
+          <li>End-to-end purchase support</li>
+          <li>Thirty-day satisfaction guarantee</li>
         </ul>
-        <a class="svc-cta" href="https://ig.me/m/805carguy" target="_blank" rel="noopener">Request a Fetch →</a>
+        <a class="svc-cta" href="https://ig.me/m/805carguy" target="_blank" rel="noopener">Start a search</a>
       </div>
+
+      <!-- Service Coordination -->
+      <div class="svc-card">
+        <div class="svc-num">04 · Ownership</div>
+        <div class="svc-name">Service Coordination</div>
+        <div class="svc-price">Custom<span class="per">hourly or retainer</span></div>
+        <p class="svc-desc">Ongoing support after the keys are in your hand. Service planning, repair quote review, warranty navigation, and trustworthy local shop recommendations.</p>
+        <ul class="svc-includes">
+          <li>Repair quote review and second opinions</li>
+          <li>Warranty and recall navigation</li>
+          <li>Vetted local shop recommendations</li>
+          <li>Scheduled maintenance planning</li>
+          <li>Hourly engagements or monthly retainer</li>
+        </ul>
+        <a class="svc-cta" href="https://ig.me/m/805carguy" target="_blank" rel="noopener">Inquire about availability</a>
+      </div>
+
     </div>
   </div>
 </section>
 
 <!-- ═══════════ ABOUT ═══════════ -->
-<section class="about-section">
+<section class="about-section" id="about">
   <div class="container">
-    <div class="section-kicker">Who I am</div>
-    <h2>Not a dealer. Just a car guy.</h2>
+    <div class="section-head">
+      <span class="kicker">About</span>
+      <h2>Twenty-five years in the industry. <em>One side of the desk now — yours.</em></h2>
+    </div>
 
     <div class="about-layout">
       <div class="about-bio">
-        <p>I've been a car guy since childhood and working in the automotive industry since 2000. Over a dozen dealerships, with experience ranging from Honda to VW to Porsche. I know the dealership world inside and out — every trick of the trade: how cars get priced, how deals get structured, where the margin hides, and when a "good deal" isn't.</p>
-        <p>I've worked with buyers from every walk of life — humble working-class families and A-list celebrities alike. Same honest deal for each of them.</p>
-        <p>I've called the Central Coast home for 12 years. When you DM, you're not getting a call center or a form — you're getting me. Flat fee, no kickbacks, no hidden incentive to push you toward one car over another.</p>
+        <p>I have been working in the automotive industry since 2000, across more than a dozen dealerships, with experience ranging from Honda to Volkswagen to Porsche. That tenure covers how vehicles are sourced and priced, how deals are structured, where margin lives, and how to recognize a good one from one that just looks like it.</p>
+        <p>My clients have ranged from working-class families to A-list celebrities. The service is the same for both — patient, candid, and aligned to what they actually need rather than what is convenient to sell.</p>
+        <p>I have called the Central Coast home for twelve years. When you contact me, you reach me directly. A flat fee. No dealer incentives. No referral commissions. No reason to point you anywhere but the right car.</p>
       </div>
+
       <div class="about-stats">
-        <div class="stat-chip">
-          <span class="stat-num">2000</span>
-          <span class="stat-label">In the automotive industry since</span>
+        <div class="stat">
+          <div class="stat-num">2000</div>
+          <div class="stat-label">In the automotive industry since</div>
         </div>
-        <div class="stat-chip">
-          <span class="stat-num">12+</span>
-          <span class="stat-label">Dealerships worked, from Honda to VW to Porsche</span>
+        <div class="stat">
+          <div class="stat-num">12+</div>
+          <div class="stat-label">Dealerships worked, Honda through Porsche</div>
         </div>
-        <div class="stat-chip">
-          <span class="stat-num">805</span>
-          <span class="stat-label">The only area code I work in</span>
+        <div class="stat">
+          <div class="stat-num">12</div>
+          <div class="stat-label">Years on the Central Coast</div>
+        </div>
+        <div class="stat">
+          <div class="stat-num">805</div>
+          <div class="stat-label">The only area code I serve</div>
         </div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ═══════════ WHY ME ═══════════ -->
-<section class="why">
+<!-- ═══════════ PRINCIPLES ═══════════ -->
+<section class="principles">
   <div class="container">
-    <div class="section-kicker">Why work with me</div>
-    <h2>Local, independent, honest.</h2>
+    <div class="section-head">
+      <span class="kicker">How I work</span>
+      <h2>Independent. Discreet. <em>Aligned with you.</em></h2>
+      <p class="lede">A short list of principles that the rest of the industry generally cannot offer.</p>
+    </div>
 
-    <div class="why-grid">
-      <div class="why-item">
-        <div class="why-num">1</div>
-        <div class="why-h">I'm on your side.</div>
-        <p class="why-p">No dealer kickbacks. No commission hidden in a markup. You pay me a flat fee and I work for you.</p>
+    <div class="principles-grid">
+      <div>
+        <div class="principle-num">i.</div>
+        <div class="principle-h">Aligned incentives</div>
+        <p class="principle-p">You hire me; the dealer does not. There are no commissions, no referral fees, no manufacturer kickbacks. The only incentive I have is to put you in the right vehicle.</p>
       </div>
-      <div class="why-item">
-        <div class="why-num">2</div>
-        <div class="why-h">I'm actually local.</div>
-        <p class="why-p">San Luis Obispo County is home. I know the lots from Paso to Pismo, which ones are a drive worth making, and which ones to skip.</p>
+      <div>
+        <div class="principle-num">ii.</div>
+        <div class="principle-h">Local knowledge</div>
+        <p class="principle-p">San Luis Obispo County is home. I know the lots from Paso Robles to Pismo Beach — which ones are worth the drive, and which ones are worth avoiding entirely.</p>
       </div>
-      <div class="why-item">
-        <div class="why-num">3</div>
-        <div class="why-h">I'll tell you the truth.</div>
-        <p class="why-p">If the car's a lemon, I'll say so. If you can get a better deal down the road, I'll tell you. Honest beats polite.</p>
+      <div>
+        <div class="principle-num">iii.</div>
+        <div class="principle-h">Direct and candid</div>
+        <p class="principle-p">If the car is wrong, I will say so. If the deal can be improved, I will push for it. This service exists because the rest of the market does not operate this way.</p>
       </div>
     </div>
   </div>
 </section>
 
 <!-- ═══════════ HOW IT WORKS ═══════════ -->
-<section>
+<section class="process-section">
   <div class="container">
-    <div class="section-kicker">How it works</div>
-    <h2>Simple as a text message.</h2>
+    <div class="section-head">
+      <span class="kicker">Process</span>
+      <h2>Three steps. <em>Same day to start.</em></h2>
+    </div>
 
     <div class="steps">
       <div class="step">
-        <div class="step-num">Step 1</div>
-        <div class="step-h">DM me.</div>
-        <p class="step-p">Shoot me a message on Instagram <a href="https://ig.me/m/805carguy" target="_blank" rel="noopener">@805carguy</a> with what you're hunting — budget, must-haves, deal-breakers.</p>
+        <div class="step-num">Step one</div>
+        <div class="step-h">Get in touch</div>
+        <p class="step-p">Message <a href="https://ig.me/m/805carguy" target="_blank" rel="noopener">@805carguy</a> on Instagram with what you are considering — budget, must-haves, deal-breakers, and timing.</p>
       </div>
       <div class="step">
-        <div class="step-num">Step 2</div>
-        <div class="step-h">We lock it in.</div>
-        <p class="step-p">Quick call or a few texts to pick the service, confirm the plan, and schedule. I'll send you a secure link to pay.</p>
+        <div class="step-num">Step two</div>
+        <div class="step-h">Define the scope</div>
+        <p class="step-p">A short call or message exchange to choose the right service, agree on scope and timing, and arrange a secure payment link.</p>
       </div>
       <div class="step">
-        <div class="step-num">Step 3</div>
-        <div class="step-h">I show up.</div>
-        <p class="step-p">I meet you at the lot (or head there solo for a Drive-By). We walk the car, I talk you through what I see, and we decide together.</p>
+        <div class="step-num">Step three</div>
+        <div class="step-h">I go to work</div>
+        <p class="step-p">At the lot, on the listing, on the phone with the dealer — whichever the service calls for. Direct, professional, and at your side.</p>
       </div>
     </div>
   </div>
 </section>
 
 <!-- ═══════════ FAQ ═══════════ -->
-<section class="faq">
+<section class="faq-section" id="faq">
   <div class="container">
-    <div class="section-kicker">Quick answers</div>
-    <h2>Common questions.</h2>
+    <div class="section-head">
+      <span class="kicker">Frequently asked</span>
+      <h2>Common <em>questions</em>.</h2>
+    </div>
 
     <div class="faq-list">
       <details class="faq-item">
-        <summary class="faq-q">Do you work with new cars, not just used?</summary>
-        <p class="faq-a">Yes — new, used, certified pre-owned, private sellers. If there's a car and a deal to be made, I can help you navigate it.</p>
+        <summary class="faq-q">Do you work with new vehicles, or only used?</summary>
+        <p class="faq-a">Both. New, used, certified pre-owned, private-party sales, and out-of-state purchases. If there is a vehicle and a deal to be made, I can help you navigate it.</p>
       </details>
       <details class="faq-item">
-        <summary class="faq-q">I'm not ready to buy yet. Can you still help?</summary>
-        <p class="faq-a">Absolutely. DM me with what you're thinking — even vague is fine. I can help you figure out what you actually need before you're ready to pull the trigger.</p>
+        <summary class="faq-q">How does Service Coordination differ from a regular shop or dealer?</summary>
+        <p class="faq-a">I do not perform the work. I help you evaluate quotes, identify whether a recommended repair is necessary, route you to trustworthy local shops, and stay on top of warranty and recall matters. It is a layer of advocacy between you and the service writer — without the markup.</p>
+      </details>
+      <details class="faq-item">
+        <summary class="faq-q">I am not ready to buy yet. Can you still help?</summary>
+        <p class="faq-a">Yes — that is often the best time to engage. A short message exchange can help you clarify what you actually need, what timing makes sense, and whether the market is in your favor before you commit to anything.</p>
       </details>
       <details class="faq-item">
         <summary class="faq-q">How does payment work?</summary>
-        <p class="faq-a">After we agree on a service, I send you a secure payment link. Once that's squared away, we make a plan and get to work. No hidden fees, no surprises.</p>
+        <p class="faq-a">After scope is agreed, I send a secure payment link. Once that is settled, we set a plan and begin. No hidden fees, no upsells, no surprises.</p>
       </details>
       <details class="faq-item">
-        <summary class="faq-q">Do you cover my area?</summary>
-        <p class="faq-a">I cover SLO County and surrounding areas — San Luis Obispo, Paso Robles, Atascadero, Santa Maria, Arroyo Grande, Pismo, Morro Bay, Nipomo, Templeton, and Los Osos. DM me your zip if you're not sure.</p>
+        <summary class="faq-q">What area do you cover?</summary>
+        <p class="faq-a">San Luis Obispo County and surrounding communities — San Luis Obispo, Paso Robles, Atascadero, Santa Maria, Arroyo Grande, Pismo Beach, Morro Bay, Nipomo, Templeton, and Los Osos. Message me your zip code if you are uncertain.</p>
+      </details>
+      <details class="faq-item">
+        <summary class="faq-q">Are you affiliated with any dealership?</summary>
+        <p class="faq-a">No. The service is fully independent. No dealer pays me, refers business in exchange for kickbacks, or has any influence over the recommendations I make.</p>
       </details>
     </div>
   </div>
@@ -757,24 +902,30 @@
 
 <!-- ═══════════ BOOK ═══════════ -->
 <section class="book">
-  <div class="section-kicker">Let's do this</div>
-  <h2>Ready to buy smart?</h2>
-  <p class="book-sub">DM me on Instagram and tell me what you're looking for. I usually reply the same day.</p>
+  <span class="kicker">Get started</span>
+  <h2>Ready to <em>buy smart?</em></h2>
+  <div class="book-rule"></div>
+  <p class="book-sub">Message me on Instagram with what you are considering. I respond personally — usually the same day.</p>
   <div class="cta-row">
     <a class="btn btn-primary" href="https://ig.me/m/805carguy" target="_blank" rel="noopener">Message @805carguy →</a>
+    <a class="btn btn-ghost" href="https://instagram.com/805carguy" target="_blank" rel="noopener">View profile</a>
   </div>
-  <p class="book-coverage"><strong>Coverage:</strong> San Luis Obispo, Paso Robles, Atascadero, Santa Maria, Arroyo Grande, Pismo Beach, Morro Bay, Nipomo, Templeton, Los Osos.</p>
+  <div class="book-coverage">
+    <strong>Coverage area</strong>
+    San Luis Obispo · Paso Robles · Atascadero · Santa Maria · Arroyo Grande · Pismo Beach · Morro Bay · Nipomo · Templeton · Los Osos
+  </div>
 </section>
 
 <!-- ═══════════ FOOTER ═══════════ -->
 <footer>
-  <a href="https://instagram.com/805carguy" target="_blank" rel="noopener">@805carguy</a>
-  <span class="sep">·</span>
-  <a href="https://ig.me/m/805carguy" target="_blank" rel="noopener">Send a DM</a>
-  <span class="sep">·</span>
-  San Luis Obispo, CA
-  <br/>
-  <span style="opacity:.7">© 2026 · Independent buyer's advocate · Not affiliated with any dealership</span>
+  <div>
+    <a href="https://instagram.com/805carguy" target="_blank" rel="noopener">@805carguy</a>
+    <span class="sep">·</span>
+    <a href="https://ig.me/m/805carguy" target="_blank" rel="noopener">Send a message</a>
+    <span class="sep">·</span>
+    San Luis Obispo, CA
+  </div>
+  <div class="copy">© 2026 805 Car Guy · Independent buyer&apos;s advocate · Not affiliated with any dealership or manufacturer</div>
 </footer>
 
 </body>
