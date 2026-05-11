@@ -83,15 +83,15 @@
     gap: 12px;
   }
   .brand-mark {
-    height: 44px;
+    height: 72px;
     width: auto;
   }
   .brand-name {
     font-family: var(--serif);
-    font-size: 22px;
+    font-size: 28px;
     font-weight: 600;
     color: var(--navy);
-    letter-spacing: -.005em;
+    letter-spacing: -.01em;
     line-height: 1;
   }
   .brand-name .amp {
@@ -125,8 +125,8 @@
   @media (max-width: 760px) {
     .nav-links .nav-link-text { display: none; }
     .site-header-inner { padding: 12px 20px; }
-    .brand-name { font-size: 19px; }
-    .brand-mark { height: 38px; }
+    .brand-name { font-size: 22px; }
+    .brand-mark { height: 56px; }
   }
 
   /* ─── HERO ─── */
@@ -429,22 +429,26 @@
     flex-wrap: wrap;
     justify-content: center;
     align-items: center;
-    gap: 64px;
+    gap: 40px 56px;
+    max-width: 1080px;
+    margin: 0 auto;
   }
   .brand-logo {
-    height: 34px;
+    height: 30px;
     width: auto;
-    opacity: .62;
+    max-width: 110px;
+    opacity: .55;
     transition: opacity .2s ease, transform .2s ease;
     flex-shrink: 0;
+    filter: grayscale(1);
   }
   .brand-logo:hover { opacity: 1; transform: translateY(-1px); }
-  /* Porsche needs to be a bit wider to read */
-  .brand-logo.wide { height: 28px; }
-  @media (max-width: 640px) {
-    .brand-marks { gap: 36px; }
-    .brand-logo { height: 26px; }
-    .brand-logo.wide { height: 22px; }
+  /* Porsche wordmark is tall; constrain it so it reads at the same visual weight */
+  .brand-logo.wide { height: 22px; max-width: 130px; }
+  @media (max-width: 760px) {
+    .brand-marks { gap: 28px 32px; }
+    .brand-logo { height: 22px; max-width: 80px; }
+    .brand-logo.wide { height: 16px; max-width: 96px; }
   }
 
   /* ─── DEAL REVIEW (lead magnet) ─── */
@@ -829,7 +833,7 @@
   <div class="site-header-inner">
     <a href="#top" class="brand" aria-label="805 Car Guy home">
       <img src="logo.png" alt="" class="brand-mark"/>
-      <span class="brand-name">805 <em class="amp">Car Guy</em></span>
+      <span class="brand-name">805 <em class="amp">carguy</em></span>
     </a>
     <nav class="nav-links">
       <a href="#services" class="nav-link-text">Services</a>
@@ -858,12 +862,30 @@
 <!-- ═══════════ BRAND STRIP ═══════════ -->
 <section class="brand-strip" aria-label="Brands I work with">
   <div class="brand-strip-inner">
-    <div class="brand-strip-label">Any brand — a few I know inside and out</div>
+    <div class="brand-strip-label">Any brand</div>
     <div class="brand-marks">
       <img class="brand-logo" src="brands/honda.svg" alt="Honda" loading="lazy"/>
+      <img class="brand-logo" src="brands/toyota.svg" alt="Toyota" loading="lazy"/>
+      <img class="brand-logo" src="brands/mazda.svg" alt="Mazda" loading="lazy"/>
+      <img class="brand-logo" src="brands/subaru.svg" alt="Subaru" loading="lazy"/>
+      <img class="brand-logo" src="brands/nissan.svg" alt="Nissan" loading="lazy"/>
+      <img class="brand-logo" src="brands/hyundai.svg" alt="Hyundai" loading="lazy"/>
+      <img class="brand-logo" src="brands/kia.svg" alt="Kia" loading="lazy"/>
+      <img class="brand-logo" src="brands/ford.svg" alt="Ford" loading="lazy"/>
+      <img class="brand-logo" src="brands/chevrolet.svg" alt="Chevrolet" loading="lazy"/>
+      <img class="brand-logo" src="brands/cadillac.svg" alt="Cadillac" loading="lazy"/>
+      <img class="brand-logo" src="brands/chrysler.svg" alt="Chrysler" loading="lazy"/>
+      <img class="brand-logo" src="brands/jeep.svg" alt="Jeep" loading="lazy"/>
+      <img class="brand-logo" src="brands/ram.svg" alt="Ram" loading="lazy"/>
+      <img class="brand-logo" src="brands/tesla.svg" alt="Tesla" loading="lazy"/>
       <img class="brand-logo" src="brands/volkswagen.svg" alt="Volkswagen" loading="lazy"/>
       <img class="brand-logo" src="brands/audi.svg" alt="Audi" loading="lazy"/>
+      <img class="brand-logo" src="brands/bmw.svg" alt="BMW" loading="lazy"/>
       <img class="brand-logo wide" src="brands/porsche.svg" alt="Porsche" loading="lazy"/>
+      <img class="brand-logo" src="brands/volvo.svg" alt="Volvo" loading="lazy"/>
+      <img class="brand-logo" src="brands/mini.svg" alt="MINI" loading="lazy"/>
+      <img class="brand-logo" src="brands/acura.svg" alt="Acura" loading="lazy"/>
+      <img class="brand-logo" src="brands/infiniti.svg" alt="Infiniti" loading="lazy"/>
     </div>
   </div>
 </section>
@@ -932,7 +954,7 @@
       <div class="svc-card">
         <div class="svc-num">04 · Concierge</div>
         <div class="svc-name">Full Concierge</div>
-        <div class="svc-price">$999<span class="per">end-to-end</span></div>
+        <div class="svc-price">$1,000<span class="per">end-to-end</span></div>
         <p class="svc-desc">Hand off the entire process. I source, vet, inspect, negotiate, and close — from your first message to the keys in your hand.</p>
         <ul class="svc-includes">
           <li>Tailored shortlist of three to five vehicles</li>
