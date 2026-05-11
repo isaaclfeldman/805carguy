@@ -429,29 +429,22 @@
     flex-wrap: wrap;
     justify-content: center;
     align-items: center;
-    gap: 56px;
+    gap: 64px;
   }
-  .brand-mark-name {
-    font-family: var(--serif);
-    font-size: 22px;
-    font-weight: 500;
-    color: var(--navy);
-    letter-spacing: .04em;
-    opacity: .65;
-    transition: opacity .15s;
+  .brand-logo {
+    height: 34px;
+    width: auto;
+    opacity: .62;
+    transition: opacity .2s ease, transform .2s ease;
+    flex-shrink: 0;
   }
-  .brand-mark-name:hover { opacity: 1; }
-  .brand-mark-name.italic { font-style: italic; }
-  .brand-mark-amp {
-    font-family: var(--serif);
-    font-style: italic;
-    color: var(--gold-dk);
-    font-size: 20px;
-    opacity: .5;
-  }
+  .brand-logo:hover { opacity: 1; transform: translateY(-1px); }
+  /* Porsche needs to be a bit wider to read */
+  .brand-logo.wide { height: 28px; }
   @media (max-width: 640px) {
-    .brand-marks { gap: 28px; }
-    .brand-mark-name { font-size: 18px; }
+    .brand-marks { gap: 36px; }
+    .brand-logo { height: 26px; }
+    .brand-logo.wide { height: 22px; }
   }
 
   /* ─── DEAL REVIEW (lead magnet) ─── */
@@ -863,17 +856,14 @@
 </section>
 
 <!-- ═══════════ BRAND STRIP ═══════════ -->
-<section class="brand-strip" aria-label="Dealership experience">
+<section class="brand-strip" aria-label="Brands I work with">
   <div class="brand-strip-inner">
-    <div class="brand-strip-label">Twelve-plus dealerships, including</div>
+    <div class="brand-strip-label">Any brand — a few I know inside and out</div>
     <div class="brand-marks">
-      <span class="brand-mark-name">HONDA</span>
-      <span class="brand-mark-amp">·</span>
-      <span class="brand-mark-name">VOLKSWAGEN</span>
-      <span class="brand-mark-amp">·</span>
-      <span class="brand-mark-name">AUDI</span>
-      <span class="brand-mark-amp">·</span>
-      <span class="brand-mark-name italic">Porsche</span>
+      <img class="brand-logo" src="brands/honda.svg" alt="Honda" loading="lazy"/>
+      <img class="brand-logo" src="brands/volkswagen.svg" alt="Volkswagen" loading="lazy"/>
+      <img class="brand-logo" src="brands/audi.svg" alt="Audi" loading="lazy"/>
+      <img class="brand-logo wide" src="brands/porsche.svg" alt="Porsche" loading="lazy"/>
     </div>
   </div>
 </section>
