@@ -12,14 +12,114 @@
 <meta property="og:description" content="Independent automotive concierge serving the Central Coast. Pre-purchase inspection, dealer negotiation, end-to-end sourcing, and ongoing service coordination."/>
 <meta property="og:type" content="website"/>
 <meta property="og:url" content="https://www.805carguy.com"/>
+<meta property="og:image" content="https://www.805carguy.com/og.png"/>
+<meta property="og:image:width" content="1200"/>
+<meta property="og:image:height" content="630"/>
 <meta name="twitter:card" content="summary_large_image"/>
 <meta name="twitter:title" content="805 Car Guy — Central Coast Automotive Concierge"/>
 <meta name="twitter:description" content="Independent automotive concierge. No dealer incentives. No commissions."/>
+<meta name="twitter:image" content="https://www.805carguy.com/og.png"/>
+<link rel="apple-touch-icon" href="/apple-touch-icon.png"/>
 <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><rect width=%22100%22 height=%22100%22 fill=%22%231a2942%22/><text x=%2250%22 y=%2266%22 text-anchor=%22middle%22 font-family=%22Georgia%22 font-size=%2244%22 font-style=%22italic%22 fill=%22%23c89b5a%22>8</text></svg>"/>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,500&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <script defer data-domain="805carguy.com" src="https://plausible.io/js/script.js"></script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "AutomotiveBusiness",
+      "@id": "https://www.805carguy.com/#business",
+      "name": "805 Car Guy",
+      "description": "Independent automotive concierge serving the Central Coast. Pre-purchase inspection, dealer negotiation, end-to-end vehicle sourcing, and ongoing service coordination. No dealer incentives. No commissions.",
+      "url": "https://www.805carguy.com",
+      "image": "https://www.805carguy.com/og.png",
+      "logo": "https://www.805carguy.com/logo.png",
+      "priceRange": "$99–$1,000",
+      "sameAs": ["https://instagram.com/805carguy"],
+      "address": {
+        "@type": "PostalAddress",
+        "addressLocality": "San Luis Obispo",
+        "addressRegion": "CA",
+        "addressCountry": "US"
+      },
+      "areaServed": ["San Luis Obispo", "Paso Robles", "Atascadero", "Santa Maria", "Arroyo Grande", "Pismo Beach", "Morro Bay", "Nipomo", "Templeton", "Los Osos"],
+      "hasOfferCatalog": {
+        "@type": "OfferCatalog",
+        "name": "Concierge services",
+        "itemListElement": [
+          {
+            "@type": "Offer",
+            "name": "On-Site Inspection",
+            "price": "99",
+            "priceCurrency": "USD",
+            "description": "In-person inspection, test drive, photo and video walkaround, and an honest buy-or-walk verdict."
+          },
+          {
+            "@type": "Offer",
+            "name": "Mechanical Inspection",
+            "price": "199",
+            "priceCurrency": "USD",
+            "description": "Pre-purchase mechanical inspection on a lift with diagnostic scan and written report."
+          },
+          {
+            "@type": "Offer",
+            "name": "Dealer Negotiation",
+            "price": "349",
+            "priceCurrency": "USD",
+            "description": "On-site dealership visit with live negotiation on price, financing, and add-ons."
+          },
+          {
+            "@type": "Offer",
+            "name": "Full Concierge",
+            "price": "1000",
+            "priceCurrency": "USD",
+            "description": "End-to-end sourcing, vetting, inspection, negotiation, and purchase support with a savings guarantee."
+          }
+        ]
+      }
+    },
+    {
+      "@type": "FAQPage",
+      "@id": "https://www.805carguy.com/#faq",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "Do you work with new vehicles, or only used?",
+          "acceptedAnswer": { "@type": "Answer", "text": "Both. New, used, certified pre-owned, private-party sales, and out-of-state purchases." }
+        },
+        {
+          "@type": "Question",
+          "name": "How does Service Coordination differ from a regular shop or dealer?",
+          "acceptedAnswer": { "@type": "Answer", "text": "I do not perform the work. I help you evaluate quotes, identify whether a recommended repair is necessary, route you to trustworthy local shops, and stay on top of warranty and recall matters." }
+        },
+        {
+          "@type": "Question",
+          "name": "I am not ready to buy yet. Can you still help?",
+          "acceptedAnswer": { "@type": "Answer", "text": "Yes — that is often the best time to engage. A short message exchange can help you clarify what you actually need and whether the market is in your favor." }
+        },
+        {
+          "@type": "Question",
+          "name": "How does payment work?",
+          "acceptedAnswer": { "@type": "Answer", "text": "After scope is agreed, I send a secure payment link. Once that is settled, we set a plan and begin. No hidden fees, no upsells, no surprises." }
+        },
+        {
+          "@type": "Question",
+          "name": "What area do you cover?",
+          "acceptedAnswer": { "@type": "Answer", "text": "San Luis Obispo County and surrounding communities — San Luis Obispo, Paso Robles, Atascadero, Santa Maria, Arroyo Grande, Pismo Beach, Morro Bay, Nipomo, Templeton, and Los Osos." }
+        },
+        {
+          "@type": "Question",
+          "name": "Are you affiliated with any dealership?",
+          "acceptedAnswer": { "@type": "Answer", "text": "No. The service is fully independent. No dealer pays me, refers business in exchange for kickbacks, or has any influence over the recommendations I make." }
+        }
+      ]
+    }
+  ]
+}
+</script>
 <style>
   :root {
     /* coastal navy palette */
@@ -44,6 +144,9 @@
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
   html { scroll-behavior: smooth; }
+  /* Anchor targets land below the sticky header */
+  [id] { scroll-margin-top: 116px; }
+  @media (max-width: 760px) { [id] { scroll-margin-top: 94px; } }
   body {
     font-family: var(--sans);
     color: var(--ink);
@@ -93,6 +196,7 @@
     color: var(--navy);
     letter-spacing: -.01em;
     line-height: 1;
+    white-space: nowrap;
   }
   .brand-name .amp {
     color: var(--gold-dk);
@@ -120,6 +224,7 @@
     font-size: 13.5px;
     letter-spacing: .02em;
     transition: background .15s;
+    white-space: nowrap;
   }
   .nav-cta:hover { background: var(--navy-dk); color: var(--ivory) !important; }
   @media (max-width: 760px) {
@@ -824,6 +929,53 @@
   .fade-in.d3 { animation-delay: .28s; }
   .fade-in.d4 { animation-delay: .38s; }
   @keyframes fadeIn { to { opacity: 1; transform: translateY(0); } }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    .fade-in { opacity: 1; transform: none; animation: none; }
+    .svc-card:hover, .btn-primary:hover, .brand-logo:hover { transform: none; }
+  }
+
+  /* ─── SIBLING — VINHOUND ─── */
+  .sibling {
+    background: var(--ivory-100);
+    border-top: 1px solid var(--rule);
+    padding: 40px 28px;
+  }
+  .sibling-inner {
+    max-width: 1180px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+    flex-wrap: wrap;
+  }
+  .sibling-h {
+    font-family: var(--serif);
+    font-size: 21px;
+    font-weight: 500;
+    color: var(--navy);
+    letter-spacing: -.005em;
+    line-height: 1.3;
+    margin-bottom: 4px;
+  }
+  .sibling-h em { font-style: italic; color: var(--gold-dk); }
+  .sibling-p { font-size: 14px; color: var(--ink-soft); line-height: 1.5; }
+  .sibling-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 13px 24px;
+    border: 1px solid var(--navy);
+    color: var(--navy);
+    font-weight: 600;
+    font-size: 13.5px;
+    letter-spacing: .04em;
+    border-radius: 3px;
+    transition: all .15s;
+    white-space: nowrap;
+  }
+  .sibling-btn:hover, .sibling-btn:focus-visible { background: var(--navy); color: var(--ivory); }
 </style>
 </head>
 <body>
@@ -832,7 +984,7 @@
 <header class="site-header">
   <div class="site-header-inner">
     <a href="#top" class="brand" aria-label="805 Car Guy home">
-      <img src="logo.png" alt="" class="brand-mark"/>
+      <img src="logo-header.png" alt="" class="brand-mark" width="224" height="160"/>
       <span class="brand-name">805 <em class="amp">carguy</em></span>
     </a>
     <nav class="nav-links">
@@ -1155,13 +1307,13 @@
 </section>
 
 <!-- ═══════════ SIBLING — VINHOUND ═══════════ -->
-<section style="background:var(--ivory-100);border-top:1px solid var(--rule);padding:40px 28px;">
-  <div style="max-width:1180px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:24px;flex-wrap:wrap;">
+<section class="sibling">
+  <div class="sibling-inner">
     <div>
-      <div style="font-family:var(--serif);font-size:21px;font-weight:500;color:var(--navy);letter-spacing:-.005em;line-height:1.3;margin-bottom:4px;">Outside the Central Coast? <em style="font-style:italic;color:var(--gold-dk);">Visit VINhound.</em></div>
-      <div style="font-size:14px;color:var(--ink-soft);line-height:1.5;">Same expertise, fully remote — listing vetting, dealer negotiation, and end-to-end concierge anywhere in the US.</div>
+      <div class="sibling-h">Outside the Central Coast? <em>Visit VINhound.</em></div>
+      <div class="sibling-p">Same expertise, fully remote — listing vetting, dealer negotiation, and end-to-end concierge anywhere in the US.</div>
     </div>
-    <a href="https://www.thevinhound.com" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:8px;padding:13px 24px;border:1px solid var(--navy);color:var(--navy);font-weight:600;font-size:13.5px;letter-spacing:.04em;border-radius:3px;text-decoration:none;transition:all .15s;white-space:nowrap;" onmouseover="this.style.background='var(--navy)';this.style.color='var(--ivory)';" onmouseout="this.style.background='transparent';this.style.color='var(--navy)';">Visit VINhound →</a>
+    <a href="https://www.thevinhound.com" target="_blank" rel="noopener" class="sibling-btn">Visit VINhound →</a>
   </div>
 </section>
 
