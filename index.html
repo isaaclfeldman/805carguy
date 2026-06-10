@@ -680,6 +680,22 @@
     line-height: 1;
     margin: 4px 10px 0 -2px;
   }
+  .about-photo {
+    margin: 0 0 32px;
+    border: 1px solid var(--rule);
+    background: var(--ivory);
+    padding: 12px 12px 0;
+    box-shadow: var(--shadow-md);
+  }
+  .about-photo img { width: 100%; height: auto; }
+  .about-photo figcaption {
+    font-family: var(--serif);
+    font-style: italic;
+    font-size: 16px;
+    color: var(--gold-dk);
+    text-align: center;
+    padding: 10px 4px 12px;
+  }
   .about-stats {
     display: flex;
     flex-direction: column;
@@ -1146,7 +1162,12 @@
         <p>I have called the Central Coast home for twelve years. When you contact me, you reach me directly. A flat fee. No dealer incentives. No referral commissions. No reason to point you anywhere but the right car.</p>
       </div>
 
-      <div class="about-stats">
+      <div class="about-side">
+        <figure class="about-photo">
+          <img src="isaac.jpg" alt="Portrait of the 805 Car Guy" width="720" height="969" loading="lazy"/>
+          <figcaption>Your guy on the Central Coast.</figcaption>
+        </figure>
+        <div class="about-stats">
         <div class="stat">
           <div class="stat-num">2000</div>
           <div class="stat-label">In the automotive industry since</div>
@@ -1162,6 +1183,7 @@
         <div class="stat">
           <div class="stat-num">805</div>
           <div class="stat-label">The only area code I serve</div>
+        </div>
         </div>
       </div>
     </div>
