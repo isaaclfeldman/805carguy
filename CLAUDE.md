@@ -57,14 +57,19 @@ Railway auto-deploys. Verify:
 curl -I https://www.805carguy.com
 ```
 
-## Instagram Integration
-All CTAs deep-link to Instagram DM: `https://ig.me/m/805carguy`. Profile link: `https://instagram.com/805carguy`. There is no contact form, no email capture, no phone number on the site by design — every visitor has exactly one next action: DM.
+## Contact Flow (June 2026)
+Primary CTA is the on-site contact form (`#contact` section, bottom of page). Submissions email to isaac@carofslo.com via **FormSubmit** (no account, free):
+- AJAX endpoint: `https://formsubmit.co/ajax/3bee3a7c1f40b430ff307881c018db32` (the hash is an alias for Isaac's email — public by design, keeps the raw address out of the HTML)
+- Non-JS fallback: form `action` posts to the same alias, `_next` redirects back to the site
+- Spam: `_honey` honeypot field; `_subject` is "New lead from 805carguy.com"; `_template=table`
+- Service-card CTAs carry `data-svc` attributes that pre-select the tier in the form's dropdown
+- If the form errors client-side, the status line falls back to the Instagram DM link
+
+Instagram DM (`https://ig.me/m/805carguy`) remains the secondary channel — linked under the form, in Process step one, and in the footer.
 
 ## What's Intentionally NOT Here
 - No database, no auth, no payments integration
-- No analytics (Plausible is an option for later)
-- No blog, no nav bar, no about page, no FAQ
-- No contact form — everything routes to Instagram
+- No blog, no about page (about is a section, not a page)
 
 Keep it simple. Every feature addition should pass the "does this make it harder for someone with ADHD to take the next step?" test.
 

@@ -897,6 +897,68 @@
   }
   .book-coverage strong { color: var(--gold); font-weight: 600; letter-spacing: .08em; text-transform: uppercase; font-size: 11.5px; display: block; margin-bottom: 6px; }
 
+  /* ─── CONTACT FORM ─── */
+  .contact-form-wrap { max-width: 560px; margin: 0 auto 24px; text-align: left; }
+  .contact-form {
+    background: var(--ivory);
+    border-radius: 4px;
+    padding: 28px;
+    box-shadow: var(--shadow-lg);
+  }
+  .cf-row { margin-bottom: 16px; }
+  .cf-label {
+    display: block;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    margin-bottom: 6px;
+  }
+  .cf-input, .cf-select, .cf-textarea {
+    width: 100%;
+    padding: 12px 14px;
+    font-size: 16px;
+    font-family: var(--sans);
+    color: var(--ink);
+    background: #fff;
+    border: 1px solid var(--rule);
+    border-radius: 3px;
+    outline: none;
+    transition: border-color .15s;
+    -webkit-appearance: none;
+    appearance: none;
+  }
+  .cf-select {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%238a8478' fill='none' stroke-width='1.5'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 14px center;
+  }
+  .cf-input:focus, .cf-select:focus, .cf-textarea:focus { border-color: var(--gold); }
+  .cf-textarea { min-height: 110px; resize: vertical; }
+  .cf-hp { display: none; }
+  .cf-submit {
+    width: 100%;
+    padding: 14px;
+    background: var(--navy);
+    color: var(--ivory);
+    font-weight: 600;
+    font-size: 15px;
+    letter-spacing: .03em;
+    border: 0;
+    border-radius: 3px;
+    cursor: pointer;
+    transition: background .15s;
+    font-family: var(--sans);
+  }
+  .cf-submit:hover { background: var(--navy-dk); }
+  .cf-submit[disabled] { opacity: .6; cursor: default; }
+  .cf-status { margin-top: 14px; font-size: 14.5px; line-height: 1.55; display: none; color: var(--ink-soft); }
+  .cf-status.show { display: block; }
+  .cf-status a { color: var(--gold-dk); font-weight: 600; }
+  .contact-alt { font-size: 14px; color: rgba(250, 248, 243, .75); }
+  .contact-alt a { color: var(--gold); font-weight: 600; }
+
   /* ─── FOOTER ─── */
   footer {
     padding: 36px 28px;
@@ -1000,7 +1062,7 @@
       <a href="#services" class="nav-link-text">Services</a>
       <a href="#about" class="nav-link-text">About</a>
       <a href="#faq" class="nav-link-text">FAQ</a>
-      <a href="https://ig.me/m/805carguy" target="_blank" rel="noopener" class="nav-cta">Get in touch →</a>
+      <a href="#contact" class="nav-cta">Get in touch →</a>
     </nav>
   </div>
 </header>
@@ -1013,7 +1075,7 @@
     <div class="hero-rule fade-in d2"></div>
     <p class="hero-sub fade-in d2">An independent advocate for buyers and owners. I find the right vehicle, negotiate the right deal, inspect before you commit, and help you manage what comes after — without dealer incentives or hidden commissions.</p>
     <div class="cta-row fade-in d3">
-      <a class="btn btn-primary" href="https://ig.me/m/805carguy" target="_blank" rel="noopener">Get in touch →</a>
+      <a class="btn btn-primary" href="#contact">Get in touch →</a>
       <a class="btn btn-ghost" href="#services">View services</a>
     </div>
     <div class="hero-trust fade-in d4"><strong>25+ years</strong> in the industry · <strong>12+ dealerships</strong> · <strong>Savings guarantee</strong> on full-concierge service</div>
@@ -1073,7 +1135,7 @@
           <li>Photo and video report within 48 hours</li>
           <li>Add a mechanical inspection on a lift at my shop — <strong>+$100</strong></li>
         </ul>
-        <a class="svc-cta" href="https://ig.me/m/805carguy" target="_blank" rel="noopener">Send me a listing</a>
+        <a class="svc-cta" href="#contact" data-svc="The Look — $99 inspection">Send me a listing</a>
       </div>
 
       <!-- The Deal (featured) -->
@@ -1089,7 +1151,7 @@
           <li>Honest "walk" call if the numbers don't work</li>
         </ul>
         <div class="svc-guarantee"><strong>For reference:</strong> national services charge $750+ to negotiate by phone. I'm in the building.</div>
-        <a class="svc-cta" href="https://ig.me/m/805carguy" target="_blank" rel="noopener" style="margin-top: 18px;">Book a visit</a>
+        <a class="svc-cta" href="#contact" data-svc="The Deal — $349 dealership negotiation" style="margin-top: 18px;">Book a visit</a>
       </div>
 
       <!-- The Works -->
@@ -1104,7 +1166,7 @@
           <li>Full negotiation and paperwork, start to finish</li>
         </ul>
         <div class="svc-guarantee"><strong>Savings guarantee.</strong> If I don't save you more than the fee, I refund the difference.</div>
-        <a class="svc-cta" href="https://ig.me/m/805carguy" target="_blank" rel="noopener" style="margin-top: 18px;">Start a search</a>
+        <a class="svc-cta" href="#contact" data-svc="The Works — $999 full concierge" style="margin-top: 18px;">Start a search</a>
       </div>
 
     </div>
@@ -1119,7 +1181,7 @@
       <h3>Have a dealer offer in hand? <em>Send it over — I'll review it free.</em></h3>
       <p>If you have an out-the-door quote or a finance worksheet you're about to sign, message it to me before you put pen to paper. I'll flag the line items worth questioning and tell you whether the numbers add up. No charge, no obligation, no upsell.</p>
     </div>
-    <a class="btn btn-primary" href="https://ig.me/m/805carguy" target="_blank" rel="noopener">Send the offer →</a>
+    <a class="btn btn-primary" href="#contact" data-svc="Free deal review">Send the offer →</a>
   </div>
 </section>
 
@@ -1231,7 +1293,7 @@
       <div class="step">
         <div class="step-num">Step one</div>
         <div class="step-h">Get in touch</div>
-        <p class="step-p">Message <a href="https://ig.me/m/805carguy" target="_blank" rel="noopener">@805carguy</a> on Instagram with what you are considering — budget, must-haves, deal-breakers, and timing.</p>
+        <p class="step-p">Use the <a href="#contact">form below</a> — or DM <a href="https://ig.me/m/805carguy" target="_blank" rel="noopener">@805carguy</a> on Instagram — with what you are considering: budget, must-haves, deal-breakers, and timing.</p>
       </div>
       <div class="step">
         <div class="step-num">Step two</div>
@@ -1284,21 +1346,91 @@
   </div>
 </section>
 
-<!-- ═══════════ BOOK ═══════════ -->
-<section class="book">
+<!-- ═══════════ CONTACT ═══════════ -->
+<section class="book" id="contact">
   <span class="kicker">Get started</span>
-  <h2>Ready to <em>buy smart?</em></h2>
+  <h2>Tell me about <em>the car</em>.</h2>
   <div class="book-rule"></div>
-  <p class="book-sub">Message me on Instagram with what you are considering. I respond personally — usually the same day.</p>
-  <div class="cta-row">
-    <a class="btn btn-primary" href="https://ig.me/m/805carguy" target="_blank" rel="noopener">Message @805carguy →</a>
-    <a class="btn btn-ghost" href="https://instagram.com/805carguy" target="_blank" rel="noopener">View profile</a>
+  <p class="book-sub">Fill this out and I'll get back to you personally — usually the same day.</p>
+  <div class="contact-form-wrap">
+    <form class="contact-form" id="leadForm" action="https://formsubmit.co/3bee3a7c1f40b430ff307881c018db32" method="POST">
+      <div class="cf-row">
+        <label class="cf-label" for="cf-name">Name</label>
+        <input class="cf-input" id="cf-name" name="name" type="text" required autocomplete="name"/>
+      </div>
+      <div class="cf-row">
+        <label class="cf-label" for="cf-contact">Phone or email</label>
+        <input class="cf-input" id="cf-contact" name="contact" type="text" required autocomplete="email"/>
+      </div>
+      <div class="cf-row">
+        <label class="cf-label" for="cf-service">What do you need?</label>
+        <select class="cf-select" id="cf-service" name="service">
+          <option>Not sure yet</option>
+          <option>The Look — $99 inspection</option>
+          <option>The Deal — $349 dealership negotiation</option>
+          <option>The Works — $999 full concierge</option>
+          <option>Free deal review</option>
+          <option>Service coordination</option>
+        </select>
+      </div>
+      <div class="cf-row">
+        <label class="cf-label" for="cf-message">What are you looking at?</label>
+        <textarea class="cf-textarea" id="cf-message" name="message" required placeholder="Year, make, model — a listing link — or the offer a dealer quoted you. Whatever you've got."></textarea>
+      </div>
+      <input type="text" name="_honey" class="cf-hp" tabindex="-1" autocomplete="off"/>
+      <input type="hidden" name="_subject" value="New lead from 805carguy.com"/>
+      <input type="hidden" name="_template" value="table"/>
+      <input type="hidden" name="_next" value="https://www.805carguy.com/#contact"/>
+      <button class="cf-submit" type="submit">Send it →</button>
+      <div class="cf-status" id="cfStatus" role="status"></div>
+    </form>
   </div>
+  <p class="contact-alt">Prefer DMs? Message <a href="https://ig.me/m/805carguy" target="_blank" rel="noopener">@805carguy</a> on Instagram.</p>
   <div class="book-coverage">
     <strong>Coverage area</strong>
     San Luis Obispo · Paso Robles · Atascadero · Santa Maria · Arroyo Grande · Pismo Beach · Morro Bay · Nipomo · Templeton · Los Osos
   </div>
 </section>
+
+<script>
+(function () {
+  var form = document.getElementById('leadForm');
+  var status = document.getElementById('cfStatus');
+  var btn = form.querySelector('.cf-submit');
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
+    btn.disabled = true;
+    btn.textContent = 'Sending…';
+    status.className = 'cf-status';
+    var data = {};
+    new FormData(form).forEach(function (v, k) { data[k] = v; });
+    fetch('https://formsubmit.co/ajax/3bee3a7c1f40b430ff307881c018db32', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+      body: JSON.stringify(data)
+    }).then(function (r) { return r.json(); }).then(function (r) {
+      if (r.success === 'true' || r.success === true) {
+        form.reset();
+        btn.textContent = 'Sent ✓';
+        status.textContent = "Got it. I'll get back to you today — keep an eye on your phone or inbox.";
+        status.className = 'cf-status show';
+        if (window.plausible) plausible('Lead Form Submit');
+      } else { throw new Error(r.message || 'failed'); }
+    }).catch(function () {
+      btn.disabled = false;
+      btn.textContent = 'Send it →';
+      status.innerHTML = 'Hmm, that didn\'t go through. Try again, or just DM me: <a href="https://ig.me/m/805carguy" target="_blank" rel="noopener">@805carguy</a>';
+      status.className = 'cf-status show';
+    });
+  });
+  // Service-card CTAs pre-select the matching tier
+  document.querySelectorAll('a[data-svc]').forEach(function (a) {
+    a.addEventListener('click', function () {
+      document.getElementById('cf-service').value = a.getAttribute('data-svc');
+    });
+  });
+})();
+</script>
 
 <!-- ═══════════ SIBLING — VINHOUND ═══════════ -->
 <section class="sibling">
