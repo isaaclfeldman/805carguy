@@ -3,9 +3,13 @@
 Local car-buying service on the Central Coast (San Luis Obispo County). Single-page static site. Customers contact via Instagram DM (@805carguy). No database, no auth, no payments integration — every CTA points to `https://ig.me/m/805carguy`.
 
 ## Services & Pricing
-- **The Drive-By — $99.** I inspect a listing in person, send video + verdict.
-- **The Ride-Along — $249 (featured / most popular).** I meet you at the dealership for live walkaround + negotiation.
-- **The Full Fetch — $495.** I find it, vet it, show up with you, help close.
+- **The Look — $99.** In-person walkaround + test drive, photo/video report, buy-or-walk verdict. Optional mechanical inspection on a lift at the shop: +$100.
+- **The Deal — $349 (featured / most requested).** Meet at the dealership, live negotiation on price/financing/add-ons until signed or walk.
+- **The Works — $999.** End-to-end: source, vet, inspect, negotiate, close. Savings guarantee (refund the difference if savings < fee; conditions in terms.html §6).
+- **Free Deal Review.** Send an out-the-door quote, get a free read. Lead magnet.
+- **Service Coordination.** Post-purchase advocacy (quotes, warranty, shops). Hourly or retainer.
+
+Pricing is market-anchored (June 2026): CarEdge/Delivrd/Negotiated charge ~$999–$1,000 for full concierge; remote-only negotiation runs $750+; Lemon Squad PPI ~$120. Tier names changed Apr→Jun 2026: Drive-By/Ride-Along/Full Fetch → On-Site/Mechanical/Negotiation/Concierge → Look/Deal/Works.
 
 Covers: new or used cars (NOT used-only — copy is intentionally generic).
 
