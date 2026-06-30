@@ -309,7 +309,7 @@
         </div>
         <div class="ci-field">
           <label class="ci-q" for="phone">Phone</label>
-          <input type="tel" id="phone" name="phone" placeholder="(805) 555-0123" autocomplete="tel">
+          <input type="tel" id="phone" name="phone" placeholder="805.555.0123" inputmode="tel" autocomplete="tel" maxlength="12">
         </div>
         <div class="ci-field">
           <label class="ci-q" for="email">Email</label>
@@ -529,6 +529,28 @@
       if (box.checked) fill.focus();
     });
   });
+
+  // Phone: live-format as xxx.xxx.xxxx while typing
+  var phone = document.getElementById('phone');
+  if (phone) {
+    phone.addEventListener('input', function () {
+      // digits to the left of the caret — so we can restore the caret after reformat
+      var caret = phone.selectionStart;
+      var digitsBeforeCaret = phone.value.slice(0, caret).replace(/\D/g, '').length;
+      var d = phone.value.replace(/\D/g, '').slice(0, 10);
+      var out = d;
+      if (d.length > 6) out = d.slice(0, 3) + '.' + d.slice(3, 6) + '.' + d.slice(6);
+      else if (d.length > 3) out = d.slice(0, 3) + '.' + d.slice(3);
+      phone.value = out;
+      // walk out the same number of digits to place the caret
+      var pos = 0, seen = 0;
+      while (pos < out.length && seen < digitsBeforeCaret) {
+        if (/\d/.test(out[pos])) seen++;
+        pos++;
+      }
+      phone.setSelectionRange(pos, pos);
+    });
+  }
 
   // Trade-in: reveal the detail fields only when "Yes" is selected
   var tradeReveal = document.getElementById('tradeReveal');
