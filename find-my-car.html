@@ -174,6 +174,16 @@
   }
   .ci-other { margin-top: 12px; }
 
+  /* Conditional reveal group (e.g. trade-in details) */
+  .ci-reveal {
+    margin: 4px 0 2px;
+    padding: 22px 0 2px 18px;
+    border-left: 2px solid rgba(200, 155, 90, .4);
+  }
+  .ci-reveal[hidden] { display: none; }
+  .ci-reveal .ci-field:last-child { margin-bottom: 4px; }
+  .ci-hint { font-weight: 400; color: var(--ink-mute); }
+
   /* ─── CHIPS (radio / checkbox pills) ─── */
   .ci-choices { display: flex; flex-wrap: wrap; gap: 10px; }
   .ci-chip {
@@ -432,9 +442,39 @@
             <label class="ci-chip"><input type="radio" name="trade" value="No"><span>No</span></label>
           </div>
         </div>
-        <div class="ci-field">
-          <label class="ci-q" for="tradedetails">If yes, what is it? (year, make, model, rough miles)</label>
-          <input type="text" id="tradedetails" name="trade_details" placeholder="e.g. 2018 Honda Accord, ~62k miles">
+
+        <div class="ci-reveal" id="tradeReveal" hidden>
+          <div class="ci-field">
+            <label class="ci-q" for="tradedetails">What is it? <span class="ci-hint">(year, make, model, rough miles)</span></label>
+            <input type="text" id="tradedetails" name="trade_details" placeholder="e.g. 2018 Honda Accord, ~62k miles">
+          </div>
+          <div class="ci-field">
+            <label class="ci-q" for="tradevin">VIN <span class="ci-hint">(optional — lets me pull exact specs &amp; value)</span></label>
+            <input type="text" id="tradevin" name="trade_vin" placeholder="17-character VIN, if it's handy" maxlength="17" autocapitalize="characters" autocomplete="off" spellcheck="false">
+          </div>
+          <div class="ci-field">
+            <label class="ci-q">Do you still owe money on it?</label>
+            <div class="ci-choices">
+              <label class="ci-chip"><input type="radio" name="trade_owed" value="Yes — still financed"><span>Yes</span></label>
+              <label class="ci-chip"><input type="radio" name="trade_owed" value="No — paid off"><span>No — paid off</span></label>
+              <label class="ci-chip"><input type="radio" name="trade_owed" value="Not sure"><span>Not sure</span></label>
+            </div>
+          </div>
+          <div class="ci-field">
+            <label class="ci-q" for="tradepayoff">If yes, roughly how much is left? <span class="ci-hint">(optional)</span></label>
+            <input type="text" id="tradepayoff" name="trade_payoff" placeholder="e.g. ~$12,000 left on the loan">
+          </div>
+          <div class="ci-field">
+            <label class="ci-q">Have you had it appraised yet?</label>
+            <div class="ci-choices">
+              <label class="ci-chip"><input type="radio" name="trade_appraised" value="Yes"><span>Yes</span></label>
+              <label class="ci-chip"><input type="radio" name="trade_appraised" value="No"><span>No, not yet</span></label>
+            </div>
+          </div>
+          <div class="ci-field">
+            <label class="ci-q" for="tradeappraisal">If appraised, what were you offered? <span class="ci-hint">(optional)</span></label>
+            <input type="text" id="tradeappraisal" name="trade_appraisal" placeholder="e.g. CarMax offered $14,500">
+          </div>
         </div>
       </fieldset>
 
@@ -487,6 +527,14 @@
       if (!fill) return;
       fill.hidden = !box.checked;
       if (box.checked) fill.focus();
+    });
+  });
+
+  // Trade-in: reveal the detail fields only when "Yes" is selected
+  var tradeReveal = document.getElementById('tradeReveal');
+  document.querySelectorAll('input[name="trade"]').forEach(function (r) {
+    r.addEventListener('change', function () {
+      if (tradeReveal) tradeReveal.hidden = (r.value !== 'Yes');
     });
   });
 
@@ -547,6 +595,7 @@
       if (r.success === 'true' || r.success === true) {
         form.reset();
         document.querySelectorAll('.ci-other').forEach(function (o) { o.hidden = true; });
+        if (tradeReveal) tradeReveal.hidden = true;
         btn.textContent = 'Sent ✓';
         status.textContent = "Got it — thanks. I'll review your answers and come back with a shortlist built just for you. Keep an eye on your phone or inbox.";
         status.className = 'ci-status ok show';
