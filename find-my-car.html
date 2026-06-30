@@ -1,0 +1,567 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
+<title>Find My Car — 805 Car Guy</title>
+<meta name="description" content="Tell 805 Car Guy what you need and get a shortlist built around exactly your budget, use, and priorities. Independent, no dealership pressure."/>
+<meta name="theme-color" content="#1a2942"/>
+<link rel="canonical" href="https://www.805carguy.com/find-my-car"/>
+<meta property="og:title" content="Find My Car — 805 Car Guy"/>
+<meta property="og:description" content="Answer a few quick questions and I'll do the hunting — research, pricing, and a shortlist built around exactly what you need."/>
+<meta property="og:type" content="website"/>
+<meta property="og:url" content="https://www.805carguy.com/find-my-car"/>
+<meta property="og:image" content="https://www.805carguy.com/og.png"/>
+<meta name="twitter:card" content="summary_large_image"/>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><rect width=%22100%22 height=%22100%22 fill=%22%231a2942%22/><text x=%2250%22 y=%2266%22 text-anchor=%22middle%22 font-family=%22Georgia%22 font-size=%2244%22 font-style=%22italic%22 fill=%22%23c89b5a%22>8</text></svg>"/>
+<link rel="apple-touch-icon" href="/apple-touch-icon.png"/>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,500&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script defer data-domain="805carguy.com" src="https://plausible.io/js/script.js"></script>
+<style>
+  :root {
+    --ivory:     #faf8f3;
+    --ivory-100: #f3eee2;
+    --ivory-200: #e8e0cc;
+    --rule:      #e0d8c5;
+    --navy:      #1a2942;
+    --navy-dk:   #0f1a30;
+    --gold:      #c89b5a;
+    --gold-dk:   #a87d3f;
+    --ink:       #1f1f1f;
+    --ink-soft:  #4a4a4a;
+    --ink-mute:  #8a8478;
+    --shadow-md: 0 8px 28px rgba(15, 26, 48, .10);
+    --shadow-lg: 0 20px 48px rgba(15, 26, 48, .14);
+    --serif: 'Cormorant Garamond', 'Playfair Display', Georgia, 'Times New Roman', serif;
+    --sans:  'Inter', -apple-system, BlinkMacSystemFont, 'Helvetica Neue', system-ui, sans-serif;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: var(--sans);
+    color: var(--ink);
+    background: var(--ivory);
+    line-height: 1.65;
+    font-size: 16px;
+    -webkit-font-smoothing: antialiased;
+    min-height: 100dvh;
+  }
+  img { max-width: 100%; display: block; }
+
+  /* ─── HEADER (matches terms.html) ─── */
+  .site-header {
+    border-bottom: 1px solid var(--rule);
+    background: rgba(250, 248, 243, .94);
+    backdrop-filter: saturate(1.2) blur(10px);
+    -webkit-backdrop-filter: saturate(1.2) blur(10px);
+    position: sticky;
+    top: 0;
+    z-index: 50;
+  }
+  .site-header-inner {
+    max-width: 1180px;
+    margin: 0 auto;
+    padding: 14px 28px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+  }
+  .brand { display: flex; align-items: center; gap: 12px; text-decoration: none; }
+  .brand-mark { height: 64px; width: auto; }
+  .brand-name {
+    font-family: var(--serif);
+    font-size: 26px;
+    font-weight: 600;
+    color: var(--navy);
+    line-height: 1;
+  }
+  .brand-name .amp { color: var(--gold-dk); font-style: italic; font-weight: 500; }
+  .back-link { font-size: 14px; color: var(--ink-soft); text-decoration: none; }
+  .back-link:hover { color: var(--navy); }
+
+  /* ─── PAGE SHELL ─── */
+  main { max-width: 720px; margin: 0 auto; padding: 64px 28px 88px; }
+
+  .ci-head { margin-bottom: 44px; }
+  .ci-eyebrow {
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: .22em;
+    text-transform: uppercase;
+    color: var(--gold-dk);
+    margin-bottom: 16px;
+  }
+  .ci-title {
+    font-family: var(--serif);
+    font-size: clamp(36px, 5.4vw, 56px);
+    font-weight: 500;
+    line-height: 1.06;
+    letter-spacing: -.015em;
+    color: var(--navy);
+    margin-bottom: 18px;
+  }
+  .ci-sub {
+    font-size: 17px;
+    color: var(--ink-soft);
+    line-height: 1.7;
+    max-width: 600px;
+  }
+
+  /* ─── STEPS ─── */
+  .ci-step {
+    border: 0;
+    border-top: 1px solid var(--rule);
+    padding: 40px 0 8px;
+    margin: 0;
+  }
+  .ci-step-title {
+    font-family: var(--serif);
+    font-size: clamp(24px, 3.2vw, 30px);
+    font-weight: 500;
+    color: var(--navy);
+    letter-spacing: -.01em;
+    line-height: 1.2;
+    margin-bottom: 28px;
+    display: flex;
+    align-items: baseline;
+    gap: 12px;
+  }
+  .ci-step-num {
+    font-family: var(--serif);
+    font-style: italic;
+    font-size: 18px;
+    color: var(--gold-dk);
+    font-weight: 500;
+  }
+
+  /* ─── FIELDS ─── */
+  .ci-field { margin-bottom: 26px; }
+  .ci-q {
+    display: block;
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--navy);
+    margin-bottom: 12px;
+    line-height: 1.4;
+  }
+  .ci-field input[type="text"],
+  .ci-field input[type="tel"],
+  .ci-field input[type="email"],
+  .ci-field textarea {
+    width: 100%;
+    padding: 12px 14px;
+    font-size: 16px;
+    font-family: var(--sans);
+    color: var(--ink);
+    background: #fff;
+    border: 1px solid var(--rule);
+    border-radius: 3px;
+    outline: none;
+    transition: border-color .15s, box-shadow .15s;
+    -webkit-appearance: none;
+    appearance: none;
+  }
+  .ci-field textarea { min-height: 96px; resize: vertical; line-height: 1.6; }
+  .ci-field input::placeholder,
+  .ci-field textarea::placeholder { color: var(--ink-mute); }
+  .ci-field input:focus,
+  .ci-field textarea:focus {
+    border-color: var(--gold);
+    box-shadow: 0 0 0 3px rgba(200, 155, 90, .18);
+  }
+  .ci-other { margin-top: 12px; }
+
+  /* ─── CHIPS (radio / checkbox pills) ─── */
+  .ci-choices { display: flex; flex-wrap: wrap; gap: 10px; }
+  .ci-chip {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    padding: 9px 16px;
+    border: 1px solid var(--rule);
+    border-radius: 999px;
+    background: #fff;
+    font-size: 14px;
+    color: var(--ink-soft);
+    cursor: pointer;
+    transition: background .15s, border-color .15s, color .15s;
+    user-select: none;
+  }
+  .ci-chip input { position: absolute; opacity: 0; width: 1px; height: 1px; }
+  .ci-chip:hover { border-color: var(--gold); color: var(--ink); }
+  .ci-chip:has(input:checked) {
+    background: var(--navy);
+    border-color: var(--navy);
+    color: var(--ivory);
+    font-weight: 500;
+  }
+  .ci-chip:has(input:focus-visible) { outline: 2px solid var(--gold-dk); outline-offset: 2px; }
+  /* Fallback focus ring for browsers without :has — focus-within still fires */
+  .ci-chip:focus-within { outline: 2px solid var(--gold-dk); outline-offset: 2px; }
+  .ci-chip.ci-disabled { opacity: .4; cursor: not-allowed; }
+
+  /* ─── SUBMIT ─── */
+  .ci-submit { border-top: 1px solid var(--rule); padding-top: 36px; margin-top: 12px; }
+  .ci-btn {
+    width: 100%;
+    padding: 16px;
+    background: var(--navy);
+    color: var(--ivory);
+    font-weight: 600;
+    font-size: 15.5px;
+    letter-spacing: .03em;
+    border: 0;
+    border-radius: 3px;
+    cursor: pointer;
+    transition: background .15s;
+    font-family: var(--sans);
+  }
+  .ci-btn:hover { background: var(--navy-dk); }
+  .ci-btn[disabled] { opacity: .6; cursor: default; }
+  .ci-foot {
+    margin-top: 14px;
+    font-size: 14px;
+    color: var(--ink-mute);
+    text-align: center;
+    line-height: 1.6;
+  }
+  .ci-status {
+    margin-top: 16px;
+    padding: 16px 18px;
+    border-radius: 4px;
+    font-size: 15px;
+    line-height: 1.6;
+    display: none;
+  }
+  .ci-status.show { display: block; }
+  .ci-status.ok { background: rgba(200, 155, 90, .14); border-left: 3px solid var(--gold); color: var(--ink-soft); }
+  .ci-status.err { background: #fbecea; border-left: 3px solid #c0492f; color: #7a2c1c; }
+  .ci-status a { color: var(--gold-dk); font-weight: 600; }
+
+  /* ─── FOOTER (matches terms.html) ─── */
+  footer {
+    border-top: 1px solid var(--rule);
+    padding: 28px;
+    text-align: center;
+    color: var(--ink-mute);
+    font-size: 13px;
+    background: var(--ivory);
+  }
+  footer a { color: var(--navy); font-weight: 500; text-decoration: none; }
+  footer a:hover { color: var(--gold-dk); }
+  footer .sep { margin: 0 10px; opacity: .4; }
+  footer .copy { margin-top: 10px; font-size: 12px; opacity: .8; }
+
+  @media (max-width: 640px) {
+    main { padding: 44px 22px 64px; }
+    .brand-mark { height: 52px; }
+    .brand-name { font-size: 22px; }
+    .ci-step { padding-top: 32px; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    * { transition: none !important; }
+  }
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="site-header-inner">
+    <a href="/" class="brand" aria-label="805 Car Guy home">
+      <img src="logo-header.png" alt="" class="brand-mark" width="224" height="160"/>
+      <span class="brand-name">805 <em class="amp">carguy</em></span>
+    </a>
+    <a href="/" class="back-link">← Back to home</a>
+  </div>
+</header>
+
+<main>
+  <section class="ci-intake">
+    <header class="ci-head">
+      <p class="ci-eyebrow">805 Car Guy</p>
+      <h1 class="ci-title">Let's find your <em>perfect car</em>.</h1>
+      <p class="ci-sub">Answer a few quick questions and I'll do the hunting — research, pricing, and a shortlist built around exactly what you need. No dealership pressure, no guesswork.</p>
+    </header>
+
+    <form class="ci-form" id="intakeForm" action="https://formsubmit.co/3bee3a7c1f40b430ff307881c018db32" method="POST">
+
+      <!-- STEP 1 — About you -->
+      <fieldset class="ci-step">
+        <legend class="ci-step-title"><span class="ci-step-num">01</span> About you</legend>
+
+        <div class="ci-field">
+          <label class="ci-q" for="name">Name</label>
+          <input type="text" id="name" name="name" placeholder="Your name" required autocomplete="name">
+        </div>
+        <div class="ci-field">
+          <label class="ci-q" for="phone">Phone</label>
+          <input type="tel" id="phone" name="phone" placeholder="(805) 555-0123" autocomplete="tel">
+        </div>
+        <div class="ci-field">
+          <label class="ci-q" for="email">Email</label>
+          <input type="email" id="email" name="email" placeholder="you@email.com" autocomplete="email">
+        </div>
+        <div class="ci-field">
+          <label class="ci-q">How soon are you looking to buy?</label>
+          <div class="ci-choices">
+            <label class="ci-chip"><input type="radio" name="timeline" value="ASAP"><span>ASAP</span></label>
+            <label class="ci-chip"><input type="radio" name="timeline" value="Within a month"><span>Within a month</span></label>
+            <label class="ci-chip"><input type="radio" name="timeline" value="1-3 months"><span>1–3 months</span></label>
+            <label class="ci-chip"><input type="radio" name="timeline" value="Just exploring"><span>Just exploring</span></label>
+          </div>
+        </div>
+      </fieldset>
+
+      <!-- STEP 2 — The vehicle -->
+      <fieldset class="ci-step">
+        <legend class="ci-step-title"><span class="ci-step-num">02</span> The vehicle</legend>
+
+        <div class="ci-field">
+          <label class="ci-q">New or used?</label>
+          <div class="ci-choices">
+            <label class="ci-chip"><input type="radio" name="condition" value="New"><span>New</span></label>
+            <label class="ci-chip"><input type="radio" name="condition" value="Used"><span>Used</span></label>
+            <label class="ci-chip"><input type="radio" name="condition" value="Certified pre-owned"><span>Certified pre-owned</span></label>
+            <label class="ci-chip"><input type="radio" name="condition" value="Open to either"><span>Open to either</span></label>
+          </div>
+        </div>
+
+        <div class="ci-field">
+          <label class="ci-q" for="specificcar">Do you have a specific car in mind, or open to suggestions?</label>
+          <textarea id="specificcar" name="specific_car" placeholder="e.g. 'Set on a Toyota 4Runner' — or — 'No idea, show me what fits. Open to suggestions.'"></textarea>
+        </div>
+
+        <div class="ci-field">
+          <label class="ci-q">What will it mainly be used for? (pick all that apply)</label>
+          <div class="ci-choices">
+            <label class="ci-chip"><input type="checkbox" name="use" value="Daily commute"><span>Daily commute</span></label>
+            <label class="ci-chip"><input type="checkbox" name="use" value="Family hauling"><span>Family hauling</span></label>
+            <label class="ci-chip"><input type="checkbox" name="use" value="Road trips"><span>Road trips</span></label>
+            <label class="ci-chip"><input type="checkbox" name="use" value="Off-road / adventure"><span>Off-road / adventure</span></label>
+            <label class="ci-chip"><input type="checkbox" name="use" value="Towing / work"><span>Towing / work</span></label>
+            <label class="ci-chip"><input type="checkbox" name="use" value="Weekend / fun car"><span>Weekend / fun car</span></label>
+            <label class="ci-chip"><input type="checkbox" name="use" value="First car for a new driver"><span>First car for a new driver</span></label>
+            <label class="ci-chip"><input type="checkbox" name="use" value="Other" data-other="useOther"><span>Other</span></label>
+          </div>
+          <input type="text" class="ci-other" id="useOther" name="use_other" placeholder="Tell me how else you'll use it" hidden>
+        </div>
+
+        <div class="ci-field">
+          <label class="ci-q">How many people does it need to seat?</label>
+          <div class="ci-choices">
+            <label class="ci-chip"><input type="radio" name="seats" value="2"><span>2</span></label>
+            <label class="ci-chip"><input type="radio" name="seats" value="4-5"><span>4–5</span></label>
+            <label class="ci-chip"><input type="radio" name="seats" value="6-7"><span>6–7</span></label>
+            <label class="ci-chip"><input type="radio" name="seats" value="8+"><span>8+</span></label>
+          </div>
+        </div>
+
+        <div class="ci-field">
+          <label class="ci-q">Any preference on fuel type?</label>
+          <div class="ci-choices">
+            <label class="ci-chip"><input type="checkbox" name="fuel" value="Gas"><span>Gas</span></label>
+            <label class="ci-chip"><input type="checkbox" name="fuel" value="Hybrid"><span>Hybrid</span></label>
+            <label class="ci-chip"><input type="checkbox" name="fuel" value="Electric"><span>Electric</span></label>
+            <label class="ci-chip"><input type="checkbox" name="fuel" value="Diesel"><span>Diesel</span></label>
+            <label class="ci-chip"><input type="checkbox" name="fuel" value="Other" data-other="fuelOther"><span>Other</span></label>
+            <label class="ci-chip"><input type="checkbox" name="fuel" value="No preference"><span>No preference</span></label>
+          </div>
+          <input type="text" class="ci-other" id="fuelOther" name="fuel_other" placeholder="Which fuel type?" hidden>
+        </div>
+      </fieldset>
+
+      <!-- STEP 3 — What matters most -->
+      <fieldset class="ci-step">
+        <legend class="ci-step-title"><span class="ci-step-num">03</span> What matters most</legend>
+
+        <div class="ci-field">
+          <label class="ci-q">Pick your top priorities (choose up to 3)</label>
+          <div class="ci-choices" data-max="3">
+            <label class="ci-chip"><input type="checkbox" name="priority" value="Safety"><span>Safety</span></label>
+            <label class="ci-chip"><input type="checkbox" name="priority" value="Reliability"><span>Reliability</span></label>
+            <label class="ci-chip"><input type="checkbox" name="priority" value="Fuel economy"><span>Fuel economy</span></label>
+            <label class="ci-chip"><input type="checkbox" name="priority" value="Style / looks"><span>Style / looks</span></label>
+            <label class="ci-chip"><input type="checkbox" name="priority" value="Performance"><span>Performance</span></label>
+            <label class="ci-chip"><input type="checkbox" name="priority" value="Comfort"><span>Comfort</span></label>
+            <label class="ci-chip"><input type="checkbox" name="priority" value="Cargo space"><span>Cargo space</span></label>
+            <label class="ci-chip"><input type="checkbox" name="priority" value="Tech features"><span>Tech features</span></label>
+            <label class="ci-chip"><input type="checkbox" name="priority" value="Resale value"><span>Resale value</span></label>
+            <label class="ci-chip"><input type="checkbox" name="priority" value="Lowest price"><span>Lowest price</span></label>
+            <label class="ci-chip"><input type="checkbox" name="priority" value="Other" data-other="priorityOther"><span>Other</span></label>
+          </div>
+          <input type="text" class="ci-other" id="priorityOther" name="priority_other" placeholder="What else matters to you?" hidden>
+        </div>
+
+        <div class="ci-field">
+          <label class="ci-q" for="dealbreaker">Anything that's a hard dealbreaker? (optional)</label>
+          <textarea id="dealbreaker" name="dealbreaker" placeholder="e.g. 'No white cars,' 'must have CarPlay,' 'has to fit in a tight garage.'"></textarea>
+        </div>
+      </fieldset>
+
+      <!-- STEP 4 — Budget & payment -->
+      <fieldset class="ci-step">
+        <legend class="ci-step-title"><span class="ci-step-num">04</span> Budget &amp; payment</legend>
+
+        <div class="ci-field">
+          <label class="ci-q">How do you plan to pay?</label>
+          <div class="ci-choices">
+            <label class="ci-chip"><input type="radio" name="payment" value="Cash"><span>Cash</span></label>
+            <label class="ci-chip"><input type="radio" name="payment" value="Finance"><span>Finance</span></label>
+            <label class="ci-chip"><input type="radio" name="payment" value="Lease"><span>Lease</span></label>
+            <label class="ci-chip"><input type="radio" name="payment" value="Not sure yet"><span>Not sure yet</span></label>
+          </div>
+        </div>
+
+        <div class="ci-field">
+          <label class="ci-q" for="budget">Target budget (total or monthly)</label>
+          <input type="text" id="budget" name="budget" placeholder="e.g. $35k total, or $550/mo">
+        </div>
+        <div class="ci-field">
+          <label class="ci-q" for="down">Down payment (if financing/leasing)</label>
+          <input type="text" id="down" name="down_payment" placeholder="e.g. $5,000">
+        </div>
+
+        <div class="ci-field">
+          <label class="ci-q">Do you have a trade-in?</label>
+          <div class="ci-choices">
+            <label class="ci-chip"><input type="radio" name="trade" value="Yes"><span>Yes</span></label>
+            <label class="ci-chip"><input type="radio" name="trade" value="No"><span>No</span></label>
+          </div>
+        </div>
+        <div class="ci-field">
+          <label class="ci-q" for="tradedetails">If yes, what is it? (year, make, model, rough miles)</label>
+          <input type="text" id="tradedetails" name="trade_details" placeholder="e.g. 2018 Honda Accord, ~62k miles">
+        </div>
+      </fieldset>
+
+      <!-- STEP 5 — Anything else -->
+      <fieldset class="ci-step">
+        <legend class="ci-step-title"><span class="ci-step-num">05</span> Anything else I should know?</legend>
+        <div class="ci-field">
+          <label class="ci-q" for="notes">Tell me anything that'll help (optional)</label>
+          <textarea id="notes" name="notes" placeholder="Past cars you loved or hated, must-have colors, brands you trust or won't touch, anything at all."></textarea>
+        </div>
+
+        <!-- FormSubmit config + spam honeypot -->
+        <input type="text" name="_honey" style="display:none" tabindex="-1" autocomplete="off">
+        <input type="hidden" name="_subject" value="New car-finder intake from 805carguy.com">
+        <input type="hidden" name="_template" value="table">
+        <input type="hidden" name="_next" value="https://www.805carguy.com/find-my-car?sent=1">
+
+        <div class="ci-submit">
+          <button class="ci-btn" type="submit">Send to 805 Car Guy</button>
+          <p class="ci-foot">I'll review your answers and come back with a shortlist built just for you.</p>
+          <div class="ci-status" id="ciStatus" role="status" aria-live="polite"></div>
+        </div>
+      </fieldset>
+
+    </form>
+  </section>
+</main>
+
+<footer>
+  <div>
+    <a href="/">Home</a>
+    <span class="sep">·</span>
+    <a href="https://ig.me/m/805carguy" target="_blank" rel="noopener">@805carguy</a>
+    <span class="sep">·</span>
+    <a href="https://www.thevinhound.com" target="_blank" rel="noopener">VINhound (nationwide)</a>
+    <span class="sep">·</span>
+    <a href="/terms">Terms &amp; disclosures</a>
+    <span class="sep">·</span>
+    San Luis Obispo, CA
+  </div>
+  <div class="copy">© 2026 805 Car Guy · Independent buyer&apos;s advocate · Not affiliated with any dealership or manufacturer</div>
+</footer>
+
+<script>
+(function () {
+  // "Other" reveal: shows the text box when an Other option is checked
+  document.querySelectorAll('.ci-intake input[data-other]').forEach(function (box) {
+    box.addEventListener('change', function () {
+      var fill = document.getElementById(box.dataset.other);
+      if (!fill) return;
+      fill.hidden = !box.checked;
+      if (box.checked) fill.focus();
+    });
+  });
+
+  // "Choose up to 3" cap on the priorities group
+  document.querySelectorAll('.ci-choices[data-max]').forEach(function (group) {
+    var max = parseInt(group.dataset.max, 10);
+    var boxes = group.querySelectorAll('input[type="checkbox"]');
+    function sync() {
+      var checked = group.querySelectorAll('input[type="checkbox"]:checked').length;
+      boxes.forEach(function (b) {
+        var atCap = checked >= max && !b.checked;
+        b.disabled = atCap;
+        b.closest('.ci-chip').classList.toggle('ci-disabled', atCap);
+      });
+    }
+    boxes.forEach(function (b) { b.addEventListener('change', sync); });
+  });
+
+  // Submit → FormSubmit (AJAX). Aggregates repeated checkbox names so every
+  // selection is captured (name → "Gas, Hybrid"), unlike a naive overwrite.
+  var form = document.getElementById('intakeForm');
+  var status = document.getElementById('ciStatus');
+  var btn = form.querySelector('.ci-btn');
+
+  // Show success if FormSubmit redirected back with ?sent=1 (non-JS fallback path)
+  if (location.search.indexOf('sent=1') !== -1) {
+    status.textContent = "Got it — thanks. I'll review your answers and come back with a shortlist built just for you.";
+    status.className = 'ci-status ok show';
+    history.replaceState(null, '', location.pathname);
+  }
+
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
+
+    var name = (form.name.value || '').trim();
+    var contact = (form.phone.value || '').trim() || (form.email.value || '').trim();
+    if (!name || !contact) {
+      status.textContent = 'Please add your name and at least a phone or email so I can reach you.';
+      status.className = 'ci-status err show';
+      return;
+    }
+
+    btn.disabled = true;
+    btn.textContent = 'Sending…';
+    status.className = 'ci-status';
+
+    var data = {};
+    new FormData(form).forEach(function (v, k) {
+      if (k === '_honey') return;
+      data[k] = (data[k] === undefined) ? v : data[k] + ', ' + v;
+    });
+
+    fetch('https://formsubmit.co/ajax/3bee3a7c1f40b430ff307881c018db32', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+      body: JSON.stringify(data)
+    }).then(function (r) { return r.json(); }).then(function (r) {
+      if (r.success === 'true' || r.success === true) {
+        form.reset();
+        document.querySelectorAll('.ci-other').forEach(function (o) { o.hidden = true; });
+        btn.textContent = 'Sent ✓';
+        status.textContent = "Got it — thanks. I'll review your answers and come back with a shortlist built just for you. Keep an eye on your phone or inbox.";
+        status.className = 'ci-status ok show';
+        if (window.plausible) plausible('Intake Form Submit');
+        status.scrollIntoView({ block: 'center', behavior: 'smooth' });
+      } else { throw new Error(r.message || 'failed'); }
+    }).catch(function () {
+      btn.disabled = false;
+      btn.textContent = 'Send to 805 Car Guy';
+      status.innerHTML = 'Hmm, that didn\'t go through. Try again, or just DM me: <a href="https://ig.me/m/805carguy" target="_blank" rel="noopener">@805carguy</a>';
+      status.className = 'ci-status err show';
+    });
+  });
+})();
+</script>
+
+</body>
+</html>
