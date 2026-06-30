@@ -184,6 +184,30 @@
   .ci-reveal .ci-field:last-child { margin-bottom: 4px; }
   .ci-hint { font-weight: 400; color: var(--ink-mute); }
 
+  /* VIN decode row */
+  .ci-vin-row { display: flex; gap: 10px; }
+  .ci-vin-row input { flex: 1; min-width: 0; }
+  .ci-vin-btn {
+    flex-shrink: 0;
+    padding: 0 18px;
+    background: var(--navy);
+    color: var(--ivory);
+    border: 0;
+    border-radius: 3px;
+    font-family: var(--sans);
+    font-weight: 600;
+    font-size: 14px;
+    letter-spacing: .03em;
+    cursor: pointer;
+    transition: background .15s;
+  }
+  .ci-vin-btn:hover { background: var(--navy-dk); }
+  .ci-vin-btn:focus-visible { outline: 2px solid var(--gold-dk); outline-offset: 2px; }
+  .ci-vin-btn[disabled] { opacity: .55; cursor: default; }
+  .ci-vin-status { margin-top: 10px; font-size: 14px; line-height: 1.5; }
+  .ci-vin-status.ok { color: var(--gold-dk); }
+  .ci-vin-status.err { color: #b0492f; }
+
   /* ─── CHIPS (radio / checkbox pills) ─── */
   .ci-choices { display: flex; flex-wrap: wrap; gap: 10px; }
   .ci-chip {
@@ -449,8 +473,12 @@
             <input type="text" id="tradedetails" name="trade_details" placeholder="e.g. 2018 Honda Accord, ~62k miles">
           </div>
           <div class="ci-field">
-            <label class="ci-q" for="tradevin">VIN <span class="ci-hint">(optional — lets me pull exact specs &amp; value)</span></label>
-            <input type="text" id="tradevin" name="trade_vin" placeholder="17-character VIN, if it's handy" maxlength="17" autocapitalize="characters" autocomplete="off" spellcheck="false">
+            <label class="ci-q" for="tradevin">VIN <span class="ci-hint">(optional — enter it and I'll auto-fill the details)</span></label>
+            <div class="ci-vin-row">
+              <input type="text" id="tradevin" name="trade_vin" placeholder="17-character VIN" maxlength="17" autocapitalize="characters" autocomplete="off" spellcheck="false">
+              <button type="button" class="ci-vin-btn" id="vinDecode">Decode</button>
+            </div>
+            <p class="ci-vin-status" id="vinStatus" aria-live="polite"></p>
           </div>
           <div class="ci-field">
             <label class="ci-q">Do you still owe money on it?</label>
@@ -551,6 +579,65 @@
       phone.setSelectionRange(pos, pos);
     });
   }
+
+  // VIN decode via the free NHTSA vPIC API — fills the vehicle-details field
+  var vinInput = document.getElementById('tradevin');
+  var vinBtn = document.getElementById('vinDecode');
+  var vinStatus = document.getElementById('vinStatus');
+  var detailsField = document.getElementById('tradedetails');
+  var lastDecoded = '';
+
+  function decodeVin() {
+    var vin = (vinInput.value || '').trim().toUpperCase();
+    if (vin.length !== 17) {
+      vinStatus.textContent = 'Enter all 17 characters of the VIN first.';
+      vinStatus.className = 'ci-vin-status err';
+      return;
+    }
+    if (vin === lastDecoded) return;
+    lastDecoded = vin;
+    vinBtn.disabled = true;
+    var orig = vinBtn.textContent;
+    vinBtn.textContent = 'Decoding…';
+    vinStatus.textContent = '';
+    vinStatus.className = 'ci-vin-status';
+
+    fetch('https://vpic.nhtsa.dot.gov/api/vehicles/DecodeVinValues/' + encodeURIComponent(vin) + '?format=json')
+      .then(function (r) { return r.json(); })
+      .then(function (j) {
+        var v = (j.Results && j.Results[0]) || {};
+        if (!v.Make || !v.Model) {
+          lastDecoded = '';
+          vinStatus.textContent = "Couldn't read that VIN — double-check it, or just type the details below.";
+          vinStatus.className = 'ci-vin-status err';
+          return;
+        }
+        var name = [v.ModelYear, v.Make, v.Model, v.Trim].filter(function (x) { return x && x.trim(); }).join(' ');
+        var extra = [];
+        if (v.BodyClass) extra.push(v.BodyClass);
+        if (v.FuelTypePrimary && v.FuelTypePrimary !== 'Not Applicable') extra.push(v.FuelTypePrimary);
+        if (v.DriveType) extra.push(v.DriveType);
+        detailsField.value = name + (extra.length ? ' · ' + extra.join(', ') : '');
+        vinStatus.textContent = '✓ ' + name + ' — filled in below. Edit if anything looks off.';
+        vinStatus.className = 'ci-vin-status ok';
+      })
+      .catch(function () {
+        lastDecoded = '';
+        vinStatus.textContent = "Couldn't reach the VIN lookup right now — just type the details below.";
+        vinStatus.className = 'ci-vin-status err';
+      })
+      .then(function () {
+        vinBtn.disabled = false;
+        vinBtn.textContent = orig;
+      });
+  }
+
+  if (vinBtn) vinBtn.addEventListener('click', decodeVin);
+  if (vinInput) vinInput.addEventListener('input', function () {
+    // VINs are uppercase and never contain I, O, or Q
+    vinInput.value = vinInput.value.toUpperCase().replace(/[^A-HJ-NPR-Z0-9]/g, '');
+    if (vinInput.value.length === 17) decodeVin();
+  });
 
   // Trade-in: reveal the detail fields only when "Yes" is selected
   var tradeReveal = document.getElementById('tradeReveal');
