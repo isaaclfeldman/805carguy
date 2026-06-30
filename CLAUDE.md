@@ -67,6 +67,8 @@ Primary CTA is the on-site contact form (`#contact` section, bottom of page). Su
 
 Instagram DM (`https://ig.me/m/805carguy`) remains the secondary channel — linked under the form, in Process step one, and in the footer.
 
+The intake page's trade-in section reveals on "Yes" and includes a **NHTSA vPIC VIN decoder** (client-side, no key: `vpic.nhtsa.dot.gov/api/vehicles/DecodeVinValues/{VIN}?format=json`, CORS-enabled) that auto-fills the vehicle-details field. Phone field live-formats to `xxx.xxx.xxxx`.
+
 **Two forms share the FormSubmit alias** (`3bee3a7c1f40b430ff307881c018db32`): the homepage contact form (`#contact`, subject "New lead…") and the **client intake page** `find-my-car.html` (served extensionless at `/find-my-car`, subject "New car-finder intake…"). The intake page is a standalone doc mirroring `terms.html`'s shell; its `ci-`-prefixed fields use pill "chips" for radio/checkbox groups. Its submit handler **aggregates repeated checkbox names** (`use`, `fuel`, `priority`) into comma-joined values — the contact form's naive `forEach` overwrite would lose all but the last. FormSubmit activation is **per-domain** (not per-path), so new pages on an already-activated origin deliver immediately. The intake page is linked from nav ("Find my car"), the hero primary CTA, the contact section, and the footer.
 
 ## What's Intentionally NOT Here
