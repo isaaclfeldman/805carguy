@@ -37,7 +37,7 @@
       "url": "https://www.805carguy.com",
       "image": "https://www.805carguy.com/og.png",
       "logo": "https://www.805carguy.com/logo.png",
-      "priceRange": "$99–$999",
+      "priceRange": "$250–$1,499",
       "sameAs": ["https://instagram.com/805carguy"],
       "address": {
         "@type": "PostalAddress",
@@ -53,23 +53,44 @@
           {
             "@type": "Offer",
             "name": "The Look",
-            "price": "99",
+            "price": "250",
             "priceCurrency": "USD",
-            "description": "In-person inspection and test drive with photo and video report and a buy-or-walk verdict. Optional mechanical inspection on a lift for $100 more."
+            "description": "In-person inspection and test drive at any Central Coast dealership, with photo and video report and a buy-or-walk verdict. Optional mechanical inspection on a lift for $100 more."
           },
           {
             "@type": "Offer",
             "name": "The Deal",
-            "price": "349",
+            "price": "500",
             "priceCurrency": "USD",
-            "description": "In-person dealership visit with live negotiation on price, financing, and add-ons."
+            "description": "In-person visit to a local Central Coast dealership with live negotiation on price, financing, and add-ons."
           },
           {
             "@type": "Offer",
             "name": "The Works",
-            "price": "999",
+            "price": "1000",
             "priceCurrency": "USD",
             "description": "End-to-end sourcing, vetting, inspection, negotiation, and purchase support with a savings guarantee."
+          },
+          {
+            "@type": "Offer",
+            "name": "The Deep Dive",
+            "price": "250",
+            "priceCurrency": "USD",
+            "description": "Extensive remote market research on an out-of-area vehicle the client has found: pricing vs. comparable listings, history, recalls, reliability, and third-party inspection coordination."
+          },
+          {
+            "@type": "Offer",
+            "name": "The Remote Deal",
+            "price": "499",
+            "priceCurrency": "USD",
+            "description": "Full negotiation of an out-of-area deal by phone and email — price, financing, add-ons, trade-in — with an out-of-area dealer. Introductory price; regular price $749."
+          },
+          {
+            "@type": "Offer",
+            "name": "The Remote Works",
+            "price": "999",
+            "priceCurrency": "USD",
+            "description": "End-to-end concierge on an out-of-area vehicle: research, negotiation, third-party inspection coordination, and transport arrangement, with a savings guarantee. Introductory price; regular price $1,499."
           }
         ]
       }
@@ -101,7 +122,7 @@
         {
           "@type": "Question",
           "name": "What area do you cover?",
-          "acceptedAnswer": { "@type": "Answer", "text": "San Luis Obispo County and surrounding communities — San Luis Obispo, Paso Robles, Atascadero, Santa Maria, Arroyo Grande, Pismo Beach, Morro Bay, Nipomo, Templeton, and Los Osos." }
+          "acceptedAnswer": { "@type": "Answer", "text": "In-person services cover San Luis Obispo County and surrounding communities — San Luis Obispo, Paso Robles, Atascadero, Santa Maria, Arroyo Grande, Pismo Beach, Morro Bay, Nipomo, Templeton, and Los Osos. If the right car is outside the area, the out-of-area tiers handle research, negotiation, inspection coordination, and transport remotely — anywhere in the US." }
         },
         {
           "@type": "Question",
@@ -501,6 +522,36 @@
   }
   .svc-guarantee strong { color: var(--gold-dk); font-weight: 600; }
   .svc-card.featured .svc-guarantee strong { color: var(--gold); }
+
+  /* ─── OUT-OF-AREA ─── */
+  .ooa-section {
+    background: var(--ivory);
+    border-bottom: 1px solid var(--rule);
+  }
+  .svc-price .was {
+    font-family: var(--sans);
+    font-size: 15px;
+    font-weight: 500;
+    color: var(--ink-mute);
+    text-decoration: line-through;
+    margin-right: 8px;
+    letter-spacing: 0;
+  }
+  .svc-card.featured .svc-price .was { color: rgba(250, 248, 243, .55); }
+  .intro-badge {
+    display: inline-block;
+    background: var(--gold);
+    color: var(--navy);
+    font-family: var(--sans);
+    font-size: 10.5px;
+    font-weight: 700;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    padding: 3px 8px;
+    border-radius: 2px;
+    margin-left: 8px;
+    vertical-align: middle;
+  }
 
   /* ─── BRAND STRIP ─── */
   .brand-strip {
@@ -1119,7 +1170,7 @@
     <div class="section-head">
       <span class="kicker">Services</span>
       <h2>Three ways to <em>work together</em>.</h2>
-      <p class="lede">Flat fees, agreed up front. Pick how much of the process you want off your plate.</p>
+      <p class="lede">Flat fees, agreed up front. All three are in-person services at dealerships here on the Central Coast — I show up, so you don't have to. Car outside the area? <a href="#out-of-area">See out-of-area deals below.</a></p>
     </div>
 
     <div class="services">
@@ -1128,14 +1179,14 @@
       <div class="svc-card">
         <div class="svc-num">01</div>
         <div class="svc-name">The Look</div>
-        <div class="svc-price">$99<span class="per">per vehicle</span></div>
-        <p class="svc-desc">Found a car? I see it before you do. Walkaround, test drive, photos and video — and a straight <em>buy or walk</em> verdict.</p>
+        <div class="svc-price">$250<span class="per">per vehicle</span></div>
+        <p class="svc-desc">Found a car at a local dealership? I see it before you do. Walkaround, test drive, photos and video — and a straight <em>buy or walk</em> verdict.</p>
         <ul class="svc-includes">
-          <li>In-person walkaround and test drive</li>
+          <li>In-person walkaround and test drive at the dealership</li>
           <li>Photo and video report within 48 hours</li>
           <li>Add a mechanical inspection on a lift at my shop — <strong>+$100</strong></li>
         </ul>
-        <a class="svc-cta" href="#contact" data-svc="The Look — $99 inspection">Send me a listing</a>
+        <a class="svc-cta" href="#contact" data-svc="The Look — $250 in-person inspection">Send me a listing</a>
       </div>
 
       <!-- The Deal (featured) -->
@@ -1143,22 +1194,22 @@
         <div class="svc-badge">Most requested</div>
         <div class="svc-num">02</div>
         <div class="svc-name">The Deal</div>
-        <div class="svc-price">$349<span class="per">per visit</span></div>
-        <p class="svc-desc">I meet you at the dealership and handle the negotiation — price, financing, add-ons, trade-in — until you sign or we walk.</p>
+        <div class="svc-price">$500<span class="per">per visit</span></div>
+        <p class="svc-desc">I meet you at the local dealership and handle the negotiation — price, financing, add-ons, trade-in — until you sign or we walk.</p>
         <ul class="svc-includes">
-          <li>Up to two hours at the dealership, at your side</li>
+          <li>Up to two hours at a Central Coast dealership, at your side</li>
           <li>Negotiation on price, financing, and add-ons</li>
           <li>Honest "walk" call if the numbers don't work</li>
         </ul>
         <div class="svc-guarantee"><strong>For reference:</strong> national services charge $750+ to negotiate by phone. I'm in the building.</div>
-        <a class="svc-cta" href="#contact" data-svc="The Deal — $349 dealership negotiation" style="margin-top: 18px;">Book a visit</a>
+        <a class="svc-cta" href="#contact" data-svc="The Deal — $500 dealership negotiation" style="margin-top: 18px;">Book a visit</a>
       </div>
 
       <!-- The Works -->
       <div class="svc-card">
         <div class="svc-num">03</div>
         <div class="svc-name">The Works</div>
-        <div class="svc-price">$999<span class="per">end-to-end</span></div>
+        <div class="svc-price">$1,000<span class="per">end-to-end</span></div>
         <p class="svc-desc">Hand me the whole thing. I find it, vet it, inspect it, and negotiate it — you show up for the keys.</p>
         <ul class="svc-includes">
           <li>Search, shortlist, and dealer vetting</li>
@@ -1166,7 +1217,65 @@
           <li>Full negotiation and paperwork, start to finish</li>
         </ul>
         <div class="svc-guarantee"><strong>Savings guarantee.</strong> If I don't save you more than the fee, I refund the difference.</div>
-        <a class="svc-cta" href="#contact" data-svc="The Works — $999 full concierge" style="margin-top: 18px;">Start a search</a>
+        <a class="svc-cta" href="#contact" data-svc="The Works — $1,000 full concierge" style="margin-top: 18px;">Start a search</a>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ OUT-OF-AREA DEALS ═══════════ -->
+<section class="ooa-section" id="out-of-area">
+  <div class="container">
+    <div class="section-head">
+      <span class="kicker">Beyond the 805</span>
+      <h2>The right car isn't always local. <em>I work those deals too.</em></h2>
+      <p class="lede">Sometimes the truck you want is 200 miles away. I can't walk that lot for you — but I can tear the deal apart from here: deep market research, the entire negotiation by phone and email, an independent inspection near the car, and transport home. It's every bit as much work as a local deal, which is why it's priced like one.</p>
+    </div>
+
+    <div class="services">
+
+      <!-- The Deep Dive -->
+      <div class="svc-card">
+        <div class="svc-num">04</div>
+        <div class="svc-name">The Deep Dive</div>
+        <div class="svc-price">$250<span class="per">per vehicle</span></div>
+        <p class="svc-desc">Found a car outside the area? I can't see it in person — so I put it under the microscope instead. Extensive market research and a straight <em>pursue or pass</em> verdict.</p>
+        <ul class="svc-includes">
+          <li>Full market analysis against comparable listings nationwide</li>
+          <li>History, open recalls, and known reliability issues for that exact year and trim</li>
+          <li>Independent inspection arranged near the car if it checks out</li>
+        </ul>
+        <a class="svc-cta" href="#contact" data-svc="The Deep Dive — $250 out-of-area research">Send me the listing</a>
+      </div>
+
+      <!-- The Remote Deal -->
+      <div class="svc-card">
+        <div class="svc-num">05</div>
+        <div class="svc-name">The Remote Deal</div>
+        <div class="svc-price"><span class="was">$749</span>$499<span class="intro-badge">Intro price</span></div>
+        <p class="svc-desc">I handle the entire negotiation with the out-of-area dealer — price, financing, add-ons, trade-in — by phone and email. You never leave home.</p>
+        <ul class="svc-includes">
+          <li>Every conversation with the dealer handled for you, start to finish</li>
+          <li>Negotiation on price, financing, and add-ons — often over multiple days</li>
+          <li>Honest "walk" call if the numbers don't work</li>
+        </ul>
+        <a class="svc-cta" href="#contact" data-svc="The Remote Deal — $499 out-of-area negotiation">Start the negotiation</a>
+      </div>
+
+      <!-- The Remote Works -->
+      <div class="svc-card">
+        <div class="svc-num">06</div>
+        <div class="svc-name">The Remote Works</div>
+        <div class="svc-price"><span class="was">$1,499</span>$999<span class="intro-badge">Intro price</span></div>
+        <p class="svc-desc">The full concierge on a car that isn't local. I research it, negotiate it, get it independently inspected, and coordinate getting it to your driveway.</p>
+        <ul class="svc-includes">
+          <li>Deep-dive research and vetting included</li>
+          <li>Full negotiation and paperwork, start to finish</li>
+          <li>Independent inspection near the car, plus transport coordination</li>
+        </ul>
+        <div class="svc-guarantee"><strong>Savings guarantee.</strong> If I don't save you more than the fee, I refund the difference.</div>
+        <a class="svc-cta" href="#contact" data-svc="The Remote Works — $999 out-of-area concierge" style="margin-top: 18px;">Start a search</a>
       </div>
 
     </div>
@@ -1336,7 +1445,7 @@
       </details>
       <details class="faq-item">
         <summary class="faq-q">What area do you cover?</summary>
-        <p class="faq-a">San Luis Obispo County and surrounding communities — San Luis Obispo, Paso Robles, Atascadero, Santa Maria, Arroyo Grande, Pismo Beach, Morro Bay, Nipomo, Templeton, and Los Osos. Message me your zip code if you are uncertain.</p>
+        <p class="faq-a">In-person services — The Look, The Deal, and The Works — cover dealerships across San Luis Obispo County and surrounding communities: San Luis Obispo, Paso Robles, Atascadero, Santa Maria, Arroyo Grande, Pismo Beach, Morro Bay, Nipomo, Templeton, and Los Osos. The car doesn't have to be local, though: the <a href="#out-of-area">out-of-area tiers</a> cover research, negotiation, independent inspection, and transport on a vehicle anywhere in the US. Message me your zip code if you are uncertain.</p>
       </details>
       <details class="faq-item">
         <summary class="faq-q">Are you affiliated with any dealership?</summary>
@@ -1366,9 +1475,12 @@
         <label class="cf-label" for="cf-service">What do you need?</label>
         <select class="cf-select" id="cf-service" name="service">
           <option>Not sure yet</option>
-          <option>The Look — $99 inspection</option>
-          <option>The Deal — $349 dealership negotiation</option>
-          <option>The Works — $999 full concierge</option>
+          <option>The Look — $250 in-person inspection</option>
+          <option>The Deal — $500 dealership negotiation</option>
+          <option>The Works — $1,000 full concierge</option>
+          <option>The Deep Dive — $250 out-of-area research</option>
+          <option>The Remote Deal — $499 out-of-area negotiation</option>
+          <option>The Remote Works — $999 out-of-area concierge</option>
           <option>Free deal review</option>
           <option>Service coordination</option>
         </select>
@@ -1388,7 +1500,8 @@
   <p class="contact-alt">Not sure what you want yet? <a href="/find-my-car">Let me find your perfect car →</a><br>Prefer DMs? Message <a href="https://ig.me/m/805carguy" target="_blank" rel="noopener">@805carguy</a> on Instagram.</p>
   <div class="book-coverage">
     <strong>Coverage area</strong>
-    San Luis Obispo · Paso Robles · Atascadero · Santa Maria · Arroyo Grande · Pismo Beach · Morro Bay · Nipomo · Templeton · Los Osos
+    In person: San Luis Obispo · Paso Robles · Atascadero · Santa Maria · Arroyo Grande · Pismo Beach · Morro Bay · Nipomo · Templeton · Los Osos<br/>
+    Out-of-area deals handled remotely — anywhere in the US
   </div>
 </section>
 
@@ -1436,8 +1549,8 @@
 <section class="sibling">
   <div class="sibling-inner">
     <div>
-      <div class="sibling-h">Outside the Central Coast? <em>Visit VINhound.</em></div>
-      <div class="sibling-p">Same expertise, fully remote — listing vetting, dealer negotiation, and end-to-end concierge anywhere in the US.</div>
+      <div class="sibling-h">Want to hunt on your own first? <em>Try VINhound.</em></div>
+      <div class="sibling-p">My AI-powered used-car search. Find the right car anywhere in the US — then bring me the deal.</div>
     </div>
     <a href="https://www.thevinhound.com" target="_blank" rel="noopener" class="sibling-btn">Visit VINhound →</a>
   </div>

@@ -3,13 +3,22 @@
 Local car-buying service on the Central Coast (San Luis Obispo County). Single-page static site. Customers contact via Instagram DM (@805carguy). No database, no auth, no payments integration — every CTA points to `https://ig.me/m/805carguy`.
 
 ## Services & Pricing
-- **The Look — $99.** In-person walkaround + test drive, photo/video report, buy-or-walk verdict. Optional mechanical inspection on a lift at the shop: +$100.
-- **The Deal — $349 (featured / most requested).** Meet at the dealership, live negotiation on price/financing/add-ons until signed or walk.
-- **The Works — $999.** End-to-end: source, vet, inspect, negotiate, close. Savings guarantee (refund the difference if savings < fee; conditions in terms.html §6).
+
+**Local tiers — in-person at Central Coast dealerships (repriced Aug 2026):**
+- **The Look — $250** (was $99). In-person walkaround + test drive at the dealership, photo/video report, buy-or-walk verdict. Optional mechanical inspection on a lift at the shop: +$100.
+- **The Deal — $500 (featured / most requested)** (was $349). Meet at the local dealership, live negotiation on price/financing/add-ons until signed or walk.
+- **The Works — $1,000** (was $999). End-to-end: source, vet, inspect, negotiate, close. Savings guarantee (refund the difference if savings < fee paid; conditions in terms.html §6).
+
+**Out-of-area tiers — car outside the Central Coast, handled remotely (added Aug 2026, e.g. the Adam Hoffman / Garden Grove deal):**
+- **The Deep Dive — $250.** Remote replacement for The Look: extensive market research on a car the client found (comps, history, recalls, reliability), plus third-party inspection coordination near the car.
+- **The Remote Deal — $499 limited-time intro (regular $749).** Full negotiation with the distant dealer by phone/email, often multi-day.
+- **The Remote Works — $999 limited-time intro (regular $1,499).** End-to-end remote: research, negotiation, third-party inspection, transport coordination. Same savings guarantee (against fee paid).
+
+**Both:**
 - **Free Deal Review.** Send an out-the-door quote, get a free read. Lead magnet.
 - **Service Coordination.** Post-purchase advocacy (quotes, warranty, shops). Hourly or retainer.
 
-Pricing is market-anchored (June 2026): CarEdge/Delivrd/Negotiated charge ~$999–$1,000 for full concierge; remote-only negotiation runs $750+; Lemon Squad PPI ~$120. Tier names changed Apr→Jun 2026: Drive-By/Ride-Along/Full Fetch → On-Site/Mechanical/Negotiation/Concierge → Look/Deal/Works.
+Pricing rationale (Aug 2026): remote deals are just as time-consuming as local ones, so intro pricing puts them at parity with local tiers ($499≈$500, $999≈$1,000); regular prices ($749/$1,499) match/exceed the national remote services ($750+ negotiation, ~$999+ concierge) that the site references. Original June 2026 anchoring: CarEdge/Delivrd/Negotiated ~$999–$1,000 full concierge; remote-only negotiation $750+; Lemon Squad PPI ~$120. Tier names changed Apr→Jun 2026: Drive-By/Ride-Along/Full Fetch → On-Site/Mechanical/Negotiation/Concierge → Look/Deal/Works; Aug 2026 added Deep Dive/Remote Deal/Remote Works.
 
 Covers: new or used cars (NOT used-only — copy is intentionally generic).
 
