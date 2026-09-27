@@ -1,90 +1,27 @@
-# 805 Car Guy — Project Reference
+# 805CarGuy project reference
 
-Local car-buying service on the Central Coast (San Luis Obispo County). Single-page static site. Customers contact via Instagram DM (@805carguy). No database, no auth, no payments integration — every CTA points to `https://ig.me/m/805carguy`.
+805CarGuy is Isaac Feldman's personal brand and human-services inquiry site, based in San Luis Obispo. VINhound is a separate self-service car-search tool; do not merge the code or turn VINhound into the human service brand.
 
-## Services & Pricing
+## Current release direction
 
-**Local tiers — in-person at Central Coast dealerships (repriced Aug 2026):**
-- **The Look — $250** (was $99). In-person walkaround + test drive at the dealership, photo/video report, buy-or-walk verdict. Optional mechanical inspection on a lift at the shop: +$100.
-- **The Deal — $500 (featured / most requested)** (was $349). Meet at the local dealership, live negotiation on price/financing/add-ons until signed or walk.
-- **The Works — $1,000** (was $999). End-to-end: source, vet, inspect, negotiate, close. Savings guarantee (refund the difference if savings < fee paid; conditions in terms.html §6).
+Finish the websites and collect inquiries. Business/entity setup, payment accounts and naming remain deferred. This preference is not a legal determination. Do not create payment accounts or add checkout. No invented savings, testimonials, demand, or expiration claims.
 
-**Out-of-area tiers — car outside the Central Coast, handled remotely (added Aug 2026, e.g. the Adam Hoffman / Garden Grove deal):**
-- **The Deep Dive — $250.** Remote replacement for The Look: extensive market research on a car the client found (comps, history, recalls, reliability), plus third-party inspection coordination near the car.
-- **The Remote Deal — $499 limited-time intro (regular $749).** Full negotiation with the distant dealer by phone/email, often multi-day.
-- **The Remote Works — $999 limited-time intro (regular $1,499).** End-to-end remote: research, negotiation, third-party inspection, transport coordination. Same savings guarantee (against fee paid).
+The September 2026 homepage has choose/find, buy, sell, evaluate and general inquiry paths. Current working scopes live in the displayed `intake.js` package descriptions and homepage FAQs:
 
-**Both:**
-- **Free Deal Review.** Send an out-the-door quote, get a free read. Lead magnet.
-- **Service Coordination.** Post-purchase advocacy (quotes, warranty, shops). Hourly or retainer.
+- Choosing consultation: $49 for the first five clients; 45–60 minutes, three model/year/trim recommendations and one follow-up.
+- Used-car search: $500 for an agreed 30-day search; at least three qualifying actual cars unless chosen sooner; seller confirmation and available-record review. Extension/refund if the agreed search cannot be delivered; physical inspection separate.
+- Purchase assistance: introductory $750; typical new-car offer comparison included. No approved expiration or claimed regular-price discount.
+- Complete local used-car purchase: $1,000, $500 to start/$500 on purchase, including one inspection at Certified Auto Repair in SLO. Seller permission/scheduling needed; transport excluded; extra inspections approved separately. Failed inspection alone does not trigger final payment.
+- Evaluate: $99 for one listing/records or written new-car deal, written verdict and one follow-up. Not a physical inspection.
+- Assisted sell: $350 upfront, one car/30 days; owner handles showings/negotiation/closing.
+- Full-service sell: 5%, $1,000 minimum, one car/60 days; $350 upfront counts toward total. Owner keeps custody unless arranged otherwise.
 
-Pricing rationale (Aug 2026): remote deals are just as time-consuming as local ones, so intro pricing puts them at parity with local tiers ($499≈$500, $999≈$1,000); regular prices ($749/$1,499) match/exceed the national remote services ($750+ negotiation, ~$999+ concierge) that the site references. Original June 2026 anchoring: CarEdge/Delivrd/Negotiated ~$999–$1,000 full concierge; remote-only negotiation $750+; Lemon Squad PPI ~$120. Tier names changed Apr→Jun 2026: Drive-By/Ride-Along/Full Fetch → On-Site/Mechanical/Negotiation/Concierge → Look/Deal/Works; Aug 2026 added Deep Dive/Remote Deal/Remote Works.
+Prior payments count once toward applicable larger service for the same purchase/sale. Repairs, detailing, smog, paid ads and transport require separate agreement. Detailed cancellation and purchase-milestone terms are open operating decisions; the `/terms` page is service information, not a replacement client contract. The $199 shop inspection price is Isaac-supplied.
 
-Covers: new or used cars (NOT used-only — copy is intentionally generic).
+## Structure and delivery
 
-## Architecture
-- `index.html` — single file, inline CSS + minimal JS. All copy, styles, structure live here.
-- `server.js` — 18-line Express static server. Serves `index.html` for any route. No API, no DB.
-- `package.json` — one dep: `express ^4.19.2`. `npm start` → `node server.js`.
-- `.gitignore` — `node_modules/`, `.env`, `.DS_Store`, `*.log`.
-- Mobile breakpoint: `@media(max-width:760px)`.
+Node/Express, no build step. `index.html` + `styles.css` + `intake.js` + `inquiry-delivery.js`, portrait at `assets/isaac.jpg`. `server.js` allows only public assets; unknown/private paths return 404. Legacy finder URLs redirect to `/#inquire`. Read README for tests and preview restrictions.
 
-## Design DNA
-Borrowed from VINhound but warmer/more local. Cream + terracotta palette:
-- `--cream-50: #fbf7ef` (primary bg)
-- `--cream-100: #f6efdf`, `--cream-200: #ecdfc2`
-- `--sand-300: #d6c7a8`, `--sand-500: #8b7a5f`, `--sand-700: #5a4a34`
-- `--rust: #b85c3a` (accent — headlines, CTAs, featured card)
-- `--rust-dk: #8f4025` (hover)
-- Hero `.accent` span uses rust color on the hook phrase
-- Featured service card (Ride-Along) has `.featured` class with rust border + badge
+FormSubmit endpoint: `https://formsubmit.co/ajax/3bee3a7c1f40b430ff307881c018db32`, intended recipient `isaac@carofslo.com`. Existing production test messages received September 24 were read in Gmail during September 27 continuation. That establishes historical delivery only; verify the new release with a real inbox receipt after publishing.
 
-## Deployment
-- **GitHub:** `https://github.com/isaaclfeldman/805carguy` — branch `main` is the auto-deploy target.
-- **Railway:** auto-deploys on push to `main` (~60 sec). Project has service `805carguy-production.up.railway.app`.
-  - Railway settings: `https://railway.com/project/3a9d82d5-074c-41c5-adfc-2c12ade150c2/service/62ccfba3-40a5-42f4-9639-00f12b5efa37/settings`
-  - Railway CNAME target: `1b6krfo4.up.railway.app` (for www custom domain)
-- **Domain:** `www.805carguy.com` → Railway (CNAME). Apex `805carguy.com` → GoDaddy 301 forward → `https://www.805carguy.com`.
-  - GoDaddy DNS: `https://dcc.godaddy.com/control/dnsmanagement?domainName=805carguy.com`
-  - Railway free plan: 1 custom domain limit, which is why apex is handled via GoDaddy forwarding instead of a second Railway custom domain.
-
-## Dev Flow
-Local:
-```bash
-npm install
-npm start
-# → http://localhost:3000
-```
-
-Deploy = push to main:
-```bash
-git add . && git commit -m "..." && git push
-```
-
-Railway auto-deploys. Verify:
-```bash
-curl -I https://www.805carguy.com
-```
-
-## Contact Flow (June 2026)
-Primary CTA is the on-site contact form (`#contact` section, bottom of page). Submissions email to isaac@carofslo.com via **FormSubmit** (no account, free):
-- AJAX endpoint: `https://formsubmit.co/ajax/3bee3a7c1f40b430ff307881c018db32` (the hash is an alias for Isaac's email — public by design, keeps the raw address out of the HTML)
-- Non-JS fallback: form `action` posts to the same alias, `_next` redirects back to the site
-- Spam: `_honey` honeypot field; `_subject` is "New lead from 805carguy.com"; `_template=table`
-- Service-card CTAs carry `data-svc` attributes that pre-select the tier in the form's dropdown
-- If the form errors client-side, the status line falls back to the Instagram DM link
-
-Instagram DM (`https://ig.me/m/805carguy`) remains the secondary channel — linked under the form, in Process step one, and in the footer.
-
-The intake page's trade-in section reveals on "Yes" and includes a **NHTSA vPIC VIN decoder** (client-side, no key: `vpic.nhtsa.dot.gov/api/vehicles/DecodeVinValues/{VIN}?format=json`, CORS-enabled) that auto-fills the vehicle-details field. Phone field live-formats to `xxx.xxx.xxxx`.
-
-**Two forms share the FormSubmit alias** (`3bee3a7c1f40b430ff307881c018db32`): the homepage contact form (`#contact`, subject "New lead…") and the **client intake page** `find-my-car.html` (served extensionless at `/find-my-car`, subject "New car-finder intake…"). The intake page is a standalone doc mirroring `terms.html`'s shell; its `ci-`-prefixed fields use pill "chips" for radio/checkbox groups. Its submit handler **aggregates repeated checkbox names** (`use`, `fuel`, `priority`) into comma-joined values — the contact form's naive `forEach` overwrite would lose all but the last. FormSubmit activation is **per-domain** (not per-path), so new pages on an already-activated origin deliver immediately. The intake page is linked from nav ("Find my car"), the hero primary CTA, the contact section, and the footer.
-
-## What's Intentionally NOT Here
-- No database, no auth, no payments integration
-- No blog, no about page (about is a section, not a page)
-
-Keep it simple. Every feature addition should pass the "does this make it harder for someone with ADHD to take the next step?" test.
-
-## Coverage Area
-SLO, Paso Robles, Atascadero, Santa Maria, Arroyo Grande, Pismo Beach, Morro Bay, Nipomo, Templeton, Los Osos.
+GitHub: `https://github.com/isaaclfeldman/805carguy`. Main auto-deploys to Railway. Custom domain `www.805carguy.com`; apex forwarding needs live verification. Review and approve the exact release before publication.

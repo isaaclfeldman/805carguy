@@ -1,42 +1,19 @@
-# 805 Car Guy
+# 805CarGuy
 
-Local car-buying service for the Central Coast. One-page site.
-Instagram: [@805carguy](https://instagram.com/805carguy) · Domain: www.805carguy.com
+Isaac Feldman's personal car-advice and service inquiry website. VINhound stays a separate self-service search tool.
 
-## Run locally
+## Run and check
 
-```bash
-npm install
-npm start
-# → http://localhost:3000
-```
+Use Node 18 or newer. Install dependencies with `npm install`, run `npm start`, and open localhost:3000. `npm test` checks inquiry payloads, rejected/unknown delivery responses, timeout behavior and public routing. Tests use fake provider responses and local HTTP; they send no email.
 
-## Deploy to Railway
+Public pages: `/`, `/terms` (service information), `/privacy`. Both `/find-my-car` and `/find-my-car.html` redirect to `/#inquire`. The server only serves explicitly listed public files. Add a new asset to `server.js` when needed.
 
-1. Push this folder to a new GitHub repo (e.g. `isaaclfeldman/805carguy`)
-2. Railway → New Project → Deploy from GitHub → pick the repo
-3. Railway auto-detects Node and runs `npm start`
-4. Grab the Railway-generated domain (something like `805carguy-production.up.railway.app`)
+## Inquiry behavior
 
-## Point www.805carguy.com at Railway
+`index.html`, `styles.css`, `intake.js`, `inquiry-delivery.js` and `assets/isaac.jpg` must deploy together. Four service paths and a general inquiry lead to contact details, review, then a separate Send button. Email/text/call preference is included. The browser sends directly to the existing FormSubmit alias; there is no inquiry database or payment integration.
 
-1. In Railway project → Settings → Networking → **Custom Domain** → add `www.805carguy.com`. Railway shows you the CNAME target.
-2. In GoDaddy → DNS management for `805carguy.com`:
-   - **CNAME**: host `www` → value `<your-railway-target>.up.railway.app`
-   - **Forwarding** on apex `805carguy.com` → forward to `https://www.805carguy.com` (permanent, 301)
-3. Wait ~10–30 minutes for DNS + Railway's SSL provisioning. Check with:
-   ```bash
-   curl -I https://www.805carguy.com
-   ```
+Sending is enabled only on HTTPS `www.805carguy.com` or `805carguy.com`. Local/other-host previews disable sending. The UI requires an HTTP success plus explicit FormSubmit acceptance. Rejected, malformed and timed-out responses retain the draft and show uncertainty, with email/Instagram alternatives. Acceptance is not an inbox-delivery receipt. Closing/reloading the page can discard unsent details; no browser storage is used.
 
-## Making edits
+## Release
 
-Everything lives in `index.html`. Change copy, prices, coverage areas, whatever — push to GitHub, Railway auto-deploys in ~60 seconds.
-
-## What's intentionally NOT here
-
-- No database, no auth, no payments integration
-- No analytics (add Plausible later if you want)
-- No blog, no nav, no about page
-
-Keep it simple. Every visitor has exactly one next step: **DM @805carguy on Instagram.**
+Main auto-deploys to Railway. Review the exact release before pushing. Verify the remote branch before a normal fast-forward push; never force-push. After publication, check the actual page/assets, HTTPS domain routing and one clearly labelled inquiry arriving in `isaac@carofslo.com`, including contact preference and selected service. Keep payment, business setup and naming decisions outside this website release.

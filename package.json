@@ -1,10 +1,11 @@
 {
   "name": "805carguy",
   "version": "1.0.0",
-  "description": "Local car-buying service on the Central Coast — landing page.",
+  "description": "Local car-buying service on the Central Coast \u2014 landing page.",
   "main": "server.js",
   "scripts": {
-    "start": "node server.js"
+    "start": "node server.js",
+    "test": "node --test scripts/test-inquiry-delivery.js && node scripts/test-public-routes.js"
   },
   "engines": {
     "node": ">=18"
