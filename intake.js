@@ -23,35 +23,35 @@
       intro: 'Start with your life, your budget, and what you enjoy about driving.',
       includes: ['A 45–60 minute conversation with Isaac.', 'At least three tailored recommendations, including suggested years and trims, the tradeoffs, and what to avoid.', 'One follow-up after you consider the options or take test drives.'],
       boundary: 'This is advice about which car to buy. Searching for individual cars and handling a purchase are separate services.',
-      terms: 'The $49 you pay counts toward an applicable larger service for this same purchase.'
+      terms: 'The $49 you pay counts once toward an applicable larger service for this same purchase.'
     },
     search: {
       title: 'Find the right used car.', price: '$500', caption: 'One agreed 30-day search',
-      intro: 'A shortlist built around your requirements, with the seller legwork already done.',
+      intro: 'Actual cars screened for your requirements, with the seller legwork already done.',
       includes: ['Clarify what fits, including model choice if needed.', 'At least three qualifying actual cars, unless you choose one sooner.', 'Contact sellers to confirm availability, specifications, and price; review available history and maintenance records.', 'A recommendation explaining which cars are worth pursuing and why.'],
-      boundary: 'We agree on the budget and must-haves first. If I cannot deliver the agreed search, we agree on an extension or refund. Physical inspection and purchase negotiation are separate.',
-      terms: 'If you upgrade to complete purchase help for the same car search, your payment counts toward the agreed total.'
+      boundary: 'We agree on the budget and must-haves first. You handle the purchase; physical inspection and purchase negotiation are separate. If I cannot deliver the agreed search, we agree on an extension or refund under our written agreement.',
+      terms: 'Your payment counts once toward complete purchase help for this same search. For example, $500 already paid for search leaves $500 toward the $1,000 complete local service. We confirm the credit and remaining payments in writing before added work starts.'
     },
     newBuy: {
       title: 'Buy your new car with help.', price: '$750', caption: 'Introductory purchase assistance',
       intro: 'Help with the offers, the details, and the experience of buying.',
       includes: ['Confirm your requirements and compare availability and dealer offers.', 'Negotiate and review the vehicle price, trade-in, add-ons, and financing or lease terms.', 'Coordinate the purchase—or recommend walking away when the deal does not make sense.'],
       boundary: 'Typical new-car deal shopping is included. A rare specification or unusually difficult search needs a separately agreed scope before any added fee.',
-      terms: 'Applicable fees already paid for this same purchase count toward the total.'
+      terms: 'This covers one purchase. Before work begins, our written agreement confirms the offers and deal revisions included, timeframe, payment timing, and cancellation or refund terms. Applicable fees already paid for this purchase count once toward the total.'
     },
     foundBuy: {
       title: 'Help buying the car you found.', price: '$750', caption: 'Introductory purchase assistance',
       intro: 'You have a candidate. Get help deciding whether—and how—to move forward.',
       includes: ['Review the listing, available vehicle records, and seller answers.', 'Negotiate and review the written deal and relevant purchase terms.', 'Coordinate the next steps through purchase—or recommend walking away.'],
-      boundary: 'A physical inspection is separate. Certified Auto Repair’s full used-car inspection is $199; any inspection or outside cost is agreed before booking.',
-      terms: 'Applicable fees already paid for this same purchase count toward the total.'
+      boundary: 'Finding other used cars and a physical inspection are separate. Certified Auto Repair’s standalone full used-car inspection is $199—the shop’s price, not an 805CarGuy fee. We agree on any inspection or outside cost before booking.',
+      terms: 'This covers one purchase. Before work begins, our written agreement confirms the candidates and deal revisions included, timeframe, payment timing, and cancellation or refund terms. Applicable fees already paid for this purchase count once toward the total.'
     },
     complete: {
       title: 'From choosing to the keys.', price: '$1,000', caption: 'Complete local used-car purchase',
       intro: 'One service for choosing, finding, checking, and buying your car.',
-      includes: ['Help choosing, plus at least three qualifying, seller-confirmed candidates in the agreed 30-day search, unless you choose sooner.', 'Screening, negotiation, and purchase coordination.', 'One full used-car inspection at Certified Auto Repair in San Luis Obispo.'],
-      boundary: 'The car must come to the shop, with seller permission and an available appointment. Transport is not included. Any additional inspections are separately priced and approved. If I cannot deliver the agreed search, we agree on an extension or refund.',
-      terms: '$500 to start and $500 when you purchase, less applicable prior payments. Rejecting a car after inspection does not by itself trigger the final payment.'
+      includes: ['Help choosing, plus at least three qualifying, seller-confirmed candidates in the agreed 30-day search, unless you choose sooner.', 'Screening, negotiation, and purchase coordination.', 'One full used-car inspection at Certified Auto Repair in San Luis Obispo, included in the $1,000 price. There is no extra $199 inspection charge.'],
+      boundary: 'The car must come to the shop, with seller permission and an available appointment. Transport is not included. Any additional inspections are separately priced and approved. If I cannot deliver the agreed search, we agree on an extension or refund under our written agreement.',
+      terms: '$500 to start and $500 when you purchase, less applicable prior payments credited once. This covers one purchase. Our written agreement confirms the candidates and deal revisions covered, overall timeframe, cancellation or refund terms, and when the purchase balance is due. Rejecting a car after inspection does not by itself trigger the final payment.'
     },
     remote: {
       title: 'Let’s scope the search together.', price: 'Price agreed first', caption: 'Used-car search and purchase help',
@@ -65,21 +65,21 @@
       intro: 'I help get the car ready to market and screen the initial buyer inquiries.',
       includes: ['Pricing guidance, photos, and a listing.', 'Initial buyer screening and introductions.', 'You handle showings, negotiations, and closing.'],
       boundary: 'The car stays with you. Detailing, repairs, smog, paid advertising, and transport are separate costs approved in advance. A sale is not guaranteed.',
-      terms: 'If you upgrade to full service for this same sale, the $350 already paid counts toward the total.'
+      terms: 'If you upgrade to full service for this same sale, the $350 already paid counts once toward the total.'
     },
     fullSell: {
       title: 'Hand over the selling details.', price: '5%', caption: 'Of sale price · $1,000 minimum · 60 days',
       intro: 'Help managing the sale of one car, from preparation to closing.',
       includes: ['Pricing, photos, listing preparation, and buyer communication.', 'Coordinate and handle showings and negotiation.', 'Coordinate closing when you accept an offer.'],
-      boundary: 'The car stays with you by default; drop-off is by arrangement when space is available. Detailing, repairs, smog, paid advertising, and transport are separately approved costs.',
-      terms: '$350 upfront, credited toward the total, with the balance due on sale. The upfront payment covers completed preparation even if the car does not sell. For example, a $20,000 sale has a $1,000 total fee; after the $350 upfront, $650 remains.'
+      boundary: 'The car stays with you by default; drop-off is by arrangement when space is available. Detailing, repairs, smog, paid advertising, and transport are separately approved costs. For a lower-value car, the $350 assisted sale may make more sense if you can handle showings, negotiation, and closing.',
+      terms: '$350 upfront, credited once toward the total, with the balance due on sale. The upfront payment covers completed preparation even if the car does not sell. A $10,000 or $20,000 sale has a $1,000 total fee; after the $350 upfront, $650 remains. A $30,000 sale has a $1,500 total fee.'
     },
     evaluate: {
       title: 'A second opinion before you commit.', price: '$99', caption: 'One car or written deal',
       intro: 'Get a clear recommendation and the questions worth asking next.',
       includes: ['Review one listing and available records, or one written new-car offer.', 'A short written verdict with the relevant concerns and next steps.', 'One follow-up for seller answers or a revised offer.'],
       boundary: 'This is a remote review, not a physical inspection. It cannot establish mechanical condition. I will confirm that I can meet your deadline before accepting the job.',
-      terms: 'This review is included when it is part of Search or Buy. If you start here, your $99 counts toward an applicable larger service for this same purchase.'
+      terms: 'This review is included when it is part of Search or Buy. If you start here, your $99 counts once toward an applicable larger service for this same purchase.'
     }
   };
 

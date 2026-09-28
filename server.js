@@ -4,18 +4,23 @@ const path = require('path');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
+const canonicalOrigin = 'https://www.805carguy.com';
+const pageAliases = new Map([
+  ['/index.html', '/'],
+  ['/about/', '/about'], ['/about.html', '/about'],
+  ['/services/', '/services'], ['/services.html', '/services'],
+  ['/terms/', '/terms'], ['/terms.html', '/terms'],
+  ['/privacy/', '/privacy'], ['/privacy.html', '/privacy'],
+]);
 
 // Keep configuration, source notes, and dependency files outside the public site.
 const publicFiles = new Map([
   ['/', 'index.html'],
-  ['/index.html', 'index.html'],
   ['/about', 'about.html'],
-  ['/about/', 'about.html'],
-  ['/about.html', 'about.html'],
+  ['/services', 'services.html'],
   ['/terms', 'terms.html'],
-  ['/terms.html', 'terms.html'],
   ['/privacy', 'privacy.html'],
-  ['/privacy.html', 'privacy.html'],
+  ['/sitemap.xml', 'sitemap.xml'],
   ['/styles.css', 'styles.css'],
   ['/intake.js', 'intake.js'],
   ['/inquiry-delivery.js', 'inquiry-delivery.js'],
@@ -33,7 +38,19 @@ const publicFiles = new Map([
 app.disable('x-powered-by');
 app.use((req, res, next) => {
   res.set('X-Content-Type-Options', 'nosniff');
+  const productionHost = ['www.805carguy.com', '805carguy.com'].includes(req.hostname);
+  // Keep local and hosted previews out of search results without blocking assets.
+  if (!productionHost) res.set('X-Robots-Tag', 'noindex, nofollow');
   if (req.method !== 'GET' && req.method !== 'HEAD') return next();
+
+  if (req.path === '/robots.txt') {
+    return res.type('text/plain').send(productionHost
+      ? `User-agent: *\nAllow: /\nSitemap: ${canonicalOrigin}/sitemap.xml\n`
+      : 'User-agent: *\nDisallow: /\n');
+  }
+
+  const canonicalPath = pageAliases.get(req.path);
+  if (canonicalPath) return res.redirect(301, canonicalPath + req.url.slice(req.path.length));
 
   if (['/find-my-car', '/find-my-car.html', '/find-my-car/'].includes(req.path)) {
     return res.redirect(301, '/#inquire');
