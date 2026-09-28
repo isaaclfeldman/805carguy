@@ -9,6 +9,9 @@ const PORT = process.env.PORT || 3000;
 const publicFiles = new Map([
   ['/', 'index.html'],
   ['/index.html', 'index.html'],
+  ['/about', 'about.html'],
+  ['/about/', 'about.html'],
+  ['/about.html', 'about.html'],
   ['/terms', 'terms.html'],
   ['/terms.html', 'terms.html'],
   ['/privacy', 'privacy.html'],
