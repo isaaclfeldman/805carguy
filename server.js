@@ -18,6 +18,7 @@ const publicFiles = new Map([
   ['/inquiry-delivery.js', 'inquiry-delivery.js'],
   ['/assets/isaac.jpg', 'assets/isaac.jpg'],
   ['/isaac.jpg', 'isaac.jpg'],
+  ['/brand-modern-plate.png', 'brand-modern-plate.png'],
   ['/logo.png', 'logo.png'],
   ['/logo.jpg', 'logo.jpg'],
   ['/logo-header.png', 'logo-header.png'],
