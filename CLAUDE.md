@@ -8,7 +8,7 @@ Finish the websites and collect inquiries. Business/entity setup, payment accoun
 
 The September 2026 homepage has choose/find, buy, sell, evaluate and general inquiry paths. Current working scopes live in the displayed `intake.js` package descriptions and homepage FAQs:
 
-- Choosing consultation: $49 for the first five clients; 45–60 minutes, three model/year/trim recommendations and one follow-up.
+- Choosing consultation: introductory $49; 45–60 minutes, three model/year/trim recommendations and one follow-up.
 - Used-car search: $500 for an agreed 30-day search; at least three qualifying actual cars unless chosen sooner; seller confirmation and available-record review. Extension/refund if the agreed search cannot be delivered; physical inspection separate.
 - Purchase assistance: introductory $750; typical new-car offer comparison included. No approved expiration or claimed regular-price discount.
 - Complete local used-car purchase: $1,000, $500 to start/$500 on purchase, including one inspection at Certified Auto Repair in SLO. Seller permission/scheduling needed; transport excluded; extra inspections approved separately. Failed inspection alone does not trigger final payment.

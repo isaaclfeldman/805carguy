@@ -19,7 +19,7 @@
       title: 'Talk with Isaac.', price: 'Scope agreed first', caption: 'General inquiry · no commitment'
     },
     choose: {
-      title: 'Figure out what fits.', price: '$49', caption: 'First five consultation clients',
+      title: 'Figure out what fits.', price: '$49', caption: 'Introductory consultation',
       intro: 'Start with your life, your budget, and what you enjoy about driving.',
       includes: ['A 45–60 minute conversation with Isaac.', 'Three recommendations, including suggested years and trims, the tradeoffs, and what to avoid.', 'One follow-up after you consider the options or take test drives.'],
       boundary: 'This is advice about which car to buy. Searching for individual cars and handling a purchase are separate services.',
