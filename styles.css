@@ -15,3 +15,8 @@ dialog{border:1px solid var(--rule);border-radius:12px;padding:0;width:min(620px
 @media(max-width:360px){.site-header{padding-inline:16px;gap:12px}}
 
 .site-header nav{flex-shrink:0}.site-header .button{white-space:nowrap}
+
+/* Offer self-service search alongside the primary personal-help action. */
+.hero-actions{display:flex;flex-wrap:wrap;justify-content:center;gap:12px}
+.hero-actions .button.secondary:hover{background:#e9e1d2;color:var(--navy)}
+@media(max-width:560px){.hero-actions{flex-direction:column;align-items:stretch;width:100%;max-width:340px;margin-inline:auto}}
