@@ -75,7 +75,7 @@
       terms: '$350 upfront, credited once toward the total, with the balance due on sale. The upfront payment covers completed preparation even if the car does not sell. A $10,000 or $20,000 sale has a $1,000 total fee; after the $350 upfront, $650 remains. A $30,000 sale has a $1,500 total fee.'
     },
     evaluate: {
-      title: 'A second opinion before you commit.', price: '$99', caption: 'One car or written deal',
+      title: 'A second opinion before you commit.', price: '$99', caption: 'One used-car listing or written new-car offer',
       intro: 'Get a clear recommendation and the questions worth asking next.',
       includes: ['Review one listing and available records, or one written new-car offer.', 'A short written verdict with the relevant concerns and next steps.', 'One follow-up for seller answers or a revised offer.'],
       boundary: 'This is a remote review, not a physical inspection. It cannot establish mechanical condition. I will confirm that I can meet your deadline before accepting the job.',
@@ -206,6 +206,9 @@
     offer.includes.forEach(line => includes.append(node('li', line)));
     content.append(includes, node('p', offer.boundary, 'result-boundary'), node('p', offer.terms, 'result-terms'));
     content.append(button('Ask about this service →', () => go('timing')));
+    if (answers.package === 'foundBuy') {
+      content.append(button('Compare $1,000 complete local help, with one shop inspection', () => go('local'), 'text-button'));
+    }
     content.append(node('p', 'No payment or commitment to send an inquiry. We’ll confirm what you need before any work begins.', 'input-hint'));
   }
 
@@ -407,18 +410,23 @@
     content.querySelector('#flow-title').focus({ preventScroll: true });
   }
 
+  function startInquiry(step, trigger) {
+    returnFocus = trigger;
+    answers = {};
+    history = [];
+    submitted = false;
+    reference = '805-' + crypto.randomUUID();
+    const packageKey = step === 'searchResult' ? 'search' : step;
+    if (!questions[step] && packages[packageKey]) {
+      answers.package = packageKey;
+      current = 'result';
+    } else current = step === 'all' ? 'start' : step;
+    dialog.showModal();
+    document.body.style.overflow = 'hidden';
+    render();
+  }
   document.querySelectorAll('[data-start]').forEach(trigger => {
-    trigger.addEventListener('click', () => {
-      returnFocus = trigger;
-      answers = {};
-      history = [];
-      submitted = false;
-      reference = '805-' + crypto.randomUUID();
-      current = trigger.dataset.start === 'all' ? 'start' : trigger.dataset.start;
-      dialog.showModal();
-      document.body.style.overflow = 'hidden';
-      render();
-    });
+    trigger.addEventListener('click', () => startInquiry(trigger.dataset.start, trigger));
   });
   document.querySelector('#close-flow').addEventListener('click', () => dialog.close());
   dialog.addEventListener('cancel', event => { if (sending) event.preventDefault(); });
@@ -426,10 +434,19 @@
     document.body.style.overflow = '';
     returnFocus?.focus({ preventScroll: true });
   });
+  const inquiryLinks = new Map([
+    ['#inquire', 'all'],
+    ['#inquire-choose', 'choose'],
+    ['#inquire-evaluate', 'evaluate'],
+    ['#inquire-search', 'searchResult'],
+    ['#inquire-buy', 'buy'],
+    ['#inquire-complete', 'local'],
+    ['#inquire-assisted-sale', 'assistedSell'],
+    ['#inquire-full-sale', 'fullSell'],
+  ]);
   function openInquiryLink() {
-    if (window.location.hash === '#inquire' && !dialog.open) {
-      document.querySelector('[data-start="all"]').click();
-    }
+    const step = inquiryLinks.get(window.location.hash);
+    if (step && !dialog.open) startInquiry(step, document.querySelector('[data-start="all"]'));
   }
   window.addEventListener('hashchange', openInquiryLink);
   openInquiryLink();

@@ -39,6 +39,8 @@ const server = app.listen(0, '127.0.0.1');
       '/styles.css', '/intake.js', '/inquiry-delivery.js', '/assets/isaac.jpg',
       '/isaac.jpg', '/logo.png', '/logo.jpg', '/logo-header.png', '/og.png',
       '/apple-touch-icon.png', '/terms?ref=old-link',
+      '/assets/plate-240.png', '/assets/plate-480.png', '/assets/plate-720.png',
+      '/assets/plate-icon-96.png', '/assets/plate-touch-180.png',
     ];
     for (const route of publicRoutes) await check(route, 200);
     for (const [route, target] of [
@@ -99,6 +101,9 @@ const server = app.listen(0, '127.0.0.1');
       assert.ok(html.includes(`rel="canonical" href="${url}"`));
       assert.doesNotMatch(html, /<meta[^>]+name="robots"[^>]+noindex/i);
       assert.equal((html.match(/<h1\b/g) || []).length, 1);
+      assert.match(html, /rel="icon"[^>]*sizes="96x96"[^>]*href="\/assets\/plate-icon-96\.png"/);
+      assert.match(html, /src="\/assets\/plate-240\.png"[^>]+srcset="\/assets\/plate-480\.png 2x, \/assets\/plate-720\.png 3x"/);
+      assert.doesNotMatch(html, /<img[^>]+src="\/brand-sunset-plate\.png"/);
       for (const match of html.matchAll(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/g)) {
         const data = JSON.parse(match[1]);
         assert.equal(data['@context'], 'https://schema.org');
@@ -108,6 +113,23 @@ const server = app.listen(0, '127.0.0.1');
     assert.match(homepage, /href="\/services"/);
     const services = await (await check('/services', 200)).text();
     assert.match(services, /one full inspection at Certified Auto Repair[^<]+included in the \$1,000 total/);
+    // The published service links must all map to a real intake entry point.
+    const intake = fs.readFileSync(path.join(__dirname, '../intake.js'), 'utf8');
+    const serviceEntries = [...services.matchAll(/href="\/(#inquire-[a-z-]+)"/g)].map(match => match[1]);
+    assert.equal(serviceEntries.length, 7);
+    for (const fragment of serviceEntries) assert.ok(intake.includes(`['${fragment}',`), fragment);
+    // Confirm real PNG dimensions and a bounded transfer budget, not just filenames.
+    for (const [file, width, height, maxBytes] of [
+      ['plate-240.png', 240, 120, 50000], ['plate-480.png', 480, 240, 160000],
+      ['plate-720.png', 720, 360, 330000], ['plate-icon-96.png', 96, 96, 15000],
+      ['plate-touch-180.png', 180, 180, 35000],
+    ]) {
+      const png = fs.readFileSync(path.join(__dirname, '../assets', file));
+      assert.equal(png.subarray(1, 4).toString(), 'PNG', file);
+      assert.equal(png.readUInt32BE(16), width, file);
+      assert.equal(png.readUInt32BE(20), height, file);
+      assert.ok(png.length < maxBytes, `${file} is ${png.length} bytes`);
+    }
     for (const match of services.matchAll(/href="(\/[^"#?]*)(?:[?#][^"]*)?"/g)) {
       await check(match[1] || '/', 200);
     }
