@@ -1,10 +1,10 @@
 'use strict';
 
 (function (root, factory) {
-  const api = factory();
+  const api = factory(typeof module === 'object' && module.exports ? require('./inquiry-attribution') : root.InquiryAttribution);
   if (typeof module === 'object' && module.exports) module.exports = api;
   else root.InquiryDelivery = api;
-})(typeof globalThis === 'object' ? globalThis : this, function () {
+})(typeof globalThis === 'object' ? globalThis : this, function (attribution) {
   const endpoint = 'https://formsubmit.co/ajax/3bee3a7c1f40b430ff307881c018db32';
   const productionHosts = new Set(['www.805carguy.com', '805carguy.com']);
 
@@ -18,6 +18,7 @@
     const reply = (contact.reply || '').trim();
     if (!(contact.name || '').trim() || !reply || !offer || !reference) throw new Error('Incomplete inquiry');
     if (!['Email me', 'Text me', 'Call me'].includes(contact.method)) throw new Error('Invalid contact preference');
+    const source = attribution?.sanitize(answers.attribution || {}) || {};
     return {
       _subject: 'New lead from 805carguy.com',
       _template: 'table',
@@ -35,6 +36,13 @@
       review_type: answers.reviewType || '',
       message: contact.context || '',
       location: contact.location || '',
+      vehicle_location: contact.vehicleLocation || '',
+      how_you_found_me: contact.heardAbout || '',
+      landing_page: source.landingPage || '',
+      referring_site: source.referrerSource || '',
+      inquiry_page: source.inquiryPage || '',
+      visit_source: source.source || '',
+      visit_medium: source.medium || '',
       inquiry_only: 'No booking, payment, or service agreement.'
     };
   }

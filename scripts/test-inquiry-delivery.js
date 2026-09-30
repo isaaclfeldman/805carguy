@@ -43,3 +43,23 @@ test('request uses existing alias, sends every field, and omits credentials', as
     return {ok:true,json:async()=>({success:'true'})};
   }});
 });
+test('inquiries carry distinct buyer and car locations plus sanitized attribution', () => {
+  const data = buildPayload({...answers, contact: {...answers.contact, vehicleLocation:'San Luis Obispo', heardAbout:'A friend'}, attribution: {
+    landingPage:'/new-car-buying-help', inquiryPage:'/new-car-buying-help',
+    referrerSource:'https://www.google.com/search?q=private-query', source:'google', medium:'organic',
+    campaign:'customer@example.com'
+  }},offer,'805-source');
+  assert.equal(data.location,'93401');
+  assert.equal(data.vehicle_location,'San Luis Obispo');
+  assert.equal(data.how_you_found_me,'A friend');
+  assert.equal(data.landing_page,'/new-car-buying-help');
+  assert.equal(data.inquiry_page,'/new-car-buying-help');
+  assert.equal(data.referring_site,'https://www.google.com');
+  assert.equal(data.visit_source,'google');
+  assert.equal(data.visit_medium,'organic');
+  assert.doesNotMatch(JSON.stringify(data), /private-query|campaign/);
+});
+test('unknown source paths and personal campaign values never enter the email payload', () => {
+  const data = buildPayload({...answers, attribution: {landingPage:'/private/customer@example.com', inquiryPage:'/unknown', source:'customer@example.com', medium:'private', referrerSource:'javascript:alert(1)'}},offer,'805-source');
+  for (const key of ['landing_page','inquiry_page','visit_source','visit_medium','referring_site']) assert.equal(data[key], '');
+});

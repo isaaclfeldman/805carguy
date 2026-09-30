@@ -36,6 +36,7 @@ const server = app.listen(0, '127.0.0.1');
   try {
     const publicRoutes = [
       '/', '/about', '/services', '/terms', '/privacy', '/robots.txt', '/sitemap.xml',
+      '/new-car-buying-help', '/used-car-evaluation', '/inquiry-attribution.js',
       '/styles.css', '/intake.js', '/inquiry-delivery.js', '/assets/isaac.jpg',
       '/isaac.jpg', '/logo.png', '/logo.jpg', '/logo-header.png', '/og.png',
       '/apple-touch-icon.png', '/terms?ref=old-link',
@@ -46,6 +47,8 @@ const server = app.listen(0, '127.0.0.1');
     for (const [route, target] of [
       ['/index.html', '/'], ['/about.html', '/about'], ['/about/', '/about'],
       ['/services.html', '/services'], ['/services/', '/services'],
+      ['/new-car-buying-help.html', '/new-car-buying-help'], ['/new-car-buying-help/', '/new-car-buying-help'],
+      ['/used-car-evaluation.html', '/used-car-evaluation'], ['/used-car-evaluation/', '/used-car-evaluation'],
       ['/terms.html', '/terms'], ['/terms/', '/terms'],
       ['/privacy.html', '/privacy'], ['/privacy/', '/privacy'],
       ['/services.html?ref=old-link', '/services?ref=old-link'],
@@ -92,7 +95,7 @@ const server = app.listen(0, '127.0.0.1');
     assert.match(sitemap.headers.get('content-type'), /xml/);
     const locations = [...(await sitemap.text()).matchAll(/<loc>(.*?)<\/loc>/g)].map(match => match[1]);
     assert.equal(new Set(locations).size, locations.length);
-    assert.deepEqual(locations.map(url => new URL(url).pathname).sort(), ['/', '/about', '/privacy', '/services', '/terms']);
+    assert.deepEqual(locations.map(url => new URL(url).pathname).sort(), ['/', '/about', '/new-car-buying-help', '/privacy', '/services', '/terms', '/used-car-evaluation']);
     for (const url of locations) {
       const page = await check(new URL(url).pathname, 200, { headers: productionHeaders });
       assert.equal(page.headers.get('x-robots-tag'), null);
@@ -115,9 +118,18 @@ const server = app.listen(0, '127.0.0.1');
     assert.match(services, /one full inspection at Certified Auto Repair[^<]+included in the \$1,000 total/);
     // The published service links must all map to a real intake entry point.
     const intake = fs.readFileSync(path.join(__dirname, '../intake.js'), 'utf8');
-    const serviceEntries = [...services.matchAll(/href="\/(#inquire-[a-z-]+)"/g)].map(match => match[1]);
-    assert.equal(serviceEntries.length, 7);
+    const serviceEntries = [...services.matchAll(/href="\/(?:\?[^"#]*)?(#inquire-[a-z-]+)"/g)].map(match => match[1]);
+    assert.ok(serviceEntries.length >= 7);
     for (const fragment of serviceEntries) assert.ok(intake.includes(`['${fragment}',`), fragment);
+    for (const route of ['/new-car-buying-help', '/used-car-evaluation']) {
+      const html = await (await check(route, 200)).text();
+      for (const link of html.matchAll(/href="(\/[^\"]*)"/g)) {
+        const url = new URL(link[1], origin);
+        await check(url.pathname + url.search, 200);
+        if (url.hash.startsWith('#inquire')) assert.ok(intake.includes(`['${url.hash}',`), `${route} -> ${url.hash}`);
+      }
+      assert.match(html, /inquiry-attribution\.js/);
+    }
     // Confirm real PNG dimensions and a bounded transfer budget, not just filenames.
     for (const [file, width, height, maxBytes] of [
       ['plate-240.png', 240, 120, 50000], ['plate-480.png', 480, 240, 160000],

@@ -18,6 +18,13 @@
     inquiry: {
       title: 'Talk with Isaac.', price: 'Scope agreed first', caption: 'General inquiry · no commitment'
     },
+    localAssessment: {
+      title: 'Check the car and the deal.', price: 'One agreed quote', caption: 'Complete local car-and-deal assessment',
+      intro: 'For a car near San Luis Obispo, whether you live nearby or are considering it from farther away.',
+      includes: ['Agree on the assessment the car needs and what can be checked.', 'Discuss seller access, a road test, a shop visit, or pickup by arrangement.', 'A written assessment of the agreed checks, available records, the deal, material unknowns, and what I recommend next.'],
+      boundary: 'We confirm the vehicle location, seller permission, inspection arrangements, timing, and one total quote before work starts. Pickup and return are by arrangement; no fixed coverage area or availability is promised. I co-own Certified Auto Repair. You do not need to buy a remote review first.',
+      terms: 'The quote covers the agreed assessment. Finding other cars, negotiating a purchase, repairs, and additional visits are separate unless expressly included. No booking or payment is made by sending this inquiry.'
+    },
     choose: {
       title: 'Figure out what fits.', price: '$49', caption: 'Introductory consultation',
       intro: 'Start with your life, your budget, and what you enjoy about driving.',
@@ -85,10 +92,9 @@
 
   const questions = {
     start: { title: 'Where are you starting?', options: [
-      ['Choose or find a car', 'I need to figure out what fits, or find the right one.', 'search'],
-      ['Get help buying', 'I want help with the deal and the purchase.', 'buy'],
-      ['Sell my car', 'I want help preparing, listing, or managing the sale.', 'sell'],
-      ['Check a car or deal', 'I want a second opinion before committing.', 'evaluate']
+      ['Check a car or deal', 'A written offer, remote second opinion, or local assessment.', 'evaluate'],
+      ['Help me buy', 'New or used: choosing, finding, or handling the purchase.', 'buy'],
+      ['Help me sell', 'Preparing a listing or getting help with the sale.', 'sell']
     ]},
     search: { title: 'Do you know what car you want?', options: [
       ['Not yet—help me choose', 'Start with advice tailored to my life and budget.', 'choose'],
@@ -103,14 +109,14 @@
       ['Find the candidates', 'A verified shortlist; I handle the purchase.', 'searchResult'],
       ['Help through the purchase', 'Choosing, searching, checking, and negotiating.', 'local']
     ]},
-    buy: { title: 'Are you buying new or used?', options: [
-      ['New', 'Help comparing offers and handling the purchase.', 'newBuy'],
-      ['Used', 'The individual car and its condition matter.', 'usedFound'],
-      ['I haven’t decided', 'Start by figuring out what fits.', 'choose']
+    buy: { title: 'Where are you with buying?', options: [
+      ['Help me choose a car', 'I need advice on the right model, new or used.', 'choose'],
+      ['I’m buying a new car', 'Help comparing dealer offers and handling the purchase.', 'newBuy'],
+      ['I’m buying a used car', 'Find a candidate or get help with a car I’ve found.', 'usedFound']
     ]},
     usedFound: { title: 'Have you found a car?', options: [
       ['Yes, I have a candidate', 'Help me check the deal and handle the purchase.', 'foundBuy'],
-      ['No, I need help finding one', 'Include searching as well as purchase help.', 'local']
+      ['No, I need help finding one', 'A screened shortlist or help through the purchase.', 'usedHelp']
     ]},
     local: { title: 'Could the car come to San Luis Obispo?', lede: 'The complete local package includes one inspection at Certified Auto Repair. Seller permission and scheduling still need to be confirmed.', options: [
       ['Yes, that should work', 'Plan around an inspection at the SLO shop.', 'complete'],
@@ -122,6 +128,7 @@
       ['Manage the sale with me', 'Handle buyer contact, showings, and negotiation too.', 'fullSell']
     ]},
     evaluate: { title: 'What would you like checked?', options: [
+      ['A local car and the deal', 'Discuss an in-person assessment near San Luis Obispo, with one agreed quote.', 'localAssessment'],
       ['A used-car listing', 'Review the listing and any available records.', 'usedReview'],
       ['A written new-car offer', 'Review the price and the terms before I commit.', 'newReview']
     ]}
@@ -179,6 +186,7 @@
     }
     const key = next === 'searchResult' ? 'search' : next === 'evaluateResult' ? 'evaluate' : next;
     if (!questions[next] && packages[key]) {
+      if (key !== 'evaluate') delete answers.reviewType;
       answers.package = key;
       go('result');
     } else go(next);
@@ -251,7 +259,9 @@
     const inputs = {};
     const selling = ['assistedSell', 'fullSell'].includes(answers.package);
     inputs.context = field(form, { id: 'context', label: selling ? 'What are you selling? (optional)' : answers.package === 'evaluate' ? 'The listing, offer, or question (optional)' : 'What should I know? (optional)', type: 'textarea', value: saved.context, hint: selling ? 'Year, make, model, mileage, condition, and anything else useful.' : 'Your priorities, budget, a listing link, or any deadline. “Not sure yet” is fine.' });
-    inputs.location = field(form, { id: 'location', label: 'City or ZIP code (optional)', value: saved.location, autocomplete: 'address-level2' });
+    inputs.location = field(form, { id: 'location', label: 'Your city or ZIP code (optional)', value: saved.location, autocomplete: 'address-level2' });
+    inputs.vehicleLocation = field(form, { id: 'vehicle-location', label: 'Where is the car? (optional)', value: saved.vehicleLocation, hint: 'City or ZIP code, if known. You can live elsewhere and ask about a car near San Luis Obispo.' });
+    inputs.heardAbout = field(form, { id: 'heard-about', label: 'How did you hear about me? (optional)', value: saved.heardAbout, hint: 'A search, a person, VINhound, social media, or somewhere else.' });
     inputs.name = field(form, { id: 'name', label: 'Your name', value: saved.name, required: true, autocomplete: 'name' });
     const methodLabel = node('label', 'How should I reach you?', 'flow-label');
     methodLabel.htmlFor = 'contact-method';
@@ -317,7 +327,9 @@
       ['Timing', answers.timing],
       ['Review type', answers.reviewType],
       ['Details', answers.contact.context],
-      ['Location', answers.contact.location],
+      ['Your location', answers.contact.location],
+      ['Vehicle location', answers.contact.vehicleLocation],
+      ['How you found me', answers.contact.heardAbout],
       ['Name', answers.contact.name],
       ['Preferred reply', answers.contact.method],
       [answers.contact.method === 'Email me' ? 'Email' : 'Phone', answers.contact.reply]
@@ -328,7 +340,7 @@
       list.append(li);
     });
     content.append(list);
-    const privacy = node('p', 'Sending shares these details with Isaac through FormSubmit so he can respond to this inquiry. ', 'input-hint');
+    const privacy = node('p', 'Sending shares these details and basic visit-source information with Isaac through FormSubmit so he can respond and understand how you found the service. ', 'input-hint');
     const privacyLink = node('a', 'Inquiry privacy');
     privacyLink.href = '/privacy';
     privacyLink.target = '_blank';
@@ -350,7 +362,7 @@
       send.textContent = 'Sending…';
       status.textContent = 'Sending your inquiry. Please keep this page open.';
       try {
-        const payload = delivery.buildPayload(answers, offer, reference);
+        const payload = delivery.buildPayload({ ...answers, attribution: window.InquiryAttribution?.get() }, offer, reference);
         await delivery.submit(payload);
         submitted = true;
         current = 'sent';
@@ -416,11 +428,20 @@
     history = [];
     submitted = false;
     reference = '805-' + crypto.randomUUID();
-    const packageKey = step === 'searchResult' ? 'search' : step;
-    if (!questions[step] && packages[packageKey]) {
-      answers.package = packageKey;
+    if (step === 'newReview' || step === 'usedReview') {
+      answers.reviewType = step === 'newReview' ? 'Written new-car offer' : 'Used-car listing';
+      answers.package = 'evaluate';
       current = 'result';
-    } else current = step === 'all' ? 'start' : step;
+    } else if (step === 'inquiry') {
+      answers.package = 'inquiry';
+      current = 'timing';
+    } else {
+      const packageKey = step === 'searchResult' ? 'search' : step;
+      if (!questions[step] && packages[packageKey]) {
+        answers.package = packageKey;
+        current = 'result';
+      } else current = step === 'all' ? 'start' : step;
+    }
     dialog.showModal();
     document.body.style.overflow = 'hidden';
     render();
@@ -436,6 +457,11 @@
   });
   const inquiryLinks = new Map([
     ['#inquire', 'all'],
+    ['#inquire-general', 'inquiry'],
+    ['#inquire-local-check', 'localAssessment'],
+    ['#inquire-new-buy', 'newBuy'],
+    ['#inquire-new-review', 'newReview'],
+    ['#inquire-used-review', 'usedReview'],
     ['#inquire-choose', 'choose'],
     ['#inquire-evaluate', 'evaluate'],
     ['#inquire-search', 'searchResult'],
