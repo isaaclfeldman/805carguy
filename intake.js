@@ -21,51 +21,16 @@
     localAssessment: {
       title: 'Check the car and the deal.', price: 'One agreed quote', caption: 'Complete local car-and-deal assessment',
       intro: 'For a car near San Luis Obispo, whether you live nearby or are considering it from farther away.',
-      includes: ['Agree on the assessment the car needs and what can be checked.', 'Discuss seller access, a road test, a shop visit, or pickup by arrangement.', 'A written assessment of the agreed checks, available records, the deal, material unknowns, and what I recommend next.'],
-      boundary: 'We confirm the vehicle location, seller permission, inspection arrangements, timing, and one total quote before work starts. Pickup and return are by arrangement; no fixed coverage area or availability is promised. I co-own Certified Auto Repair. You do not need to buy a remote review first.',
+      includes: ['Agree on the assessment the car needs and what can be checked.', 'Discuss seeing and test-driving the car and coordinating its shop inspection.', 'A written assessment of the agreed checks, available records, the deal, material unknowns, and what I recommend next.'],
+      boundary: 'We confirm the vehicle location, seller permission, inspection arrangements, travel, timing, and one total quote before work starts. Pickup and delivery are not included; no fixed coverage area or availability is promised. I co-own Certified Auto Repair. You do not need to buy a remote review first.',
       terms: 'The quote covers the agreed assessment. Finding other cars, negotiating a purchase, repairs, and additional visits are separate unless expressly included. No booking or payment is made by sending this inquiry.'
-    },
-    choose: {
-      title: 'Figure out what fits.', price: '$49', caption: 'Introductory consultation',
-      intro: 'Start with your life, your budget, and what you enjoy about driving.',
-      includes: ['A 45–60 minute conversation with Isaac.', 'At least three tailored recommendations, including suggested years and trims, the tradeoffs, and what to avoid.', 'One follow-up after you consider the options or take test drives.'],
-      boundary: 'This is advice about which car to buy. Searching for individual cars and handling a purchase are separate services.',
-      terms: 'The $49 you pay counts once toward an applicable larger service for this same purchase.'
-    },
-    search: {
-      title: 'Find the right used car.', price: '$500', caption: 'One agreed 30-day search',
-      intro: 'Actual cars screened for your requirements, with the seller legwork already done.',
-      includes: ['Clarify what fits, including model choice if needed.', 'At least three qualifying actual cars, unless you choose one sooner.', 'Contact sellers to confirm availability, specifications, and price; review available history and maintenance records.', 'A recommendation explaining which cars are worth pursuing and why.'],
-      boundary: 'We agree on the budget and must-haves first. You handle the purchase; physical inspection and purchase negotiation are separate. If I cannot deliver the agreed search, we agree on an extension or refund under our written agreement.',
-      terms: 'Your payment counts once toward complete purchase help for this same search. For example, $500 already paid for search leaves $500 toward the $1,000 complete local service. We confirm the credit and remaining payments in writing before added work starts.'
-    },
-    newBuy: {
-      title: 'Buy your new car with help.', price: '$750', caption: 'Introductory purchase assistance',
-      intro: 'Help with the offers, the details, and the experience of buying.',
-      includes: ['Confirm your requirements and compare availability and dealer offers.', 'Negotiate and review the vehicle price, trade-in, add-ons, and financing or lease terms.', 'Coordinate the purchase—or recommend walking away when the deal does not make sense.'],
-      boundary: 'Typical new-car deal shopping is included. A rare specification or unusually difficult search needs a separately agreed scope before any added fee.',
-      terms: 'This covers one purchase. Before work begins, our written agreement confirms the offers and deal revisions included, timeframe, payment timing, and cancellation or refund terms. Applicable fees already paid for this purchase count once toward the total.'
-    },
-    foundBuy: {
-      title: 'Help buying the car you found.', price: '$750', caption: 'Introductory purchase assistance',
-      intro: 'You have a candidate. Get help deciding whether—and how—to move forward.',
-      includes: ['Review the listing, available vehicle records, and seller answers.', 'Negotiate and review the written deal and relevant purchase terms.', 'Coordinate the next steps through purchase—or recommend walking away.'],
-      boundary: 'Finding other used cars and a physical inspection are separate. Certified Auto Repair’s standalone full used-car inspection is $199—the shop’s price, not an 805CarGuy fee. We agree on any inspection or outside cost before booking.',
-      terms: 'This covers one purchase. Before work begins, our written agreement confirms the candidates and deal revisions included, timeframe, payment timing, and cancellation or refund terms. Applicable fees already paid for this purchase count once toward the total.'
     },
     complete: {
       title: 'From choosing to the keys.', price: '$1,000', caption: 'Complete local used-car purchase',
       intro: 'One service for choosing, finding, checking, and buying your car.',
-      includes: ['Help choosing, plus at least three qualifying, seller-confirmed candidates in the agreed 30-day search, unless you choose sooner.', 'Screening, negotiation, and purchase coordination.', 'One full used-car inspection at Certified Auto Repair in San Luis Obispo, included in the $1,000 price. There is no extra $199 inspection charge.'],
+      includes: ['Help choosing, plus at least three qualifying, seller-confirmed candidates in the agreed 30-day search, unless you choose sooner.', 'Screening, negotiation, and purchase coordination; any agreed personal visit or test drive depends on seller permission, access, travel and scheduling.', 'One full used-car inspection at Certified Auto Repair in San Luis Obispo, included in the $1,000 price. There is no extra $199 inspection charge.'],
       boundary: 'The car must come to the shop, with seller permission and an available appointment. Transport is not included. Any additional inspections are separately priced and approved. If I cannot deliver the agreed search, we agree on an extension or refund under our written agreement.',
       terms: '$500 to start and $500 when you purchase, less applicable prior payments credited once. This covers one purchase. Our written agreement confirms the candidates and deal revisions covered, overall timeframe, cancellation or refund terms, and when the purchase balance is due. Rejecting a car after inspection does not by itself trigger the final payment.'
-    },
-    remote: {
-      title: 'Let’s scope the search together.', price: 'Price agreed first', caption: 'Used-car search and purchase help',
-      intro: 'The help can include finding, screening, negotiating, and coordinating the purchase.',
-      includes: ['Confirm your requirements, location, and the help you want.', 'Agree on a search scope, price, and timeline before starting.', 'Arrange an appropriate inspection with its cost approved in advance.'],
-      boundary: 'The $1,000 local package includes one inspection at Certified Auto Repair in San Luis Obispo. If the car cannot come to that shop—or you are not sure yet—we will confirm a suitable scope and any outside costs first.',
-      terms: 'Applicable prior payments for this same purchase are credited once toward the agreed service.'
     },
     assistedSell: {
       title: 'A stronger listing. Less legwork.', price: '$350', caption: 'One car · 30 days · paid upfront',
@@ -81,47 +46,34 @@
       boundary: 'The car stays with you by default; drop-off is by arrangement when space is available. Detailing, repairs, smog, paid advertising, and transport are separately approved costs. For a lower-value car, the $350 assisted sale may make more sense if you can handle showings, negotiation, and closing.',
       terms: '$350 upfront, credited once toward the total, with the balance due on sale. The upfront payment covers completed preparation even if the car does not sell. A $10,000 or $20,000 sale has a $1,000 total fee; after the $350 upfront, $650 remains. A $30,000 sale has a $1,500 total fee.'
     },
-    evaluate: {
-      title: 'A second opinion before you commit.', price: '$99', caption: 'One used-car listing or written new-car offer',
-      intro: 'Get a clear recommendation and the questions worth asking next.',
-      includes: ['Review one listing and available records, or one written new-car offer.', 'A short written verdict with the relevant concerns and next steps.', 'One follow-up for seller answers or a revised offer.'],
-      boundary: 'This is a remote review, not a physical inspection. It cannot establish mechanical condition. I will confirm that I can meet your deadline before accepting the job.',
-      terms: 'This review is included when it is part of Search or Buy. If you start here, your $99 counts once toward an applicable larger service for this same purchase.'
-    }
+  };
+
+  const remoteEntries = {
+    choose: ['Help choosing a car', 'https://www.yourotto.com/expert-help#inquire-choose'],
+    search: ['A nationwide used-car search', 'https://www.yourotto.com/expert-help#inquire-search'],
+    searchResult: ['A nationwide used-car search', 'https://www.yourotto.com/expert-help#inquire-search'],
+    newBuy: ['Nationwide remote car-buying guidance', 'https://www.yourotto.com/services'],
+    newReview: ['A written second opinion', 'https://www.yourotto.com/expert-help#inquire-evaluate'],
+    usedReview: ['A written second opinion', 'https://www.yourotto.com/expert-help#inquire-evaluate'],
+    evaluateResult: ['A written second opinion', 'https://www.yourotto.com/expert-help#inquire-evaluate'],
+    remote: ['Nationwide remote guidance and search', 'https://www.yourotto.com/services']
   };
 
   const questions = {
-    start: { title: 'Where are you starting?', options: [
-      ['Check a car or deal', 'A written offer, remote second opinion, or local assessment.', 'evaluate'],
-      ['Help me buy', 'New or used: choosing, finding, or handling the purchase.', 'buy'],
-      ['Help me sell', 'Preparing a listing or getting help with the sale.', 'sell']
+    start: { title: 'What local help do you need?', lede: '805CarGuy handles hands-on work near San Luis Obispo. Nationwide remote guidance and search are with OttO.', options: [
+      ['Check a local car', 'Discuss seeing the car, a test drive and its shop inspection.', 'localAssessment'],
+      ['Complete local buying help', '$1,000 used-car service, including one shop inspection.', 'local'],
+      ['Help me sell', 'Preparing a listing or getting help with the local sale.', 'sell'],
+      ['I need remote help', 'Explore nationwide guidance and search with OttO.', 'remote']
     ]},
-    search: { title: 'Do you know what car you want?', options: [
-      ['Not yet—help me choose', 'Start with advice tailored to my life and budget.', 'choose'],
-      ['Yes—help me find one', 'I have a model or a clear set of requirements.', 'searchType']
+    buy: { title: 'Where is the help needed?', options: [
+      ['Complete local used-car help', 'Choosing through purchase, with one SLO shop inspection.', 'local'],
+      ['Remote guidance or search', 'Continue with OttO’s nationwide services.', 'remote']
     ]},
-    searchType: { title: 'Are you shopping new or used?', options: [
-      ['Used', 'Find and compare individual cars.', 'usedHelp'],
-      ['New', 'Compare availability, offers, and the buying experience.', 'newBuy'],
-      ['I’m open to either', 'Help me decide which makes more sense.', 'choose']
-    ]},
-    usedHelp: { title: 'How much help would you like?', options: [
-      ['Find the candidates', 'A verified shortlist; I handle the purchase.', 'searchResult'],
-      ['Help through the purchase', 'Choosing, searching, checking, and negotiating.', 'local']
-    ]},
-    buy: { title: 'Where are you with buying?', options: [
-      ['Help me choose a car', 'I need advice on the right model, new or used.', 'choose'],
-      ['I’m buying a new car', 'Help comparing dealer offers and handling the purchase.', 'newBuy'],
-      ['I’m buying a used car', 'Find a candidate or get help with a car I’ve found.', 'usedFound']
-    ]},
-    usedFound: { title: 'Have you found a car?', options: [
-      ['Yes, I have a candidate', 'Help me check the deal and handle the purchase.', 'foundBuy'],
-      ['No, I need help finding one', 'A screened shortlist or help through the purchase.', 'usedHelp']
-    ]},
-    local: { title: 'Could the car come to San Luis Obispo?', lede: 'The complete local package includes one inspection at Certified Auto Repair. Seller permission and scheduling still need to be confirmed.', options: [
+    local: { title: 'Could the car come to San Luis Obispo?', lede: 'The $1,000 complete local package includes one inspection at Certified Auto Repair. Seller permission, access, travel and scheduling still need to be confirmed. Transport is not included.', options: [
       ['Yes, that should work', 'Plan around an inspection at the SLO shop.', 'complete'],
-      ['No, it would need another shop', 'Agree on the scope and outside inspection costs first.', 'remote'],
-      ['Not sure yet', 'Confirm the location and arrangements together.', 'remote']
+      ['No, the car is elsewhere', 'Explore remote guidance through OttO.', 'remote'],
+      ['Not sure yet', 'Ask about the location and local arrangements first.', 'inquiry']
     ]},
     sell: { title: 'How much of the sale should I handle?', options: [
       ['Get it listed and screen buyers', 'I’ll handle the showings, negotiation, and closing.', 'assistedSell'],
@@ -129,8 +81,7 @@
     ]},
     evaluate: { title: 'What would you like checked?', options: [
       ['A local car and the deal', 'Discuss an in-person assessment near San Luis Obispo, with one agreed quote.', 'localAssessment'],
-      ['A used-car listing', 'Review the listing and any available records.', 'usedReview'],
-      ['A written new-car offer', 'Review the price and the terms before I commit.', 'newReview']
+      ['Listings or written offers remotely', 'Ask OttO about a written second opinion.', 'evaluateResult']
     ]}
   };
 
@@ -180,11 +131,12 @@
       go('timing');
       return;
     }
-    if (next === 'usedReview' || next === 'newReview') {
-      answers.reviewType = next === 'usedReview' ? 'Used-car listing' : 'Written new-car offer';
-      next = 'evaluateResult';
+    if (remoteEntries[next]) {
+      answers.remoteEntry = next;
+      go('remoteHandoff');
+      return;
     }
-    const key = next === 'searchResult' ? 'search' : next === 'evaluateResult' ? 'evaluate' : next;
+    const key = next;
     if (!questions[next] && packages[key]) {
       if (key !== 'evaluate') delete answers.reviewType;
       answers.package = key;
@@ -214,10 +166,18 @@
     offer.includes.forEach(line => includes.append(node('li', line)));
     content.append(includes, node('p', offer.boundary, 'result-boundary'), node('p', offer.terms, 'result-terms'));
     content.append(button('Ask about this service →', () => go('timing')));
-    if (answers.package === 'foundBuy') {
-      content.append(button('Compare $1,000 complete local help, with one shop inspection', () => go('local'), 'text-button'));
-    }
     content.append(node('p', 'No payment or commitment to send an inquiry. We’ll confirm what you need before any work begins.', 'input-hint'));
+  }
+
+  function renderRemoteHandoff() {
+    const [label, url] = remoteEntries[answers.remoteEntry] || remoteEntries.remote;
+    heading('Nationwide help is with OttO.', label + ' from the 805CarGuy team.');
+    content.append(node('p', '805CarGuy is for local hands-on work. OttO handles remote guidance and search, with the scope and price agreed before work starts.', 'flow-lede'));
+    const link = node('a', 'Continue to OttO →', 'button');
+    link.href = url;
+    content.append(link);
+    content.append(node('p', 'This opens OttO. No inquiry details are sent or transferred by this link.', 'input-hint'));
+    content.append(button('Ask about local arrangements instead', () => pick('Local arrangements inquiry', 'inquiry'), 'text-button'));
   }
 
   function renderTiming() {
@@ -261,7 +221,7 @@
     inputs.context = field(form, { id: 'context', label: selling ? 'What are you selling? (optional)' : answers.package === 'evaluate' ? 'The listing, offer, or question (optional)' : 'What should I know? (optional)', type: 'textarea', value: saved.context, hint: selling ? 'Year, make, model, mileage, condition, and anything else useful.' : 'Your priorities, budget, a listing link, or any deadline. “Not sure yet” is fine.' });
     inputs.location = field(form, { id: 'location', label: 'Your city or ZIP code (optional)', value: saved.location, autocomplete: 'address-level2' });
     inputs.vehicleLocation = field(form, { id: 'vehicle-location', label: 'Where is the car? (optional)', value: saved.vehicleLocation, hint: 'City or ZIP code, if known. You can live elsewhere and ask about a car near San Luis Obispo.' });
-    inputs.heardAbout = field(form, { id: 'heard-about', label: 'How did you hear about me? (optional)', value: saved.heardAbout, hint: 'A search, a person, VINhound, social media, or somewhere else.' });
+    inputs.heardAbout = field(form, { id: 'heard-about', label: 'How did you hear about me? (optional)', value: saved.heardAbout, hint: 'A search, a person, OttO, social media, or somewhere else.' });
     inputs.name = field(form, { id: 'name', label: 'Your name', value: saved.name, required: true, autocomplete: 'name' });
     const methodLabel = node('label', 'How should I reach you?', 'flow-label');
     methodLabel.htmlFor = 'contact-method';
@@ -408,7 +368,8 @@
 
   function render() {
     content.replaceChildren();
-    if (current === 'result') renderResult();
+    if (current === 'remoteHandoff') renderRemoteHandoff();
+    else if (current === 'result') renderResult();
     else if (current === 'timing') renderTiming();
     else if (current === 'details') renderDetails();
     else if (current === 'summary') renderSummary();
@@ -428,15 +389,14 @@
     history = [];
     submitted = false;
     reference = '805-' + crypto.randomUUID();
-    if (step === 'newReview' || step === 'usedReview') {
-      answers.reviewType = step === 'newReview' ? 'Written new-car offer' : 'Used-car listing';
-      answers.package = 'evaluate';
-      current = 'result';
+    if (remoteEntries[step]) {
+      answers.remoteEntry = step;
+      current = 'remoteHandoff';
     } else if (step === 'inquiry') {
       answers.package = 'inquiry';
       current = 'timing';
     } else {
-      const packageKey = step === 'searchResult' ? 'search' : step;
+      const packageKey = step;
       if (!questions[step] && packages[packageKey]) {
         answers.package = packageKey;
         current = 'result';
@@ -460,6 +420,9 @@
     ['#inquire-general', 'inquiry'],
     ['#inquire-local-check', 'localAssessment'],
     ['#inquire-new-buy', 'newBuy'],
+    ['#inquire-found-buy', 'local'],
+    ['#inquire-remote', 'remote'],
+    ['#inquire-second-opinion', 'evaluateResult'],
     ['#inquire-new-review', 'newReview'],
     ['#inquire-used-review', 'usedReview'],
     ['#inquire-choose', 'choose'],

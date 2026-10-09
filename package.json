@@ -5,7 +5,7 @@
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
-    "test": "node --test scripts/test-inquiry-delivery.js scripts/test-inquiry-attribution.js && node scripts/test-public-routes.js"
+    "test": "node --test --test-concurrency=1 scripts/test-inquiry-delivery.js scripts/test-inquiry-attribution.js scripts/test-intake-navigation.js && node scripts/test-public-routes.js"
   },
   "engines": {
     "node": ">=18"
