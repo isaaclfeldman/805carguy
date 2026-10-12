@@ -124,7 +124,20 @@ const server = app.listen(0, '127.0.0.1');
     assert.match(services, /at least three qualifying, seller-confirmed cars unless you choose one sooner/);
     assert.match(services, /extension or refund/);
     assert.match(services, /\$500 to start and \$500 when you purchase/);
-    assert.doesNotMatch(services + homepage + terms + intake, /\$(?:49|249|750)\b/);
+    assert.doesNotMatch(services + homepage + terms + intake, /\$(?:49|750)\b/);
+    const evaluation = await (await check('/used-car-evaluation', 200)).text();
+    for (const [name, html] of Object.entries({ homepage, services, terms, evaluation, intake })) {
+      assert.match(html, /\$249 total/, name);
+      assert.match(html, /(?:one|One) car in (?:SLO city|the city of San Luis Obispo)/, name);
+      assert.match(html, /(?:payment|Payment) (?:is )?due when booking/, name);
+      assert.match(html, /(?:Dealership|dealership) pickup/, name);
+      assert.match(html, /transport to Certified Auto Repair/, name);
+      assert.match(html, /full used-car inspection/, name);
+      assert.match(html, /(?:written|Written) deal analysis/, name);
+      assert.match(html, /(?:Elsewhere|elsewhere) in SLO County or beyond requires a separate quote/, name);
+      assert.match(html, /pickup and transport are included, with no extra travel charge/, name);
+      assert.doesNotMatch(html, /One agreed quote|No \$249 tier is approved|Pickup and delivery are not included/, name);
+    }
     for (const fragment of serviceEntries) assert.ok(intake.includes(`['${fragment}',`), fragment);
     for (const route of ['/new-car-buying-help', '/used-car-evaluation']) {
       const html = await (await check(route, 200)).text();

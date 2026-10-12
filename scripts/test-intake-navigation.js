@@ -107,8 +107,11 @@ test('legacy evaluation allows a local assessment or explicit remote handoff wit
   await ui.click('← Back');
   assert.equal(ui.title, 'What would you like checked?');
   await ui.click('A local car and the deal');
-  assert.match(ui.text, /One agreed quote/);
-  assert.match(ui.text, /Pickup and delivery are not included/);
+  assert.match(ui.text, /\$249 total/);
+  assert.match(ui.text, /One car in SLO city/);
+  assert.match(ui.text, /payment due when booking/);
+  assert.match(ui.text, /pickup and transport are included, with no extra travel charge/);
+  assert.match(ui.text, /Elsewhere in SLO County or beyond requires a separate quote/);
   assert.equal(ui.calls.length, 0);
 });
 
@@ -142,7 +145,7 @@ test('nonlocal car goes to OttO choice; uncertain location remains a local inqui
 
 test('all four local offers retain direct entries and existing selling prices and periods', async () => {
   for (const [hash, title, expected] of [
-    ['#inquire-local-check', 'Check the car and the deal.', /One agreed quote/],
+    ['#inquire-local-check', 'Check the car and the deal.', /\$249 totalOne car in SLO city/],
     ['#inquire-assisted-sale', 'A stronger listing. Less legwork.', /\$350One car · 30 days · paid upfront/],
     ['#inquire-full-sale', 'Hand over the selling details.', /5%Of sale price · \$1,000 minimum · 60 days/]
   ]) {
@@ -177,4 +180,32 @@ test('complete local draft reaches review with its price and details while previ
   assert.equal(send.disabled, true);
   await send.click();
   assert.equal(ui.calls.length, 0);
+});
+
+
+test('assessment scope and booking price remain visible in review for local and out-of-city inquiries', async () => {
+  for (const location of ['San Luis Obispo', 'Paso Robles', 'Not known yet']) {
+    const ui = fixture('#inquire-local-check');
+    await ui.click('Ask about this service');
+    await ui.click('Within a month');
+    await ui.fill('vehicle-location', location);
+    await ui.fill('name', 'Synthetic Preview');
+    await ui.fill('reply', 'sample@example.invalid');
+    await ui.review();
+    assert.equal(ui.title, 'Your inquiry, at a glance.');
+    assert.match(ui.text, /Check the car and the deal. — \$249 total/);
+    assert.match(ui.text, /One car in SLO city/);
+    assert.match(ui.text, /Payment is due when booking/);
+    assert.match(ui.text, /Dealership pickup, a test drive, and transport to Certified Auto Repair/);
+    assert.match(ui.text, /One full used-car inspection/);
+    assert.match(ui.text, /Written deal analysis/);
+    assert.match(ui.text, /\$199 standalone inspection price is not added to the \$249 total/);
+    assert.match(ui.text, /Elsewhere in SLO County or beyond requires a separate quote/);
+    assert.match(ui.text, /Finding other cars, negotiating a purchase, repairs, and additional visits are separate/);
+    assert.ok(ui.text.includes(location));
+    assert.match(ui.text, /does not book the service or take payment/);
+    const send = ui.document.querySelector('#flow-content').querySelectorAll('button').find(button => button.textContent.startsWith('Send my inquiry'));
+    assert.equal(send.disabled, true);
+    assert.equal(ui.calls.length, 0);
+  }
 });

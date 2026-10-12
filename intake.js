@@ -19,11 +19,11 @@
       title: 'Talk with Isaac.', price: 'Scope agreed first', caption: 'General inquiry · no commitment'
     },
     localAssessment: {
-      title: 'Check the car and the deal.', price: 'One agreed quote', caption: 'Complete local car-and-deal assessment',
-      intro: 'For a car near San Luis Obispo, whether you live nearby or are considering it from farther away.',
-      includes: ['Agree on the assessment the car needs and what can be checked.', 'Discuss seeing and test-driving the car and coordinating its shop inspection.', 'A written assessment of the agreed checks, available records, the deal, material unknowns, and what I recommend next.'],
-      boundary: 'We confirm the vehicle location, seller permission, inspection arrangements, travel, timing, and one total quote before work starts. Pickup and delivery are not included; no fixed coverage area or availability is promised. I co-own Certified Auto Repair. You do not need to buy a remote review first.',
-      terms: 'The quote covers the agreed assessment. Finding other cars, negotiating a purchase, repairs, and additional visits are separate unless expressly included. No booking or payment is made by sending this inquiry.'
+      title: 'Check the car and the deal.', price: '$249 total', caption: 'One car in SLO city · payment due when booking · elsewhere in SLO County or beyond: separate quote',
+      intro: 'For one car in the city of San Luis Obispo, whether you live nearby or are buying from farther away.',
+      includes: ['Dealership pickup, a test drive, and transport to Certified Auto Repair in San Luis Obispo.', 'One full used-car inspection at Certified Auto Repair, included in the $249 total.', 'Written deal analysis: the available records, inspection findings, price, material unknowns, and what I recommend next.'],
+      boundary: 'Ordinary SLO-city pickup and transport are included, with no extra travel charge. Elsewhere in SLO County or beyond requires a separate quote. We confirm the car’s location, seller permission, access and scheduling before booking. I co-own Certified Auto Repair; a remote review is not required first.',
+      terms: 'Payment is due when booking. The shop’s $199 standalone inspection price is not added to the $249 total. Finding other cars, negotiating a purchase, repairs, and additional visits are separate unless expressly included. Sending this inquiry does not book the service or take payment.'
     },
     complete: {
       title: 'From choosing to the keys.', price: '$1,000', caption: 'Complete local used-car purchase',
@@ -61,9 +61,9 @@
 
   const questions = {
     start: { title: 'What local help do you need?', lede: '805CarGuy handles hands-on work near San Luis Obispo. Nationwide remote guidance and search are with OttO.', options: [
-      ['Check a local car', 'Discuss seeing the car, a test drive and its shop inspection.', 'localAssessment'],
+      ['Check a local car', '$249 total for one car in SLO city, including pickup, a test drive, transport, a full inspection and deal analysis.', 'localAssessment'],
       ['Complete local buying help', '$1,000 used-car service, including one shop inspection.', 'local'],
-      ['Help me sell', 'Preparing a listing or getting help with the local sale.', 'sell'],
+      ['Help me sell', '$350 assisted, or 5% full service with a $1,000 minimum.', 'sell'],
       ['I need remote help', 'Explore nationwide guidance and search with OttO.', 'remote']
     ]},
     buy: { title: 'Where is the help needed?', options: [
@@ -76,11 +76,11 @@
       ['Not sure yet', 'Ask about the location and local arrangements first.', 'inquiry']
     ]},
     sell: { title: 'How much of the sale should I handle?', options: [
-      ['Get it listed and screen buyers', 'I’ll handle the showings, negotiation, and closing.', 'assistedSell'],
-      ['Manage the sale with me', 'Handle buyer contact, showings, and negotiation too.', 'fullSell']
+      ['Get it listed and screen buyers', '$350 upfront · one car, 30 days. You handle showings, negotiation and closing.', 'assistedSell'],
+      ['Manage the sale with me', '5%, $1,000 minimum · one car, 60 days. $350 upfront counts toward the total.', 'fullSell']
     ]},
     evaluate: { title: 'What would you like checked?', options: [
-      ['A local car and the deal', 'Discuss an in-person assessment near San Luis Obispo, with one agreed quote.', 'localAssessment'],
+      ['A local car and the deal', '$249 total for one car in SLO city; elsewhere requires a separate quote.', 'localAssessment'],
       ['Listings or written offers remotely', 'Ask OttO about a written second opinion.', 'evaluateResult']
     ]}
   };
@@ -284,6 +284,9 @@
     const rows = [
       ['Interested in', offer.title + ' — ' + offer.price],
       ['Scope and pricing', offer.caption],
+      ['Included', offer.includes?.join(' ')],
+      ['Arrangements and extras', offer.boundary],
+      ['Payment and terms', offer.terms],
       ['Timing', answers.timing],
       ['Review type', answers.reviewType],
       ['Details', answers.contact.context],
