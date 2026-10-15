@@ -39,7 +39,7 @@ const server = app.listen(0, '127.0.0.1');
       '/new-car-buying-help', '/used-car-evaluation', '/inquiry-attribution.js',
       '/styles.css', '/intake.js', '/inquiry-delivery.js', '/assets/isaac.jpg',
       '/isaac.jpg', '/logo.png', '/logo.jpg', '/logo-header.png', '/og.png',
-      '/apple-touch-icon.png', '/terms?ref=old-link',
+      '/apple-touch-icon.png', '/brand-modern-plate.png', '/terms?ref=old-link',
       '/assets/plate-240.png', '/assets/plate-480.png', '/assets/plate-720.png',
       '/assets/plate-icon-96.png', '/assets/plate-touch-180.png',
     ];
@@ -105,7 +105,14 @@ const server = app.listen(0, '127.0.0.1');
       assert.doesNotMatch(html, /<meta[^>]+name="robots"[^>]+noindex/i);
       assert.equal((html.match(/<h1\b/g) || []).length, 1);
       assert.match(html, /rel="icon"[^>]*sizes="96x96"[^>]*href="\/assets\/plate-icon-96\.png"/);
-      assert.match(html, /src="\/assets\/plate-240\.png"[^>]+srcset="\/assets\/plate-480\.png 2x, \/assets\/plate-720\.png 3x"/);
+      const wordmarks = [...html.matchAll(/<a[^>]+class="wordmark wordmark-modern"[^>]*>([\s\S]*?)<\/a>/g)];
+      assert.ok(wordmarks.length >= 1, url + ' has a branded home link');
+      for (const [, wordmark] of wordmarks) {
+        assert.match(wordmark, /src="\/brand-modern-plate\.png"/);
+        assert.match(wordmark, /width="1774" height="887"/);
+        assert.match(wordmark, /alt="805CarGuy modern California license plate logo"/);
+      }
+      assert.doesNotMatch(html, /<img[^>]+src="\/assets\/plate-(?:240|480|720)\.png"/);
       assert.doesNotMatch(html, /<img[^>]+src="\/brand-sunset-plate\.png"/);
       for (const match of html.matchAll(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/g)) {
         const data = JSON.parse(match[1]);
