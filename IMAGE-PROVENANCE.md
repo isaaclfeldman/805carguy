@@ -1,3 +1,17 @@
+# Homepage coastal photograph — October 29, 2026
+
+The approved homepage hero is Juan Di Nella’s real photograph, *Man driving car near coast*, originally published September 22, 2014. Wikimedia Commons records its pre-June-2017 Unsplash release under CC0 1.0 Universal Public Domain Dedication. Its metadata identifies Varadero, Cuba. It is not a photograph of California, Isaac, or an 805CarGuy client; the site’s coastal California tagline describes the service area.
+
+- Commons source: https://commons.wikimedia.org/wiki/File:Man_driving_car_near_coast_(Unsplash).jpg
+- Original source: https://unsplash.com/photos/Knv9AaodRKc
+- Archived original photo: https://web.archive.org/web/20170504084839/https://unsplash.com/photos/Knv9AaodRKc
+- Archived CC0 license: https://web.archive.org/web/20170403233634/https://unsplash.com/license
+- License: https://creativecommons.org/publicdomain/zero/1.0/
+
+Original: 5184 × 3456 pixels, 9,787,117 bytes; SHA-1 `66585dcd19960a0d9e33a98e5f4cbfe0d6584297`. The archived publication date and license independently support the Commons declaration; no claim of completed Commons manual review is made. No photographer or subject endorsement is implied.
+
+Published asset: `assets/juan-di-nella-coastal-drive.jpg`, 2880 × 1920, 638,596 bytes. macOS `sips` proportionally downsamples and JPEG-encodes the original at quality 80. There is no crop, mirror, retouching, color adjustment or generative editing. Existing CSS controls the exact reviewed desktop/mobile framing and shading. The hero is decorative and retains empty alt text. The original source and reviewed full-resolution mockup are preserved outside the public site.
+
 # Gearshift detail — local redesign preview
 
 Created October 15, 2026 with the built-in `image_gen` tool. Original AI-generated editorial artwork; no third-party reference photograph was used. No portrait of Isaac or real inventory is represented. Intended only for the authorized local 805CarGuy homepage redesign until that redesign is separately approved for publication.

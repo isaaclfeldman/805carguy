@@ -31,6 +31,7 @@ const publicFiles = new Map([
   ['/inquiry-attribution.js', 'inquiry-attribution.js'],
   ['/assets/isaac.jpg', 'assets/isaac.jpg'],
   ['/assets/dashboard-original.png', 'assets/dashboard-original.png'],
+  ['/assets/juan-di-nella-coastal-drive.jpg', 'assets/juan-di-nella-coastal-drive.jpg'],
   ['/assets/gearshift-600.jpg', 'assets/gearshift-600.jpg'],
   ['/assets/gearshift-1200.jpg', 'assets/gearshift-1200.jpg'],
   ['/assets/plate-240.png', 'assets/plate-240.png'],

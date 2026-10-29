@@ -43,6 +43,7 @@ const server = app.listen(0, '127.0.0.1');
       '/assets/plate-240.png', '/assets/plate-480.png', '/assets/plate-720.png',
       '/assets/plate-icon-96.png', '/assets/plate-touch-180.png',
       '/assets/gearshift-600.jpg', '/assets/gearshift-1200.jpg', '/assets/dashboard-original.png',
+      '/assets/juan-di-nella-coastal-drive.jpg',
     ];
     for (const route of publicRoutes) await check(route, 200);
     for (const [route, target] of [
@@ -126,7 +127,7 @@ const server = app.listen(0, '127.0.0.1');
     for (const intent of ['newCar', 'usedCar', 'sell']) {
       assert.ok(homepage.includes('data-start="' + intent + '"'), 'Homepage offers ' + intent);
     }
-    assert.match(homepage, /src="\/assets\/dashboard-original\.png"/);
+    assert.match(homepage, /src="\/assets\/juan-di-nella-coastal-drive\.jpg"/);
     for (const [file, budget] of [['gearshift-600.jpg', 70000], ['gearshift-1200.jpg', 200000]]) {
       assert.ok(fs.statSync(path.join(__dirname, '../assets', file)).size < budget, file + ' transfer budget');
     }
