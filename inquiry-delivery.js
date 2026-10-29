@@ -19,6 +19,7 @@
     if (!(contact.name || '').trim() || !reply || !offer || !reference) throw new Error('Incomplete inquiry');
     if (!['Email me', 'Text me', 'Call me'].includes(contact.method)) throw new Error('Invalid contact preference');
     const source = attribution?.sanitize(answers.attribution || {}) || {};
+    const intent = ['Buy', 'Buy new', 'Buy used', 'Sell', 'Research'].includes(answers.intent) ? answers.intent : '';
     return {
       _subject: 'New lead from 805carguy.com',
       _template: 'table',
@@ -29,7 +30,8 @@
       contact_preference: contact.method,
       contact: reply,
       ...(email ? { email: reply, _replyto: reply } : { phone: reply }),
-      intent: ['Buy new', 'Buy used', 'Sell'].includes(answers.intent) ? answers.intent : '',
+      intent,
+      purchase_preference: ['Buy', 'Buy new', 'Buy used'].includes(intent) && ['New', 'Used', 'Open to Either'].includes(answers.purchasePreference) ? answers.purchasePreference : '',
       service: offer.title,
       displayed_price: offer.price,
       scope: offer.caption,

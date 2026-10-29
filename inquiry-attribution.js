@@ -7,11 +7,11 @@
 })(typeof globalThis === 'object' ? globalThis : this, function (root) {
   const storageKey = '805carguy-inquiry-attribution-v1';
   const publicPaths = new Set([
-    '/', '/services', '/about', '/privacy', '/terms', '/find-my-car',
+    '/', '/services', '/pricing', '/about', '/privacy', '/terms', '/find-my-car',
     '/new-car-buying-help', '/used-car-evaluation'
   ]);
   const inquiryPaths = new Set([
-    '/services', '/about', '/find-my-car', '/new-car-buying-help', '/used-car-evaluation'
+    '/services', '/pricing', '/about', '/find-my-car', '/new-car-buying-help', '/used-car-evaluation'
   ]);
   const sources = new Set([
     'google', 'bing', 'chatgpt', 'perplexity', 'instagram', 'facebook',

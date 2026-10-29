@@ -55,7 +55,7 @@ function fixture(hash = '#inquire', { production = false } = {}) {
   add('button', 'close-flow', dialog);
   add('div', 'preview-banner');
   const triggers = {};
-  for (const step of ['all', 'newCar', 'usedCar', 'sell']) {
+  for (const step of ['all', 'buyStart', 'newCar', 'usedCar', 'sell', 'research', 'openToEither']) {
     triggers[step] = add('button', 'entry-' + step);
     triggers[step].dataset.start = step;
   }
@@ -228,10 +228,10 @@ async function finishDraft(ui, context = 'Synthetic draft, never sent to a provi
   await ui.review();
 }
 
-test('starting choices are Buy new, Buy used and Sell, with a secondary explicit OttO handoff', async () => {
+test('starting choices are Buy, Sell and Research, with a secondary explicit OttO handoff', async () => {
   const ui = fixture();
   const choices = ui.document.querySelector('#flow-content').querySelectorAll('button').filter(button => button.className === 'flow-option');
-  assert.deepEqual(choices.map(button => button.children[0].textContent), ['Buy new', 'Buy used', 'Sell']);
+  assert.deepEqual(choices.map(button => button.children[0].textContent), ['Buy', 'Sell', 'Research']);
   await ui.click('Explore remote help with OttO');
   assert.equal(ui.title, 'Nationwide help is with OttO.');
   assert.equal(ui.links()[0].href, 'https://www.yourotto.com/services');
@@ -254,6 +254,7 @@ test('new-car entry retains conversation scope and explicit intent through revie
   await ui.click('Send my inquiry');
   assert.equal(ui.calls.length, 1);
   assert.equal(ui.calls[0].intent, 'Buy new');
+  assert.equal(ui.calls[0].purchase_preference, 'New');
   assert.equal(ui.calls[0].service, 'Let’s talk about your new car.');
   assert.equal(ui.calls[0].displayed_price, 'Scope and fee agreed first');
   assert.equal(ui.calls[0].scope, 'New-car guidance · start with a conversation');
@@ -277,6 +278,7 @@ test('used-car entry preserves each package and eligibility gate and carries its
     assert.match(ui.text, /Looking toBuy used/);
     await ui.click('Send my inquiry');
     assert.equal(ui.calls[0].intent, 'Buy used');
+    assert.equal(ui.calls[0].purchase_preference, 'Used');
     assert.equal(ui.calls[0].service, expectedTitle);
     assert.equal(ui.calls[0].displayed_price, expectedPrice);
   }
@@ -297,15 +299,17 @@ test('selling primary entry and direct offers retain Sell intent through mocked 
 
 test('Back preserves contact draft while replacing new-car intent with used-car or general intent', async () => {
   const ui = fixture('#inquire', { production: true });
-  await ui.click('Buy new');
+  await ui.click('Buy');
+  await ui.click('New');
   await ui.click('Ask about this service');
   await ui.click('Within a month');
   await ui.fill('name', 'Draft Name');
   await ui.fill('reply', 'draft@example.invalid');
   await ui.fill('context', 'Draft context');
-  for (let i = 0; i < 3; i++) await ui.click('← Back');
+  for (let i = 0; i < 4; i++) await ui.click('← Back');
   assert.equal(ui.title, 'How can I help?');
-  await ui.click('Buy used');
+  await ui.click('Buy');
+  await ui.click('Used');
   await ui.click('Not sure yet');
   await ui.click('Within a month');
   assert.equal(ui.document.querySelector('#name').value, 'Draft Name');
@@ -313,13 +317,115 @@ test('Back preserves contact draft while replacing new-car intent with used-car 
   await ui.review();
   assert.match(ui.text, /Looking toBuy used/);
   assert.doesNotMatch(ui.text, /Buy new|New-car guidance/);
-  for (let i = 0; i < 4; i++) await ui.click('← Back');
+  for (let i = 0; i < 5; i++) await ui.click('← Back');
   assert.equal(ui.title, 'How can I help?');
   await ui.click('I’d rather just tell you');
   await finishDraft(ui);
-  assert.doesNotMatch(ui.text, /Looking to|Buy new|Buy used|New-car guidance/);
+  assert.doesNotMatch(ui.text, /Looking to|Car preference|Buy new|Buy used|New-car guidance/);
   await ui.click('Send my inquiry');
   assert.equal(ui.calls[0].intent, '');
+  assert.equal(ui.calls[0].purchase_preference, '');
+});
+
+test('Buy chooser carries New, Used or Open to Either through review and mocked delivery', async () => {
+  for (const [preference, intent] of [['New', 'Buy new'], ['Used', 'Buy used'], ['Open to Either', 'Buy']]) {
+    const ui = fixture('#inquire-buy-start', { production: true });
+    assert.equal(ui.title, 'New, used, or open to either?');
+    const options = ui.document.querySelector('#flow-content').querySelectorAll('button').filter(button => button.className === 'flow-option');
+    assert.deepEqual(options.map(button => button.children[0].textContent), ['New', 'Used', 'Open to Either']);
+    await ui.click(preference);
+    if (preference === 'New') await ui.click('Ask about this service');
+    else if (preference === 'Used') await ui.click('Not sure yet');
+    else {
+      assert.equal(ui.title, 'You can stay open to either.');
+      assert.match(ui.text, /don’t need to choose new or used/);
+      assert.match(ui.text, /scope, fee and payment timing before any work begins/);
+      assert.doesNotMatch(ui.text, /\$249|\$1,000|guarantee/);
+      await ui.click('Continue');
+    }
+    await finishDraft(ui);
+    assert.ok(ui.text.includes('Looking to' + intent));
+    assert.ok(ui.text.includes('Car preference' + preference));
+    if (preference === 'Open to Either') assert.match(ui.text, /Buying · open to new or used/);
+    await ui.click('Send my inquiry');
+    assert.equal(ui.calls.length, 1);
+    assert.equal(ui.calls[0].intent, intent);
+    assert.equal(ui.calls[0].purchase_preference, preference);
+  }
+});
+
+test('Research stays an unpriced conversation through review and mocked delivery', async () => {
+  const ui = fixture('#inquire-research', { production: true });
+  assert.equal(ui.title, 'What are you researching?');
+  assert.match(ui.text, /still gathering information/);
+  assert.match(ui.text, /agree on the scope, fee and payment timing before any work begins/);
+  assert.match(ui.text, /does not book a service or take payment/);
+  assert.doesNotMatch(ui.text, /\$\d|guarantee|report|30-day/);
+  await ui.click('Continue');
+  await finishDraft(ui, 'Compare EV and hybrid ownership.');
+  assert.match(ui.text, /Looking toResearch/);
+  assert.match(ui.text, /Research inquiry · start with a conversation/);
+  assert.match(ui.text, /Scope and fee agreed first/);
+  assert.doesNotMatch(ui.text, /Car preference|Buy new|Buy used|Open to Either/);
+  await ui.click('Send my inquiry');
+  assert.equal(ui.calls.length, 1);
+  assert.equal(ui.calls[0].intent, 'Research');
+  assert.equal(ui.calls[0].purchase_preference, '');
+  assert.equal(ui.calls[0].message, 'Compare EV and hybrid ownership.');
+});
+
+test('Back can replace Either with Used while keeping contact draft, then Research clears purchase selections', async () => {
+  const ui = fixture('#inquire', { production: true });
+  await ui.click('Buy');
+  await ui.click('Open to Either');
+  await ui.click('Continue');
+  await ui.click('Within a month');
+  await ui.fill('name', 'Still exploring');
+  await ui.fill('reply', 'draft@example.invalid');
+  await ui.fill('context', 'Keep my priorities while I change direction.');
+  for (let i = 0; i < 3; i++) await ui.click('← Back');
+  assert.equal(ui.title, 'New, used, or open to either?');
+  await ui.click('Used');
+  await ui.click('Not sure yet');
+  await ui.click('Within a month');
+  assert.equal(ui.document.querySelector('#name').value, 'Still exploring');
+  await ui.review();
+  assert.match(ui.text, /Car preferenceUsed/);
+  assert.doesNotMatch(ui.text, /Open to Either|open to new or used/);
+  for (let i = 0; i < 5; i++) await ui.click('← Back');
+  assert.equal(ui.title, 'How can I help?');
+  await ui.click('Research');
+  await ui.click('Continue');
+  await ui.click('Within a month');
+  assert.equal(ui.document.querySelector('#context').value, 'Keep my priorities while I change direction.');
+  await ui.review();
+  assert.match(ui.text, /Looking toResearch/);
+  assert.doesNotMatch(ui.text, /Car preference|Buy used|Open to Either/);
+  await ui.click('Send my inquiry');
+  assert.equal(ui.calls[0].intent, 'Research');
+  assert.equal(ui.calls[0].purchase_preference, '');
+});
+
+test('close and reopen reset Research and Either drafts; legacy Buy location chooser remains intact', async () => {
+  const ui = fixture('#inquire-open-to-either');
+  await ui.click('Continue');
+  await finishDraft(ui, 'Old either draft');
+  await ui.close();
+  await ui.open('research');
+  assert.equal(ui.title, 'What are you researching?');
+  await ui.click('Continue');
+  await ui.click('Within a month');
+  assert.equal(ui.document.querySelector('#name').value, '');
+  assert.equal(ui.document.querySelector('#context').value, '');
+  await ui.close();
+  await ui.open('buyStart');
+  assert.equal(ui.title, 'New, used, or open to either?');
+  await ui.close();
+  await ui.changeHash('#inquire-buy');
+  assert.equal(ui.title, 'Where is the help needed?');
+  await ui.click('Remote guidance or search');
+  assert.equal(ui.links()[0].href, 'https://www.yourotto.com/services');
+  assert.equal(ui.calls.length, 0);
 });
 
 test('reset and close/reopen do not reuse prior route intent or contact information', async () => {

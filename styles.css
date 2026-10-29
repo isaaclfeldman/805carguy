@@ -246,3 +246,34 @@ dialog{border:1px solid var(--rule);border-radius:12px;padding:0;width:min(620px
  .coastal-direction .site-header nav{gap:8px}
  .coastal-direction .dashboard-hero{padding-top:216px;min-height:842px}
 }
+
+/* Homepage review: clearer navigation, keeping the continuous photograph. */
+.coastal-direction .site-header nav>a:not(.button),
+.coastal-direction .site-header .button{font-size:1.0625rem;font-weight:650;line-height:1.4}
+.coastal-direction .site-header nav>a{color:#fffaf1;text-shadow:0 0 1px #000,0 1px 2px #000,0 0 10px #000b}
+.coastal-direction .site-header nav>a:hover{text-decoration-thickness:2px;text-underline-offset:5px}
+.coastal-direction .site-header .button{min-height:48px;padding:12px 18px;gap:12px;color:#243334;background:#fffaf1;border-color:#fffaf1;text-shadow:none;box-shadow:0 2px 10px #0002}
+.coastal-direction .site-header .button:hover{color:#243334;background:#f3e8d7;border-color:#f3e8d7}
+@media(max-width:760px){
+ .coastal-direction .site-header nav>a:not(.button),
+ .coastal-direction .site-header .button{font-size:.9375rem}
+ .coastal-direction .site-header .button{padding-inline:12px;gap:8px}
+}
+@media(forced-colors:active){
+ .coastal-direction .site-header nav>a{color:LinkText;text-shadow:none}
+ .coastal-direction .site-header .button{color:ButtonText;background:ButtonFace;border-color:ButtonText;box-shadow:none}
+}
+
+/* Homepage walkthrough: supporting location line and clearer starting prompt. */
+.coastal-direction .dashboard-hero .path-label{font-size:1.0625rem;line-height:1.5;font-weight:600;margin-bottom:13px}
+.coastal-direction .dashboard-hero .hero-pricing{margin:15px 0 0;font-size:.8125rem;line-height:1.5;color:#fffaf1;text-shadow:0 0 1px #000,0 1px 2px #000,0 0 8px #0009}
+.coastal-direction .dashboard-hero .hero-pricing a{display:inline-flex;align-items:center;min-height:44px;text-underline-offset:4px}
+.personal-contact .bio-line{font-weight:600;color:var(--navy)}
+.coastal-direction .dashboard-hero .hero-location{position:absolute;left:max(56px,calc((100vw - 1328px)/2));bottom:64px;max-width:34%;margin:0;color:#ece5d9;font-size:.6875rem;font-weight:500;line-height:1.7;letter-spacing:.1em;text-align:left}
+@media(min-width:761px) and (max-width:1100px){
+ .coastal-direction .dashboard-hero .hero-location{left:36px;bottom:60px;max-width:36%}
+}
+@media(max-width:760px){
+ .coastal-direction .dashboard-hero .hero-location{position:static;max-width:18rem;margin:36px 0 0;font-size:.6875rem}
+ .coastal-direction .dashboard-hero .path-label{font-size:1rem}
+}

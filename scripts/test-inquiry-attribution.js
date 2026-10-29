@@ -56,6 +56,18 @@ test('from markers never masquerade as original landing pages', () => {
   assert.equal(data.inquiryPage, '/used-car-evaluation');
 });
 
+test('pricing visits and CTAs preserve only the approved page attribution', () => {
+  const storage = new Map();
+  browser(origin + '/pricing?private=ignored&utm_source=google', 'https://www.google.com/search?q=private', storage);
+  const inquiry = browser(origin + '/?from=pricing#inquire-local-check', origin + '/pricing', storage);
+  assert.deepEqual(inquiry.get(), {
+    landingPage: '/pricing', referrerSource: 'https://www.google.com',
+    inquiryPage: '/pricing', source: 'google', medium: ''
+  });
+  assert.doesNotMatch([...storage.values()].join(''), /private|ignored|search\?q/);
+  assert.equal(capture(null, { url: origin + '/?from=pricing' }).inquiryPage, '/pricing');
+});
+
 test('internal referrers including the canonical-host redirect are not external sources', () => {
   for (const referrer of [origin + '/about?email=private@example.com', 'http://805carguy.com/services']) {
     assert.equal(capture(null, { url: origin + '/', referrer }).referrerSource, '');

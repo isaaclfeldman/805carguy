@@ -35,7 +35,7 @@ const server = app.listen(0, '127.0.0.1');
 
   try {
     const publicRoutes = [
-      '/', '/about', '/services', '/terms', '/privacy', '/robots.txt', '/sitemap.xml',
+      '/', '/about', '/services', '/pricing', '/terms', '/privacy', '/robots.txt', '/sitemap.xml',
       '/new-car-buying-help', '/used-car-evaluation', '/inquiry-attribution.js',
       '/styles.css', '/intake.js', '/inquiry-delivery.js', '/assets/isaac.jpg',
       '/isaac.jpg', '/logo.png', '/logo.jpg', '/logo-header.png', '/og.png',
@@ -49,6 +49,7 @@ const server = app.listen(0, '127.0.0.1');
     for (const [route, target] of [
       ['/index.html', '/'], ['/about.html', '/about'], ['/about/', '/about'],
       ['/services.html', '/services'], ['/services/', '/services'],
+      ['/pricing.html', '/pricing'], ['/pricing/', '/pricing'], ['/pricing.html?from=about', '/pricing?from=about'],
       ['/new-car-buying-help.html', '/new-car-buying-help'], ['/new-car-buying-help/', '/new-car-buying-help'],
       ['/used-car-evaluation.html', '/used-car-evaluation'], ['/used-car-evaluation/', '/used-car-evaluation'],
       ['/terms.html', '/terms'], ['/terms/', '/terms'],
@@ -72,7 +73,7 @@ const server = app.listen(0, '127.0.0.1');
       const response = await check(route, 404);
       assert.match(await response.text(), /Page not found/);
     }
-    for (const route of ['/terms', '/privacy', '/styles.css']) {
+    for (const route of ['/terms', '/privacy', '/pricing', '/styles.css']) {
       const response = await check(route, 200, { method: 'HEAD' });
       assert.equal(await response.text(), '');
     }
@@ -98,7 +99,7 @@ const server = app.listen(0, '127.0.0.1');
     assert.match(sitemap.headers.get('content-type'), /xml/);
     const locations = [...(await sitemap.text()).matchAll(/<loc>(.*?)<\/loc>/g)].map(match => match[1]);
     assert.equal(new Set(locations).size, locations.length);
-    assert.deepEqual(locations.map(url => new URL(url).pathname).sort(), ['/', '/about', '/new-car-buying-help', '/privacy', '/services', '/terms', '/used-car-evaluation']);
+    assert.deepEqual(locations.map(url => new URL(url).pathname).sort(), ['/', '/about', '/new-car-buying-help', '/pricing', '/privacy', '/services', '/terms', '/used-car-evaluation']);
     for (const url of locations) {
       const page = await check(new URL(url).pathname, 200, { headers: productionHeaders });
       assert.equal(page.headers.get('x-robots-tag'), null);
@@ -124,7 +125,7 @@ const server = app.listen(0, '127.0.0.1');
     }
     const homepage = await (await check('/', 200)).text();
     assert.match(homepage, /href="\/services"/);
-    for (const intent of ['newCar', 'usedCar', 'sell']) {
+    for (const intent of ['buyStart', 'sell', 'research']) {
       assert.ok(homepage.includes('data-start="' + intent + '"'), 'Homepage offers ' + intent);
     }
     assert.match(homepage, /src="\/assets\/juan-di-nella-coastal-drive\.jpg"/);
@@ -132,18 +133,30 @@ const server = app.listen(0, '127.0.0.1');
       assert.ok(fs.statSync(path.join(__dirname, '../assets', file)).size < budget, file + ' transfer budget');
     }
     const services = await (await check('/services', 200)).text();
+    const pricing = await (await check('/pricing', 200)).text();
     assert.match(services, /one full inspection at Certified Auto Repair[^<]+included in the \$1,000 total/);
+    assert.match(homepage, /href="\/pricing"/);
+    assert.match(pricing, /Complete local used-car help · \$1,000 total/);
+    assert.match(pricing, /\$500 to start and \$500 when you purchase/);
+    assert.match(pricing, /Assisted sale · \$350 total/);
+    assert.match(pricing, /Paid upfront · one car · 30 days/);
+    assert.match(pricing, /Full-service sale · 5%, \$1,000 minimum/);
+    assert.match(pricing, /One car · 60 days\. \$350 upfront counts toward the total, with the balance due on sale/);
+    assert.match(pricing, /Transport is not included in this package/);
+    assert.match(pricing, /\$199 standalone retail inspection price is not an extra 805CarGuy charge/);
+    assert.match(pricing, /Scope, fee and payment timing agreed first/);
+    assert.match(pricing, /No payment is taken to inquire/);
     // The published service links must all map to a real intake entry point.
     const intake = fs.readFileSync(path.join(__dirname, '../intake.js'), 'utf8');
-    const serviceEntries = [...services.matchAll(/href="\/(?:\?[^"#]*)?(#inquire-[a-z-]+)"/g)].map(match => match[1]);
+    const serviceEntries = [...(services + pricing).matchAll(/href="\/(?:\?[^"#]*)?(#inquire-[a-z-]+)"/g)].map(match => match[1]);
     assert.ok(serviceEntries.length >= 4);
     assert.match(services, /https:\/\/www\.yourotto\.com\/services/);
     assert.match(services, /at least three qualifying, seller-confirmed cars unless you choose one sooner/);
     assert.match(services, /extension or refund/);
     assert.match(services, /\$500 to start and \$500 when you purchase/);
-    assert.doesNotMatch(services + homepage + terms + intake, /\$(?:49|750)\b/);
+    assert.doesNotMatch(services + pricing + homepage + terms + intake, /\$(?:49|750)\b/);
     const evaluation = await (await check('/used-car-evaluation', 200)).text();
-    for (const [name, html] of Object.entries({ homepage, services, terms, evaluation, intake })) {
+    for (const [name, html] of Object.entries({ homepage, services, pricing, terms, evaluation, intake })) {
       assert.match(html, /\$249 total/, name);
       assert.match(html, /(?:one|One) car in (?:SLO city|the city of San Luis Obispo)/, name);
       assert.match(html, /(?:payment|Payment) (?:is )?due when booking/, name);
@@ -156,7 +169,7 @@ const server = app.listen(0, '127.0.0.1');
       assert.doesNotMatch(html, /One agreed quote|No \$249 tier is approved|Pickup and delivery are not included/, name);
     }
     for (const fragment of serviceEntries) assert.ok(intake.includes(`['${fragment}',`), fragment);
-    for (const route of ['/new-car-buying-help', '/used-car-evaluation']) {
+    for (const route of ['/new-car-buying-help', '/used-car-evaluation', '/pricing']) {
       const html = await (await check(route, 200)).text();
       for (const link of html.matchAll(/href="(\/[^\"]*)"/g)) {
         const url = new URL(link[1], origin);

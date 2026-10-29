@@ -66,7 +66,7 @@ test('unknown source paths and personal campaign values never enter the email pa
 
 
 test('delivery includes each explicit buying or selling intent without changing its offer', () => {
-  for (const intent of ['Buy new', 'Buy used', 'Sell']) {
+  for (const intent of ['Buy', 'Buy new', 'Buy used', 'Sell', 'Research']) {
     const data = buildPayload({ ...answers, intent }, offer, '805-intent');
     assert.equal(data.intent, intent);
     assert.equal(data.service, offer.title);
@@ -75,5 +75,18 @@ test('delivery includes each explicit buying or selling intent without changing 
   }
   for (const intent of [undefined, '', 'stale or unknown route']) {
     assert.equal(buildPayload({ ...answers, intent }, offer, '805-general').intent, '');
+  }
+});
+
+test('purchase preference is retained only for buying inquiries and known choices', () => {
+  for (const [intent, purchasePreference] of [['Buy new', 'New'], ['Buy used', 'Used'], ['Buy', 'Open to Either']]) {
+    const data = buildPayload({ ...answers, intent, purchasePreference }, offer, '805-preference');
+    assert.equal(data.purchase_preference, purchasePreference);
+  }
+  for (const purchasePreference of [undefined, '', 'unknown or stale value']) {
+    assert.equal(buildPayload({ ...answers, intent: 'Buy', purchasePreference }, offer, '805-preference').purchase_preference, '');
+  }
+  for (const intent of ['Research', 'Sell', undefined]) {
+    assert.equal(buildPayload({ ...answers, intent, purchasePreference: 'Open to Either' }, offer, '805-preference').purchase_preference, '');
   }
 });

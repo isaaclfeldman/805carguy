@@ -18,6 +18,18 @@
     inquiry: {
       title: 'Talk with Isaac.', price: 'Scope agreed first', caption: 'General inquiry · no commitment'
     },
+    openToEither: {
+      title: 'You can stay open to either.', price: 'Scope and fee agreed first', caption: 'Buying · open to new or used', conversation: true,
+      intro: 'You don’t need to choose new or used before reaching out. Tell me what matters to you and what you’re considering.',
+      boundary: 'We’ll discuss what you need and agree on the scope, fee and payment timing before any work begins.',
+      terms: 'Sending this inquiry does not book a service or take payment.'
+    },
+    research: {
+      title: 'What are you researching?', price: 'Scope and fee agreed first', caption: 'Research inquiry · start with a conversation', conversation: true,
+      intro: 'Tell me the car question you’re exploring. It’s fine if you’re still gathering information.',
+      boundary: 'We’ll discuss what you need and agree on the scope, fee and payment timing before any work begins.',
+      terms: 'Sending this inquiry does not book a service or take payment.'
+    },
     newCar: {
       title: 'Let’s talk about your new car.', price: 'Scope and fee agreed first', caption: 'New-car guidance · start with a conversation',
       intro: 'Tell me what you’re considering and where you could use a hand.',
@@ -68,9 +80,14 @@
 
   const questions = {
     start: { title: 'How can I help?', lede: 'Choose a starting point. We’ll work out the details together.', options: [
-      ['Buy new', 'Choosing a model, understanding a dealer quote, or deciding what comes next.', 'newCar'],
-      ['Buy used', 'Check a car you found or get help with the whole purchase.', 'usedCar'],
-      ['Sell', 'Help with the listing or with managing the sale.', 'sell']
+      ['Buy', 'New, used, or open to either.', 'buyStart'],
+      ['Sell', 'Help with the listing or with managing the sale.', 'sell'],
+      ['Research', 'Start with a question, even if you’re not ready to buy or sell.', 'research']
+    ]},
+    buyStart: { title: 'New, used, or open to either?', lede: 'You don’t need to decide before asking for help.', options: [
+      ['New', 'Choosing a model, understanding a dealer quote, or deciding what comes next.', 'newCar'],
+      ['Used', 'Check a car you found or get help with the whole purchase.', 'usedCar'],
+      ['Open to Either', 'Keep both possibilities open and tell me what matters to you.', 'openToEither']
     ]},
     usedCar: { title: 'Where are you with your used-car search?', options: [
       ['Check a car I found', '$249 total in SLO city: pickup, test drive, transport, full inspection and deal analysis.', 'localAssessment'],
@@ -97,9 +114,14 @@
   };
 
   const intents = {
+    buyStart: 'Buy', openToEither: 'Buy', research: 'Research',
     newCar: 'Buy new', usedCar: 'Buy used', local: 'Buy used',
     localAssessment: 'Buy used', complete: 'Buy used',
     sell: 'Sell', assistedSell: 'Sell', fullSell: 'Sell'
+  };
+  const purchasePreferences = {
+    newCar: 'New', usedCar: 'Used', local: 'Used',
+    localAssessment: 'Used', complete: 'Used', openToEither: 'Open to Either'
   };
 
   function node(tag, text, className) {
@@ -145,6 +167,7 @@
     // Snapshot the previous route before changing it, so Back restores its intent.
     const selection = { [current]: label };
     if (intents[next]) selection.intent = intents[next];
+    if (purchasePreferences[next]) selection.purchasePreference = purchasePreferences[next];
     if (next === 'inquiry') {
       go('timing', { ...selection, package: 'inquiry' });
       return;
@@ -176,6 +199,13 @@
 
   function renderResult() {
     const offer = packages[answers.package];
+    if (offer.conversation) {
+      heading(offer.title, offer.intro);
+      content.append(node('p', offer.boundary, 'result-boundary'));
+      content.append(button('Continue →', () => go('timing')));
+      content.append(node('p', offer.terms, 'input-hint'));
+      return;
+    }
     content.append(node('p', 'Your starting point', 'result-kicker'));
     heading(offer.title, offer.intro);
     content.append(node('p', offer.price, 'result-price'), node('p', offer.caption, 'flow-lede'));
@@ -300,6 +330,7 @@
     const list = node('ul', undefined, 'review-list');
     const rows = [
       ['Looking to', answers.intent],
+      ['Car preference', answers.purchasePreference],
       ['Interested in', offer.title + ' — ' + offer.price],
       ['Scope and pricing', offer.caption],
       ['Included', offer.includes?.join(' ')],
@@ -407,6 +438,7 @@
   function startInquiry(step, trigger) {
     returnFocus = trigger;
     answers = intents[step] ? { intent: intents[step] } : {};
+    if (purchasePreferences[step]) answers.purchasePreference = purchasePreferences[step];
     history = [];
     submitted = false;
     reference = '805-' + crypto.randomUUID();
@@ -439,6 +471,9 @@
   const inquiryLinks = new Map([
     ['#inquire', 'all'],
     ['#inquire-general', 'inquiry'],
+    ['#inquire-buy-start', 'buyStart'],
+    ['#inquire-open-to-either', 'openToEither'],
+    ['#inquire-research', 'research'],
     ['#inquire-new-car', 'newCar'],
     ['#inquire-used-car', 'usedCar'],
     ['#inquire-sell', 'sell'],
