@@ -204,7 +204,7 @@ dialog{border:1px solid var(--rule);border-radius:12px;padding:0;width:min(620px
  .coastal-direction .site-header .button{font-size:11px;padding:12px}
  .coastal-direction .dashboard-hero{padding:178px 24px 42px;min-height:800px}
  .coastal-direction .dashboard-scene{object-position:18% 50%}
- .coastal-direction .dashboard-shade{background:rgba(10,17,18,.38)}
+ .coastal-direction .dashboard-shade{background:rgba(10,17,18,.26)}
  .coastal-direction .dashboard-hero .personal-hero-copy{width:100%;max-width:520px;margin-inline:auto}
  .coastal-direction .dashboard-hero h1{font-size:49px;max-width:470px;letter-spacing:-1.6px;line-height:1.07}
  .coastal-direction .dashboard-hero .intro{font-size:16px}

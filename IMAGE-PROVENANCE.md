@@ -1,6 +1,16 @@
-# Homepage coastal photograph — October 29, 2026
+# Brighter coastal retouch — approved October 29, 2026
 
-The approved homepage hero is Juan Di Nella’s real photograph, *Man driving car near coast*, originally published September 22, 2014. Wikimedia Commons records its pre-June-2017 Unsplash release under CC0 1.0 Universal Public Domain Dedication. Its metadata identifies Varadero, Cuba. It is not a photograph of California, Isaac, or an 805CarGuy client; the site’s coastal California tagline describes the service area.
+Current homepage asset: `assets/juan-di-nella-coastal-drive-brighter-v2.png`, 1536 × 1024, 1,856,165 bytes; SHA-256 `09e4a131ca7183217e51060c84e21c39705f3a8e493138ce2a6a70d4ebf232cd`.
+
+This is the user-reviewed AI-assisted retouch of Juan Di Nella’s CC0 photograph documented below, created with the built-in image editing tool. It lifts exposure/shadows, reduces the green/yellow cast and removes the hanging sunglasses. The original composition and other objects are visually preserved, including the separate hanging cross; this is not a claim of pixel-identical preservation or an untouched stock original. The source depicts Cuba and is not Isaac’s likeness, car or inventory.
+
+The exact reviewed PNG is used without further pixel edits, cropping, mirroring, rescaling or recompression. The original source and previously published JPEG remain intact. Existing CSS framing is preserved; only the mobile ≤760px uniform shade changes from .38 to .26, with desktop remaining .10. Copy, logo and portrait are unchanged. Publication was explicitly approved after desktop/mobile preview review. No photographer or subject endorsement is implied.
+
+The initial stronger candidate was not selected. The selected edit uses restrained natural exposure/color correction and removes only the sunglasses; it preserves the original soft focus and does not deliberately add scenery, sharpen gauge text or change the driver. Full source prompt and local review evidence are retained in `bright-photo-preview-20261029/IMAGE-EDIT.md` outside the public server allowlist.
+
+# Original photograph and first photo release — October 29, 2026
+
+The source for the homepage hero is Juan Di Nella’s real photograph, *Man driving car near coast*, originally published September 22, 2014. Wikimedia Commons records its pre-June-2017 Unsplash release under CC0 1.0 Universal Public Domain Dedication. Its metadata identifies Varadero, Cuba. It is not a photograph of California, Isaac, or an 805CarGuy client; the site’s coastal California tagline describes the service area.
 
 - Commons source: https://commons.wikimedia.org/wiki/File:Man_driving_car_near_coast_(Unsplash).jpg
 - Original source: https://unsplash.com/photos/Knv9AaodRKc
@@ -10,7 +20,7 @@ The approved homepage hero is Juan Di Nella’s real photograph, *Man driving ca
 
 Original: 5184 × 3456 pixels, 9,787,117 bytes; SHA-1 `66585dcd19960a0d9e33a98e5f4cbfe0d6584297`. The archived publication date and license independently support the Commons declaration; no claim of completed Commons manual review is made. No photographer or subject endorsement is implied.
 
-Published asset: `assets/juan-di-nella-coastal-drive.jpg`, 2880 × 1920, 638,596 bytes. macOS `sips` proportionally downsamples and JPEG-encodes the original at quality 80. There is no crop, mirror, retouching, color adjustment or generative editing. Existing CSS controls the exact reviewed desktop/mobile framing and shading. The hero is decorative and retains empty alt text. The original source and reviewed full-resolution mockup are preserved outside the public site.
+Previously published asset (retained): `assets/juan-di-nella-coastal-drive.jpg`, 2880 × 1920, 638,596 bytes. macOS `sips` proportionally downsamples and JPEG-encodes the original at quality 80. There is no crop, mirror, retouching, color adjustment or generative editing. Existing CSS controls the exact reviewed desktop/mobile framing and shading. The hero is decorative and retains empty alt text. The original source and reviewed full-resolution mockup are preserved outside the public site.
 
 # Gearshift detail — local redesign preview
 
