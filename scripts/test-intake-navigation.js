@@ -10,7 +10,7 @@ const source = fs.readFileSync(path.join(__dirname, '../intake.js'), 'utf8');
 
 // Execute the complete served intake script. This DOM supports its real controls;
 // no browser, network request, provider submission or source-code extraction occurs.
-function fixture(hash = '#inquire') {
+function fixture(hash = '#inquire', { production = false } = {}) {
   let document;
   class Element {
     constructor(tag) { this.tagName = tag; this.children = []; this.listeners = {}; this.attributes = {}; this.style = {}; this.dataset = {}; this.value = ''; this._text = ''; this.disabled = false; }
@@ -54,17 +54,26 @@ function fixture(hash = '#inquire') {
   add('div', 'flow-content', dialog);
   add('button', 'close-flow', dialog);
   add('div', 'preview-banner');
-  const trigger = add('button', 'entry'); trigger.dataset.start = 'all';
-  const location = { protocol: 'http:', hostname: '127.0.0.1', hash };
+  const triggers = {};
+  for (const step of ['all', 'newCar', 'usedCar', 'sell']) {
+    triggers[step] = add('button', 'entry-' + step);
+    triggers[step].dataset.start = step;
+  }
+  const location = { protocol: production ? 'https:' : 'http:', hostname: production ? 'www.805carguy.com' : '127.0.0.1', hash };
   const calls = [];
-  const window = { location, addEventListener() {}, InquiryDelivery: {
+  const windowListeners = {};
+  const window = { location, addEventListener(name, callback) { windowListeners[name] = callback; }, InquiryDelivery: {
     ...delivery,
-    submit: async payload => { calls.push(payload); throw new Error('No provider submission is allowed in this test'); }
+    // Production-host behavior is exercised only against this in-memory stub.
+    submit: async payload => { calls.push(payload); return { accepted: true }; }
   }};
   vm.runInNewContext(source, { window, document, crypto, fetch() { throw new Error('Network is forbidden'); } }, { filename: 'intake.js', timeout: 1000 });
   const content = document.querySelector('#flow-content');
   return {
     document, dialog, calls, location,
+    async open(step = 'all') { await triggers[step].click(); },
+    async close() { await document.querySelector('#close-flow').click(); },
+    async changeHash(hash) { location.hash = hash; await windowListeners.hashchange(); },
     get text() { return content.textContent; },
     get title() { return document.querySelector('#flow-title').textContent; },
     links() { return content.querySelectorAll('a'); },
@@ -208,4 +217,143 @@ test('assessment scope and booking price remain visible in review for local and 
     assert.equal(send.disabled, true);
     assert.equal(ui.calls.length, 0);
   }
+});
+
+
+async function finishDraft(ui, context = 'Synthetic draft, never sent to a provider.') {
+  await ui.click('Within a month');
+  await ui.fill('context', context);
+  await ui.fill('name', 'Synthetic Preview');
+  await ui.fill('reply', 'sample@example.invalid');
+  await ui.review();
+}
+
+test('starting choices are Buy new, Buy used and Sell, with a secondary explicit OttO handoff', async () => {
+  const ui = fixture();
+  const choices = ui.document.querySelector('#flow-content').querySelectorAll('button').filter(button => button.className === 'flow-option');
+  assert.deepEqual(choices.map(button => button.children[0].textContent), ['Buy new', 'Buy used', 'Sell']);
+  await ui.click('Explore remote help with OttO');
+  assert.equal(ui.title, 'Nationwide help is with OttO.');
+  assert.equal(ui.links()[0].href, 'https://www.yourotto.com/services');
+  assert.equal(ui.calls.length, 0);
+});
+
+test('new-car entry retains conversation scope and explicit intent through review and mocked delivery', async () => {
+  const ui = fixture('#inquire-new-car', { production: true });
+  assert.equal(ui.title, 'Let’s talk about your new car.');
+  assert.match(ui.text, /Scope and fee agreed first/);
+  assert.match(ui.text, /Help choosing and comparing models/);
+  assert.match(ui.text, /Help understanding a dealer quote/);
+  assert.match(ui.text, /agree on the scope, fee and payment timing before work begins/);
+  assert.doesNotMatch(ui.text, /\$249|\$1,000|guarantee|financing/);
+  await ui.click('Ask about this service');
+  await finishDraft(ui);
+  assert.match(ui.text, /Looking toBuy new/);
+  assert.match(ui.text, /New-car guidance · start with a conversation/);
+  assert.match(ui.text, /Scope and fee agreed first/);
+  await ui.click('Send my inquiry');
+  assert.equal(ui.calls.length, 1);
+  assert.equal(ui.calls[0].intent, 'Buy new');
+  assert.equal(ui.calls[0].service, 'Let’s talk about your new car.');
+  assert.equal(ui.calls[0].displayed_price, 'Scope and fee agreed first');
+  assert.equal(ui.calls[0].scope, 'New-car guidance · start with a conversation');
+});
+
+test('used-car entry preserves each package and eligibility gate and carries its intent', async () => {
+  for (const [choice, expectedTitle, expectedPrice] of [
+    ['Check a car I found', 'Check the car and the deal.', '$249 total'],
+    ['Help with the whole purchase', 'From choosing to the keys.', '$1,000'],
+    ['Not sure yet', 'Talk with Isaac.', 'Scope agreed first']
+  ]) {
+    const ui = fixture('#inquire-used-car', { production: true });
+    assert.equal(ui.title, 'Where are you with your used-car search?');
+    await ui.click(choice);
+    if (choice === 'Help with the whole purchase') {
+      assert.equal(ui.title, 'Could the car come to San Luis Obispo?');
+      await ui.click('Yes, that should work');
+    }
+    if (choice !== 'Not sure yet') await ui.click('Ask about this service');
+    await finishDraft(ui);
+    assert.match(ui.text, /Looking toBuy used/);
+    await ui.click('Send my inquiry');
+    assert.equal(ui.calls[0].intent, 'Buy used');
+    assert.equal(ui.calls[0].service, expectedTitle);
+    assert.equal(ui.calls[0].displayed_price, expectedPrice);
+  }
+});
+
+test('selling primary entry and direct offers retain Sell intent through mocked delivery', async () => {
+  for (const hash of ['#inquire-sell', '#inquire-assisted-sale', '#inquire-full-sale']) {
+    const ui = fixture(hash, { production: true });
+    if (hash === '#inquire-sell') await ui.click('Get it listed and screen buyers');
+    await ui.click('Ask about this service');
+    await finishDraft(ui);
+    assert.match(ui.text, /Looking toSell/);
+    await ui.click('Send my inquiry');
+    assert.equal(ui.calls[0].intent, 'Sell');
+    assert.ok(['$350', '5%'].includes(ui.calls[0].displayed_price));
+  }
+});
+
+test('Back preserves contact draft while replacing new-car intent with used-car or general intent', async () => {
+  const ui = fixture('#inquire', { production: true });
+  await ui.click('Buy new');
+  await ui.click('Ask about this service');
+  await ui.click('Within a month');
+  await ui.fill('name', 'Draft Name');
+  await ui.fill('reply', 'draft@example.invalid');
+  await ui.fill('context', 'Draft context');
+  for (let i = 0; i < 3; i++) await ui.click('← Back');
+  assert.equal(ui.title, 'How can I help?');
+  await ui.click('Buy used');
+  await ui.click('Not sure yet');
+  await ui.click('Within a month');
+  assert.equal(ui.document.querySelector('#name').value, 'Draft Name');
+  assert.equal(ui.document.querySelector('#context').value, 'Draft context');
+  await ui.review();
+  assert.match(ui.text, /Looking toBuy used/);
+  assert.doesNotMatch(ui.text, /Buy new|New-car guidance/);
+  for (let i = 0; i < 4; i++) await ui.click('← Back');
+  assert.equal(ui.title, 'How can I help?');
+  await ui.click('I’d rather just tell you');
+  await finishDraft(ui);
+  assert.doesNotMatch(ui.text, /Looking to|Buy new|Buy used|New-car guidance/);
+  await ui.click('Send my inquiry');
+  assert.equal(ui.calls[0].intent, '');
+});
+
+test('reset and close/reopen do not reuse prior route intent or contact information', async () => {
+  const ui = fixture('#inquire-new-car');
+  await ui.click('← See all starting points');
+  assert.equal(ui.title, 'How can I help?');
+  await ui.click('Sell');
+  await ui.click('Manage the sale with me');
+  await ui.click('Ask about this service');
+  await finishDraft(ui, 'Old selling draft');
+  assert.match(ui.text, /Looking toSell/);
+  await ui.close();
+  assert.equal(ui.dialog.open, false);
+  assert.equal(ui.document.body.style.overflow, '');
+  await ui.open('newCar');
+  assert.equal(ui.title, 'Let’s talk about your new car.');
+  await ui.click('Ask about this service');
+  await ui.click('Within a month');
+  assert.equal(ui.document.querySelector('#name').value, '');
+  assert.equal(ui.document.querySelector('#context').value, '');
+  await ui.fill('name', 'Fresh draft');
+  await ui.fill('reply', 'fresh@example.invalid');
+  await ui.review();
+  assert.match(ui.text, /Looking toBuy new/);
+  assert.doesNotMatch(ui.text, /Old selling draft|Looking toSell/);
+  await ui.click('Send my inquiry');
+  assert.equal(ui.calls.length, 0, 'preview send stays disabled');
+  await ui.close();
+  await ui.changeHash('#inquire-used-car');
+  assert.equal(ui.title, 'Where are you with your used-car search?');
+  await ui.close();
+  await ui.open('sell');
+  assert.equal(ui.title, 'How much of the sale should I handle?');
+  await ui.close();
+  await ui.open('all');
+  assert.equal(ui.title, 'How can I help?');
 });

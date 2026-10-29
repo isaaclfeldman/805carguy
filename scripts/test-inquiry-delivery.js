@@ -63,3 +63,17 @@ test('unknown source paths and personal campaign values never enter the email pa
   const data = buildPayload({...answers, attribution: {landingPage:'/private/customer@example.com', inquiryPage:'/unknown', source:'customer@example.com', medium:'private', referrerSource:'javascript:alert(1)'}},offer,'805-source');
   for (const key of ['landing_page','inquiry_page','visit_source','visit_medium','referring_site']) assert.equal(data[key], '');
 });
+
+
+test('delivery includes each explicit buying or selling intent without changing its offer', () => {
+  for (const intent of ['Buy new', 'Buy used', 'Sell']) {
+    const data = buildPayload({ ...answers, intent }, offer, '805-intent');
+    assert.equal(data.intent, intent);
+    assert.equal(data.service, offer.title);
+    assert.equal(data.displayed_price, offer.price);
+    assert.equal(data.scope, offer.caption);
+  }
+  for (const intent of [undefined, '', 'stale or unknown route']) {
+    assert.equal(buildPayload({ ...answers, intent }, offer, '805-general').intent, '');
+  }
+});

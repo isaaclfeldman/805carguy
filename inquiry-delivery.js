@@ -29,6 +29,7 @@
       contact_preference: contact.method,
       contact: reply,
       ...(email ? { email: reply, _replyto: reply } : { phone: reply }),
+      intent: ['Buy new', 'Buy used', 'Sell'].includes(answers.intent) ? answers.intent : '',
       service: offer.title,
       displayed_price: offer.price,
       scope: offer.caption,

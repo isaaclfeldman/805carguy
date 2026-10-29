@@ -32,3 +32,9 @@ Node/Express, no build step. `index.html` + `styles.css` + `intake.js` + `inquir
 FormSubmit endpoint: `https://formsubmit.co/ajax/3bee3a7c1f40b430ff307881c018db32`, intended recipient `isaac@carofslo.com`. Existing production test messages received September 24 were read in Gmail during September 27 continuation. That establishes historical delivery only. The October 9 content release expressly authorizes no new inquiry send; use no-send review and mocked delivery checks.
 
 GitHub: `https://github.com/isaaclfeldman/805carguy`. Main auto-deploys to Railway. Custom domain `www.805carguy.com`; apex forwarding needs live verification. Review and test the exact scoped release before publication; October 9 user approval already authorizes publishing these content/pricing changes. Do not activate paid agent execution or inventory, renew budgets, change credentials, or buy services.
+
+## October 15 personal redesign preview
+
+Isaac approved a simpler, friendly personal 805CarGuy site: “Buying or selling a car? I can help.” with Buy new / Buy used / Sell paths and his existing portrait. OttO remains the supporting nationwide remote guidance/search destination. New-car help covers choosing/comparing models, understanding dealer quotes and discussing next steps; agree on scope, fee and payment timing before work. No new fixed-price new-car package or new broker, financing, sourcing or delivery promise is authorized. Preserve the established used-car/selling offers and terms.
+
+The approved modern-plate logo-only snapshot was published as `6dd0860`. The broader personal homepage, imagery and inquiry changes on `codex/805-personal-preview` are LOCAL PREVIEW ONLY pending separate publication approval. No inquiry sends or payments are authorized.

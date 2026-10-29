@@ -18,6 +18,13 @@
     inquiry: {
       title: 'Talk with Isaac.', price: 'Scope agreed first', caption: 'General inquiry · no commitment'
     },
+    newCar: {
+      title: 'Let’s talk about your new car.', price: 'Scope and fee agreed first', caption: 'New-car guidance · start with a conversation',
+      intro: 'Tell me what you’re considering and where you could use a hand.',
+      includes: ['Help choosing and comparing models.', 'Help understanding a dealer quote and your options.', 'Help deciding on your next step.'],
+      boundary: 'We’ll talk about what you need and agree on the scope, fee and payment timing before work begins.',
+      terms: 'Sending this inquiry does not book a service or take payment.'
+    },
     localAssessment: {
       title: 'Check the car and the deal.', price: '$249 total', caption: 'One car in SLO city · payment due when booking · elsewhere in SLO County or beyond: separate quote',
       intro: 'For one car in the city of San Luis Obispo, whether you live nearby or are buying from farther away.',
@@ -60,11 +67,15 @@
   };
 
   const questions = {
-    start: { title: 'What local help do you need?', lede: '805CarGuy handles hands-on work near San Luis Obispo. Nationwide remote guidance and search are with OttO.', options: [
-      ['Check a local car', '$249 total for one car in SLO city, including pickup, a test drive, transport, a full inspection and deal analysis.', 'localAssessment'],
-      ['Complete local buying help', '$1,000 used-car service, including one shop inspection.', 'local'],
-      ['Help me sell', '$350 assisted, or 5% full service with a $1,000 minimum.', 'sell'],
-      ['I need remote help', 'Explore nationwide guidance and search with OttO.', 'remote']
+    start: { title: 'How can I help?', lede: 'Choose a starting point. We’ll work out the details together.', options: [
+      ['Buy new', 'Choosing a model, understanding a dealer quote, or deciding what comes next.', 'newCar'],
+      ['Buy used', 'Check a car you found or get help with the whole purchase.', 'usedCar'],
+      ['Sell', 'Help with the listing or with managing the sale.', 'sell']
+    ]},
+    usedCar: { title: 'Where are you with your used-car search?', options: [
+      ['Check a car I found', '$249 total in SLO city: pickup, test drive, transport, full inspection and deal analysis.', 'localAssessment'],
+      ['Help with the whole purchase', '$1,000 local used-car service, including one shop inspection.', 'local'],
+      ['Not sure yet', 'Let’s talk about what you need and agree on a next step.', 'inquiry']
     ]},
     buy: { title: 'Where is the help needed?', options: [
       ['Complete local used-car help', 'Choosing through purchase, with one SLO shop inspection.', 'local'],
@@ -83,6 +94,12 @@
       ['A local car and the deal', '$249 total for one car in SLO city; elsewhere requires a separate quote.', 'localAssessment'],
       ['Listings or written offers remotely', 'Ask OttO about a written second opinion.', 'evaluateResult']
     ]}
+  };
+
+  const intents = {
+    newCar: 'Buy new', usedCar: 'Buy used', local: 'Buy used',
+    localAssessment: 'Buy used', complete: 'Buy used',
+    sell: 'Sell', assistedSell: 'Sell', fullSell: 'Sell'
   };
 
   function node(tag, text, className) {
@@ -107,8 +124,9 @@
     if (lede) content.append(node('p', lede, 'flow-lede'));
   }
 
-  function go(next) {
+  function go(next, selection = {}) {
     history.push({ step: current, answers: { ...answers } });
+    answers = { ...answers, ...selection };
     current = next;
     render();
   }
@@ -124,24 +142,20 @@
   }
 
   function pick(label, next) {
-    // Keep a human-readable path, without recording anything outside this page.
-    answers[current] = label;
+    // Snapshot the previous route before changing it, so Back restores its intent.
+    const selection = { [current]: label };
+    if (intents[next]) selection.intent = intents[next];
     if (next === 'inquiry') {
-      answers.package = 'inquiry';
-      go('timing');
+      go('timing', { ...selection, package: 'inquiry' });
       return;
     }
     if (remoteEntries[next]) {
-      answers.remoteEntry = next;
-      go('remoteHandoff');
+      go('remoteHandoff', { ...selection, remoteEntry: next });
       return;
     }
-    const key = next;
-    if (!questions[next] && packages[key]) {
-      if (key !== 'evaluate') delete answers.reviewType;
-      answers.package = key;
-      go('result');
-    } else go(next);
+    if (!questions[next] && packages[next]) {
+      go('result', { ...selection, package: next });
+    } else go(next, selection);
   }
 
   function renderQuestion() {
@@ -154,7 +168,10 @@
       options.append(option);
     });
     content.append(options);
-    if (current === 'start') content.append(button('I’d rather just tell you what I need', () => pick('General inquiry', 'inquiry'), 'text-button'));
+    if (current === 'start') {
+      content.append(button('I’d rather just tell you what I need', () => pick('General inquiry', 'inquiry'), 'text-button'));
+      content.append(button('Explore remote help with OttO →', () => pick('Remote help with OttO', 'remote'), 'text-button'));
+    }
   }
 
   function renderResult() {
@@ -217,7 +234,7 @@
     const form = node('form');
     const saved = answers.contact || {};
     const inputs = {};
-    const selling = ['assistedSell', 'fullSell'].includes(answers.package);
+    const selling = answers.intent === 'Sell';
     inputs.context = field(form, { id: 'context', label: selling ? 'What are you selling? (optional)' : answers.package === 'evaluate' ? 'The listing, offer, or question (optional)' : 'What should I know? (optional)', type: 'textarea', value: saved.context, hint: selling ? 'Year, make, model, mileage, condition, and anything else useful.' : 'Your priorities, budget, a listing link, or any deadline. “Not sure yet” is fine.' });
     inputs.location = field(form, { id: 'location', label: 'Your city or ZIP code (optional)', value: saved.location, autocomplete: 'address-level2' });
     inputs.vehicleLocation = field(form, { id: 'vehicle-location', label: 'Where is the car? (optional)', value: saved.vehicleLocation, hint: 'City or ZIP code, if known. You can live elsewhere and ask about a car near San Luis Obispo.' });
@@ -282,6 +299,7 @@
     heading('Your inquiry, at a glance.', 'Asking about a service does not book it or commit you to paying.');
     const list = node('ul', undefined, 'review-list');
     const rows = [
+      ['Looking to', answers.intent],
       ['Interested in', offer.title + ' — ' + offer.price],
       ['Scope and pricing', offer.caption],
       ['Included', offer.includes?.join(' ')],
@@ -388,7 +406,7 @@
 
   function startInquiry(step, trigger) {
     returnFocus = trigger;
-    answers = {};
+    answers = intents[step] ? { intent: intents[step] } : {};
     history = [];
     submitted = false;
     reference = '805-' + crypto.randomUUID();
@@ -421,6 +439,9 @@
   const inquiryLinks = new Map([
     ['#inquire', 'all'],
     ['#inquire-general', 'inquiry'],
+    ['#inquire-new-car', 'newCar'],
+    ['#inquire-used-car', 'usedCar'],
+    ['#inquire-sell', 'sell'],
     ['#inquire-local-check', 'localAssessment'],
     ['#inquire-new-buy', 'newBuy'],
     ['#inquire-found-buy', 'local'],
