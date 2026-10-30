@@ -85,7 +85,13 @@ function fixture(hash = '#inquire', { production = false } = {}) {
     async fill(id, value) {
       const element = document.querySelector('#' + id); assert.ok(element, id);
       element.value = value;
+      await element.dispatch('input');
       await content.querySelector('form').dispatch('input');
+    },
+    async select(id, value) {
+      const element = document.querySelector('#' + id); assert.ok(element, id);
+      element.value = value;
+      await element.dispatch('change');
     },
     async review() { await content.querySelector('form').dispatch('submit'); }
   };
@@ -462,4 +468,52 @@ test('reset and close/reopen do not reuse prior route intent or contact informat
   await ui.close();
   await ui.open('all');
   assert.equal(ui.title, 'How can I help?');
+});
+
+test('switching a numeric email to Text or Call blocks review without losing the draft', async () => {
+  for (const method of ['Text me', 'Call me']) {
+    const ui = fixture('#inquire-general', { production: true });
+    await ui.click('Within a month');
+    await ui.fill('name', 'Synthetic contact');
+    await ui.fill('context', 'Keep my question while I correct my contact.');
+    await ui.fill('reply', 'buyer1234567@example.invalid');
+    await ui.select('contact-method', method);
+    await ui.review();
+    assert.equal(ui.title, 'Tell me what you need.');
+    assert.equal(ui.document.querySelector('#reply').value, 'buyer1234567@example.invalid');
+    assert.equal(ui.document.querySelector('#reply').validationMessage, 'Please enter a phone number I can reach you on.');
+    assert.equal(ui.document.querySelector('#context').value, 'Keep my question while I correct my contact.');
+    assert.equal(ui.calls.length, 0);
+    await ui.fill('reply', '+44 20 7946 0958 ext. 12');
+    assert.equal(ui.document.querySelector('#reply').validationMessage, '');
+    await ui.review();
+    assert.equal(ui.title, 'Your inquiry, at a glance.');
+    await ui.click('← Back');
+    assert.equal(ui.document.querySelector('#reply').value, '+44 20 7946 0958 ext. 12');
+    assert.equal(ui.document.querySelector('#contact-method').value, method);
+    assert.equal(ui.document.querySelector('#context').value, 'Keep my question while I correct my contact.');
+    await ui.review();
+    await ui.click('Send my inquiry');
+    assert.equal(ui.calls.length, 1, 'Only the corrected contact reaches the memory-only provider');
+    assert.equal(ui.calls[0].phone, '+44 20 7946 0958 ext. 12');
+    assert.equal(ui.calls[0].contact_preference, method);
+  }
+});
+
+test('returning to Email clears the phone error and retains the entered email', async () => {
+  const ui = fixture('#inquire-general', { production: true });
+  await ui.click('Within a month');
+  await ui.fill('name', 'Synthetic contact');
+  await ui.fill('reply', 'buyer1234567@example.invalid');
+  await ui.select('contact-method', 'Text me');
+  await ui.review();
+  assert.equal(ui.title, 'Tell me what you need.');
+  await ui.select('contact-method', 'Email me');
+  assert.equal(ui.document.querySelector('#reply').validationMessage, '');
+  assert.equal(ui.document.querySelector('#reply').value, 'buyer1234567@example.invalid');
+  await ui.review();
+  await ui.click('Send my inquiry');
+  assert.equal(ui.calls.length, 1);
+  assert.equal(ui.calls[0].email, 'buyer1234567@example.invalid');
+  assert.equal(ui.calls[0].phone, undefined);
 });

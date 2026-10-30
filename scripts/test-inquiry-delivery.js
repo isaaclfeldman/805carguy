@@ -1,7 +1,7 @@
 'use strict';
 const test = require('node:test');
 const assert = require('node:assert/strict');
-const { isProduction, buildPayload, submit } = require('../inquiry-delivery');
+const { isProduction, isValidPhone, buildPayload, submit } = require('../inquiry-delivery');
 const answers = {contact:{name:' Customer ',method:'Email me',reply:' customer@example.com ',context:'<script>plain text</script>\nBudget $25,000',location:'93401'},timing:'Within a month',reviewType:'Used-car listing'};
 const offer = {title:'Find the right used car.',price:'$500',caption:'One agreed 30-day search'};
 test('preview and untrusted hosts cannot enable the production send control', () => {
@@ -18,6 +18,28 @@ test('phone preference does not create a broken email reply-to', () => {
     const data = buildPayload({...answers,contact:{...answers.contact,method,reply:'805-555-0100'}},offer,'805-phone');
     assert.equal(data.contact_preference,method);assert.equal(data.phone,'805-555-0100');assert.equal(data.email,undefined);assert.equal(data._replyto,undefined);
   }
+});
+test('phone format preserves ordinary US and international numbers and extensions', () => {
+  for (const reply of ['5550100', '805-555-0100', '805.555.0100', '805–555–0100', '+1 (805) 555-0100', '(+44) 20 7946 0958', '+33 (0)1 23 45 67 89', '030/1234567', '805-555-0100 x123', '+44 20 7946 0958 ext. 12', '805-555-0100 extension 123', '805-555-0100 #123']) {
+    assert.equal(isValidPhone(reply), true, reply);
+    for (const method of ['Text me', 'Call me']) {
+      const data = buildPayload({...answers, contact:{...answers.contact, method, reply}}, offer, '805-phone');
+      assert.equal(data.phone, reply, 'Keep the submitted formatting');
+      assert.equal(data.contact_preference, method);
+    }
+  }
+});
+test('numeric emails, URLs and short main numbers cannot become phone inquiries', () => {
+  for (const reply of ['buyer1234567@example.invalid', 'https://8055550100', 'call me at 8055550100', '805-555-0100 other123', '123456 ext. 1234', '123456#7890', '8055550100 ext abc', '+1+8055550100', '805+5550100', '123', '']) {
+    assert.equal(isValidPhone(reply), false, reply);
+    for (const method of ['Text me', 'Call me']) {
+      assert.throws(() => buildPayload({...answers, contact:{...answers.contact, method, reply}}, offer, '805-phone'), /Invalid phone number|Incomplete inquiry/, reply);
+    }
+  }
+  for (const reply of [undefined, null, 8055550100]) assert.equal(isValidPhone(reply), false);
+  // The same numeric email remains valid for the email preference.
+  const data = buildPayload({...answers, contact:{...answers.contact, reply:'buyer1234567@example.invalid'}}, offer, '805-email');
+  assert.equal(data.email, 'buyer1234567@example.invalid');
 });
 test('incomplete or invalid preferences are never posted', () => {
   assert.throws(()=>buildPayload({...answers,contact:{name:' ',reply:'a',method:'Email me'}},offer,'id'));

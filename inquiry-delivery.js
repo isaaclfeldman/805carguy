@@ -12,12 +12,25 @@
     return location.protocol === 'https:' && productionHosts.has(location.hostname);
   }
 
+  function isValidPhone(value) {
+    if (typeof value !== 'string') return false;
+    // Keep the entered formatting; extensions do not make a short main number valid.
+    const parts = value.trim().match(/^(.+?)(?:\s*(?:ext(?:ension)?\.?|x|#)\s*\d+)?$/i);
+    if (!parts) return false;
+    const main = parts[1];
+    if (!/^[\d\s()+.\/\-\u2010-\u2015]+$/.test(main)) return false;
+    const pluses = (main.match(/\+/g) || []).length;
+    if (pluses > 1 || (pluses === 1 && !/^[\s(]*\+/.test(main))) return false;
+    return main.replace(/\D/g, '').length >= 7;
+  }
+
   function buildPayload(answers, offer, reference) {
     const contact = answers.contact || {};
     const email = contact.method === 'Email me';
     const reply = (contact.reply || '').trim();
     if (!(contact.name || '').trim() || !reply || !offer || !reference) throw new Error('Incomplete inquiry');
     if (!['Email me', 'Text me', 'Call me'].includes(contact.method)) throw new Error('Invalid contact preference');
+    if (!email && !isValidPhone(reply)) throw new Error('Invalid phone number');
     const source = attribution?.sanitize(answers.attribution || {}) || {};
     const intent = ['Buy', 'Buy new', 'Buy used', 'Sell', 'Research'].includes(answers.intent) ? answers.intent : '';
     return {
@@ -73,5 +86,5 @@
     }
   }
 
-  return { isProduction, buildPayload, submit };
+  return { isProduction, isValidPhone, buildPayload, submit };
 });

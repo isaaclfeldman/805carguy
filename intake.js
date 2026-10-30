@@ -308,7 +308,7 @@
         inputs.name.reportValidity();
         return;
       }
-      if (inputs.method.value !== 'Email me' && inputs.reply.value.replace(/\D/g, '').length < 7) {
+      if (inputs.method.value !== 'Email me' && !delivery.isValidPhone(inputs.reply.value)) {
         inputs.reply.setCustomValidity('Please enter a phone number I can reach you on.');
         inputs.reply.reportValidity();
         return;
