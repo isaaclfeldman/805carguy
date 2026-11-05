@@ -132,6 +132,9 @@ test('legacy evaluation allows a local assessment or explicit remote handoff wit
 
 test('complete local entry requires shop eligibility and preserves inspection and payment terms', async () => {
   const ui = fixture('#inquire-complete');
+  assert.equal(ui.title, 'Tell me what you need.');
+  await fillContact(ui);
+  await ui.review();
   assert.equal(ui.title, 'Could the car come to San Luis Obispo?');
   assert.match(ui.text, /Transport is not included/);
   await ui.click('Yes, that should work');
@@ -147,14 +150,20 @@ test('complete local entry requires shop eligibility and preserves inspection an
 
 test('nonlocal car goes to OttO choice; uncertain location remains a local inquiry', async () => {
   const outside = fixture('#inquire-complete');
+  await fillContact(outside);
+  await outside.review();
   await outside.click('No, the car is elsewhere');
   assert.equal(outside.title, 'Nationwide help is with OttO.');
   assert.equal(outside.links()[0].href, 'https://www.yourotto.com/services');
   const unknown = fixture('#inquire-complete');
+  await fillContact(unknown);
+  await unknown.review();
   await unknown.click('Not sure yet');
-  assert.equal(unknown.title, 'When would you like help?');
-  await unknown.click('As soon as practical');
-  assert.ok(unknown.document.querySelector('#vehicle-location'));
+  assert.equal(unknown.title, 'Your inquiry, at a glance.');
+  assert.match(unknown.text, /Talk with Isaac. — Scope agreed first/);
+  assert.match(unknown.text, /Local arrangements inquiry/);
+  assert.match(unknown.text, /SLO shop arrangementsNot sure yet/);
+  assert.doesNotMatch(unknown.text, /From choosing to the keys|\$1,000/);
   assert.equal(outside.calls.length + unknown.calls.length, 0);
 });
 
@@ -165,26 +174,29 @@ test('all four local offers retain direct entries and existing selling prices an
     ['#inquire-full-sale', 'Hand over the selling details.', /5%Of sale price · \$1,000 minimum · 60 days/]
   ]) {
     const ui = fixture(hash);
-    assert.equal(ui.title, title); assert.match(ui.text, expected);
-    await ui.click('Ask about this service');
-    assert.equal(ui.title, 'When would you like help?');
+    assert.equal(ui.title, 'Tell me what you need.');
+    assert.ok(ui.text.includes(title)); assert.match(ui.text, expected);
+    assert.ok(ui.document.querySelector('#name'));
+    assert.ok(ui.document.querySelector('#reply'));
+    if (hash === '#inquire-local-check') assert.match(ui.text, /The listing, offer, or question \(optional\)/);
     assert.equal(ui.calls.length, 0);
   }
   const legacyFound = fixture('#inquire-found-buy');
-  assert.equal(legacyFound.title, 'Could the car come to San Luis Obispo?');
+  assert.equal(legacyFound.title, 'Tell me what you need.');
+  assert.match(legacyFound.text, /From choosing to the keys. — \$1,000/);
 });
 
 test('complete local draft reaches review with its price and details while preview sending stays disabled', async () => {
   const ui = fixture('#inquire-complete');
-  await ui.click('Yes, that should work');
-  await ui.click('Ask about this service');
-  await ui.click('Within a month');
+  await ui.select('timing', 'Within a month');
   await ui.fill('context', 'Synthetic no-send draft: review the local car.');
   await ui.fill('location', '93401');
   await ui.fill('vehicle-location', 'San Luis Obispo');
   await ui.fill('name', 'Synthetic Preview');
   await ui.fill('reply', 'sample@example.invalid');
   await ui.review();
+  assert.equal(ui.title, 'Could the car come to San Luis Obispo?');
+  await ui.click('Yes, that should work');
   assert.equal(ui.title, 'Your inquiry, at a glance.');
   assert.match(ui.text, /From choosing to the keys. — \$1,000/);
   assert.match(ui.text, /Complete local used-car purchase/);
@@ -201,8 +213,7 @@ test('complete local draft reaches review with its price and details while previ
 test('assessment scope and booking price remain visible in review for local and out-of-city inquiries', async () => {
   for (const location of ['San Luis Obispo', 'Paso Robles', 'Not known yet']) {
     const ui = fixture('#inquire-local-check');
-    await ui.click('Ask about this service');
-    await ui.click('Within a month');
+    await ui.select('timing', 'Within a month');
     await ui.fill('vehicle-location', location);
     await ui.fill('name', 'Synthetic Preview');
     await ui.fill('reply', 'sample@example.invalid');
@@ -225,6 +236,11 @@ test('assessment scope and booking price remain visible in review for local and 
   }
 });
 
+
+async function fillContact(ui) {
+  await ui.fill('name', 'Synthetic Preview');
+  await ui.fill('reply', 'sample@example.invalid');
+}
 
 async function finishDraft(ui, context = 'Synthetic draft, never sent to a provider.') {
   await ui.click('Within a month');
@@ -293,9 +309,14 @@ test('used-car entry preserves each package and eligibility gate and carries its
 test('selling primary entry and direct offers retain Sell intent through mocked delivery', async () => {
   for (const hash of ['#inquire-sell', '#inquire-assisted-sale', '#inquire-full-sale']) {
     const ui = fixture(hash, { production: true });
-    if (hash === '#inquire-sell') await ui.click('Get it listed and screen buyers');
-    await ui.click('Ask about this service');
-    await finishDraft(ui);
+    if (hash === '#inquire-sell') {
+      await ui.click('Get it listed and screen buyers');
+      await ui.click('Ask about this service');
+      await finishDraft(ui);
+    } else {
+      await fillContact(ui);
+      await ui.review();
+    }
     assert.match(ui.text, /Looking toSell/);
     await ui.click('Send my inquiry');
     assert.equal(ui.calls[0].intent, 'Sell');
@@ -516,4 +537,65 @@ test('returning to Email clears the phone error and retains the entered email', 
   assert.equal(ui.calls.length, 1);
   assert.equal(ui.calls[0].email, 'buyer1234567@example.invalid');
   assert.equal(ui.calls[0].phone, undefined);
+});
+
+
+test('priced service entries start with essential contact controls and optional timing', async () => {
+  for (const hash of ['#inquire-local-check', '#inquire-complete', '#inquire-assisted-sale', '#inquire-full-sale']) {
+    const ui = fixture(hash);
+    const form = ui.document.querySelector('form');
+    const controls = form.children.filter(child => ['input', 'select', 'textarea'].includes(child.tagName));
+    assert.deepEqual(controls.slice(0, 3).map(control => control.id), ['name', 'contact-method', 'reply']);
+    assert.equal(ui.document.querySelector('#timing').required || false, false);
+    assert.equal(ui.document.querySelector('#reply').autocomplete, 'email');
+    assert.equal(ui.document.querySelector('#name').autocomplete, 'name');
+    await fillContact(ui);
+    await ui.review();
+    if (hash === '#inquire-complete') await ui.click('Yes, that should work');
+    assert.equal(ui.title, 'Your inquiry, at a glance.');
+    assert.equal(ui.calls.length, 0);
+  }
+});
+
+test('direct complete entry retains contact and timing while local arrangements change', async () => {
+  const ui = fixture('#inquire-complete', { production: true });
+  await fillContact(ui);
+  await ui.select('timing', 'Within a month');
+  await ui.fill('context', 'Keep this draft while I check transport.');
+  await ui.review();
+  await ui.click('Yes, that should work');
+  assert.match(ui.text, /SLO shop arrangementsYes, that should work/);
+  await ui.click('← Back');
+  await ui.click('Not sure yet');
+  assert.match(ui.text, /Talk with Isaac. — Scope agreed first/);
+  assert.match(ui.text, /TimingWithin a month/);
+  assert.match(ui.text, /Keep this draft while I check transport/);
+  await ui.click('← Back');
+  await ui.click('← Back');
+  assert.equal(ui.document.querySelector('#name').value, 'Synthetic Preview');
+  assert.equal(ui.document.querySelector('#timing').value, 'Within a month');
+  assert.equal(ui.document.querySelector('#context').value, 'Keep this draft while I check transport.');
+  await ui.review();
+  await ui.click('Yes, that should work');
+  assert.doesNotMatch(ui.text, /Local arrangements inquiry/);
+  await ui.click('Send my inquiry');
+  assert.equal(ui.calls.length, 1);
+  assert.equal(ui.calls[0].displayed_price, '$1,000');
+  assert.equal(ui.calls[0].timing, 'Within a month');
+  assert.equal(ui.calls[0].local_shop_arrangements, 'Yes, that should work');
+});
+
+test('direct entry restart clears the draft and previous service selection', async () => {
+  const ui = fixture('#inquire-assisted-sale');
+  await fillContact(ui);
+  await ui.select('timing', 'Later / just planning');
+  await ui.close();
+  await ui.changeHash('#inquire-local-check');
+  assert.equal(ui.document.querySelector('#name').value, '');
+  assert.equal(ui.document.querySelector('#timing').value, '');
+  assert.match(ui.text, /Check the car and the deal. — \$249 total/);
+  assert.doesNotMatch(ui.text, /A stronger listing|\$350/);
+  await ui.click('← See all starting points');
+  assert.equal(ui.title, 'How can I help?');
+  assert.equal(ui.calls.length, 0);
 });

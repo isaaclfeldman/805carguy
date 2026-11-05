@@ -27,6 +27,24 @@ const publicFiles = new Map([
   ['/terms', 'terms.html'],
   ['/privacy', 'privacy.html'],
   ['/sitemap.xml', 'sitemap.xml'],
+  ['/site.webmanifest', 'site.webmanifest'],
+  ['/assets/coastal-brighter-v3-1536.jpg', 'assets/coastal-brighter-v3-1536.jpg'],
+  ['/assets/coastal-brighter-v3-1536.webp', 'assets/coastal-brighter-v3-1536.webp'],
+  ['/assets/coastal-brighter-v3-640.jpg', 'assets/coastal-brighter-v3-640.jpg'],
+  ['/assets/coastal-brighter-v3-640.webp', 'assets/coastal-brighter-v3-640.webp'],
+  ['/assets/coastal-brighter-v3-960.jpg', 'assets/coastal-brighter-v3-960.jpg'],
+  ['/assets/coastal-brighter-v3-960.webp', 'assets/coastal-brighter-v3-960.webp'],
+  ['/assets/modern-plate-icon-v1-180.png', 'assets/modern-plate-icon-v1-180.png'],
+  ['/assets/modern-plate-icon-v1-192.png', 'assets/modern-plate-icon-v1-192.png'],
+  ['/assets/modern-plate-icon-v1-32.png', 'assets/modern-plate-icon-v1-32.png'],
+  ['/assets/modern-plate-icon-v1-512.png', 'assets/modern-plate-icon-v1-512.png'],
+  ['/assets/modern-plate-icon-v1-96.png', 'assets/modern-plate-icon-v1-96.png'],
+  ['/assets/modern-plate-v1-1200.png', 'assets/modern-plate-v1-1200.png'],
+  ['/assets/modern-plate-v1-1200.webp', 'assets/modern-plate-v1-1200.webp'],
+  ['/assets/modern-plate-v1-400.png', 'assets/modern-plate-v1-400.png'],
+  ['/assets/modern-plate-v1-400.webp', 'assets/modern-plate-v1-400.webp'],
+  ['/assets/modern-plate-v1-800.png', 'assets/modern-plate-v1-800.png'],
+  ['/assets/modern-plate-v1-800.webp', 'assets/modern-plate-v1-800.webp'],
   ['/styles.css', 'styles.css'],
   ['/intake.js', 'intake.js'],
   ['/inquiry-delivery.js', 'inquiry-delivery.js'],
@@ -40,8 +58,8 @@ const publicFiles = new Map([
   ['/assets/plate-240.png', 'assets/plate-240.png'],
   ['/assets/plate-480.png', 'assets/plate-480.png'],
   ['/assets/plate-720.png', 'assets/plate-720.png'],
-  ['/assets/plate-icon-96.png', 'assets/plate-icon-96.png'],
-  ['/assets/plate-touch-180.png', 'assets/plate-touch-180.png'],
+  ['/assets/plate-icon-96.png', 'assets/modern-plate-icon-v1-96.png'],
+  ['/assets/plate-touch-180.png', 'assets/modern-plate-icon-v1-180.png'],
   ['/isaac.jpg', 'isaac.jpg'],
   ['/brand-modern-plate.png', 'brand-modern-plate.png'],
   ['/brand-sunset-plate.png', 'brand-sunset-plate.png'],
@@ -76,7 +94,11 @@ app.use((req, res, next) => {
   const file = publicFiles.get(req.path);
   if (!file) return next();
 
-  res.sendFile(path.join(__dirname, file), (error) => {
+  // Versioned image names can be retained; documents and app code revalidate on reuse.
+  const versionedImage = /^\/assets\/(?:modern-plate-(?:icon-)?v1-|coastal-brighter-v3-)/.test(req.path);
+  res.set('Cache-Control', versionedImage ? 'public, max-age=31536000, immutable' : 'public, max-age=0, must-revalidate');
+  if (file === 'site.webmanifest') res.type('application/manifest+json');
+  res.sendFile(path.join(__dirname, file), { cacheControl: false }, (error) => {
     if (error) next(error);
   });
 });

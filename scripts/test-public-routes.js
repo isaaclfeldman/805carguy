@@ -42,6 +42,10 @@ const server = app.listen(0, '127.0.0.1');
       '/apple-touch-icon.png', '/brand-modern-plate.png', '/terms?ref=old-link',
       '/assets/plate-240.png', '/assets/plate-480.png', '/assets/plate-720.png',
       '/assets/plate-icon-96.png', '/assets/plate-touch-180.png',
+      '/site.webmanifest', '/assets/modern-plate-icon-v1-32.png', '/assets/modern-plate-icon-v1-96.png',
+      '/assets/modern-plate-icon-v1-180.png', '/assets/modern-plate-icon-v1-192.png', '/assets/modern-plate-icon-v1-512.png',
+      ...[400, 800, 1200].flatMap(size => ['webp', 'png'].map(ext => `/assets/modern-plate-v1-${size}.${ext}`)),
+      ...[640, 960, 1536].flatMap(size => ['webp', 'jpg'].map(ext => `/assets/coastal-brighter-v3-${size}.${ext}`)),
       '/assets/gearshift-600.jpg', '/assets/gearshift-1200.jpg', '/assets/dashboard-original.png',
       '/assets/juan-di-nella-coastal-drive.jpg', '/assets/juan-di-nella-coastal-drive-brighter-v2.png',
     ];
@@ -108,11 +112,14 @@ const server = app.listen(0, '127.0.0.1');
       assert.ok(html.includes(`rel="canonical" href="${url}"`));
       assert.doesNotMatch(html, /<meta[^>]+name="robots"[^>]+noindex/i);
       assert.equal((html.match(/<h1\b/g) || []).length, 1);
-      assert.match(html, /rel="icon"[^>]*sizes="96x96"[^>]*href="\/assets\/plate-icon-96\.png"/);
+      assert.match(html, /rel="icon"[^>]*sizes="96x96"[^>]*href="\/assets\/modern-plate-icon-v1-96\.png"/);
+      assert.match(html, /rel="apple-touch-icon"[^>]*href="\/assets\/modern-plate-icon-v1-180\.png"/);
+      assert.match(html, /rel="manifest" href="\/site\.webmanifest"/);
+      assert.doesNotMatch(html, /brand-sunset-plate|\/assets\/plate-(?:touch|icon)-/);
       const wordmarks = [...html.matchAll(/<a[^>]+class="wordmark wordmark-modern"[^>]*>([\s\S]*?)<\/a>/g)];
       assert.ok(wordmarks.length >= 1, url + ' has a branded home link');
       for (const [, wordmark] of wordmarks) {
-        assert.match(wordmark, /src="\/brand-modern-plate\.png"/);
+        assert.match(wordmark, /src="\/assets\/modern-plate-v1-800\.png"/);
         assert.match(wordmark, /width="1774" height="887"/);
         assert.match(wordmark, /alt="805CarGuy modern California license plate logo"/);
       }
@@ -128,7 +135,7 @@ const server = app.listen(0, '127.0.0.1');
     for (const intent of ['buyStart', 'sell', 'research']) {
       assert.ok(homepage.includes('data-start="' + intent + '"'), 'Homepage offers ' + intent);
     }
-    assert.match(homepage, /src="\/assets\/juan-di-nella-coastal-drive-brighter-v2\.png"/);
+    assert.match(homepage, /src="\/assets\/coastal-brighter-v3-1536\.jpg"/);
     for (const [file, budget] of [['gearshift-600.jpg', 70000], ['gearshift-1200.jpg', 200000]]) {
       assert.ok(fs.statSync(path.join(__dirname, '../assets', file)).size < budget, file + ' transfer budget');
     }
@@ -183,6 +190,11 @@ const server = app.listen(0, '127.0.0.1');
       ['plate-240.png', 240, 120, 50000], ['plate-480.png', 480, 240, 160000],
       ['plate-720.png', 720, 360, 330000], ['plate-icon-96.png', 96, 96, 15000],
       ['plate-touch-180.png', 180, 180, 35000],
+      ['modern-plate-icon-v1-32.png', 32, 32, 2500],
+      ['modern-plate-icon-v1-96.png', 96, 96, 12000],
+      ['modern-plate-icon-v1-180.png', 180, 180, 30000],
+      ['modern-plate-icon-v1-192.png', 192, 192, 35000],
+      ['modern-plate-icon-v1-512.png', 512, 512, 150000],
     ]) {
       const png = fs.readFileSync(path.join(__dirname, '../assets', file));
       assert.equal(png.subarray(1, 4).toString(), 'PNG', file);
@@ -190,6 +202,35 @@ const server = app.listen(0, '127.0.0.1');
       assert.equal(png.readUInt32BE(20), height, file);
       assert.ok(png.length < maxBytes, `${file} is ${png.length} bytes`);
     }
+    const manifestResponse = await check('/site.webmanifest', 200);
+    assert.match(manifestResponse.headers.get('content-type'), /application\/manifest\+json/);
+    const manifest = await manifestResponse.json();
+    assert.equal(manifest.start_url, '/');
+    assert.equal(manifest.display, 'browser');
+    assert.deepEqual(manifest.icons.map(icon => icon.sizes), ['192x192', '512x512']);
+    for (const icon of manifest.icons) await check(icon.src, 200);
+    assert.deepEqual(fs.readFileSync(path.join(__dirname, '../apple-touch-icon.png')), fs.readFileSync(path.join(__dirname, '../assets/modern-plate-icon-v1-180.png')));
+    for (const asset of ['/assets/coastal-brighter-v3-1536.webp', '/assets/modern-plate-v1-800.webp', '/assets/modern-plate-icon-v1-180.png']) {
+      const response = await check(asset, 200);
+      assert.equal(response.headers.get('cache-control'), 'public, max-age=31536000, immutable');
+    }
+    for (const asset of ['/', '/pricing', '/styles.css', '/intake.js', '/site.webmanifest', '/apple-touch-icon.png']) {
+      const response = await check(asset, 200);
+      assert.equal(response.headers.get('cache-control'), 'public, max-age=0, must-revalidate');
+    }
+    // Cached older HTML/bookmarks requesting the legacy URLs also receive the new plate.
+    for (const [legacy, modern] of [['/assets/plate-touch-180.png', 'modern-plate-icon-v1-180.png'], ['/assets/plate-icon-96.png', 'modern-plate-icon-v1-96.png']]) {
+      const response = await check(legacy, 200);
+      assert.equal(response.headers.get('cache-control'), 'public, max-age=0, must-revalidate');
+      assert.deepEqual(Buffer.from(await response.arrayBuffer()), fs.readFileSync(path.join(__dirname, '../assets', modern)));
+    }
+    const heroBytes = fs.statSync(path.join(__dirname, '../assets/coastal-brighter-v3-1536.webp')).size;
+    const plateBytes = fs.statSync(path.join(__dirname, '../assets/modern-plate-v1-1200.webp')).size;
+    assert.ok(heroBytes + plateBytes < 150000, 'largest new hero + logo stay below 150 KB');
+    assert.match(homepage, /type="image\/webp" srcset="\/assets\/coastal-brighter/);
+    assert.match(homepage, /fetchpriority="high"/);
+    assert.match(pricing, /Compare the options/);
+    assert.match(pricing, /5% · \$1,000 minimum/);
     for (const match of services.matchAll(/href="(\/[^"#?]*)(?:[?#][^"]*)?"/g)) {
       await check(match[1] || '/', 200);
     }

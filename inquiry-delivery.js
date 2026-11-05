@@ -50,6 +50,7 @@
       scope: offer.caption,
       timing: answers.timing || '',
       review_type: answers.reviewType || '',
+      local_shop_arrangements: ['Yes, that should work', 'No, the car is elsewhere', 'Not sure yet'].includes(answers.local) ? answers.local : '',
       message: contact.context || '',
       location: contact.location || '',
       vehicle_location: contact.vehicleLocation || '',

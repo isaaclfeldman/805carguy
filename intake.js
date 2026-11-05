@@ -67,6 +67,8 @@
     },
   };
 
+  const directPackages = new Set(['localAssessment', 'complete', 'assistedSell', 'fullSell']);
+
   const remoteEntries = {
     choose: ['Help choosing a car', 'https://www.yourotto.com/expert-help#inquire-choose'],
     search: ['A nationwide used-car search', 'https://www.yourotto.com/expert-help#inquire-search'],
@@ -169,6 +171,10 @@
     if (intents[next]) selection.intent = intents[next];
     if (purchasePreferences[next]) selection.purchasePreference = purchasePreferences[next];
     if (next === 'inquiry') {
+      if (answers.directDetailsReviewed) {
+        go('summary', { ...selection, package: 'inquiry', reviewType: 'Local arrangements inquiry' });
+        return;
+      }
       go('timing', { ...selection, package: 'inquiry' });
       return;
     }
@@ -177,7 +183,7 @@
       return;
     }
     if (!questions[next] && packages[next]) {
-      go('result', { ...selection, package: next });
+      go(answers.directDetailsReviewed ? 'summary' : 'result', { ...selection, package: next });
     } else go(next, selection);
   }
 
@@ -192,8 +198,10 @@
     });
     content.append(options);
     if (current === 'start') {
-      content.append(button('I’d rather just tell you what I need', () => pick('General inquiry', 'inquiry'), 'text-button'));
-      content.append(button('Explore remote help with OttO →', () => pick('Remote help with OttO', 'remote'), 'text-button'));
+      const secondary = node('div', undefined, 'flow-secondary-actions');
+      secondary.append(button('I’d rather just tell you what I need', () => pick('General inquiry', 'inquiry'), 'text-button'));
+      secondary.append(button('Explore remote help with OttO →', () => pick('Remote help with OttO', 'remote'), 'text-button'));
+      content.append(secondary);
     }
   }
 
@@ -265,10 +273,11 @@
     const saved = answers.contact || {};
     const inputs = {};
     const selling = answers.intent === 'Sell';
-    inputs.context = field(form, { id: 'context', label: selling ? 'What are you selling? (optional)' : answers.package === 'evaluate' ? 'The listing, offer, or question (optional)' : 'What should I know? (optional)', type: 'textarea', value: saved.context, hint: selling ? 'Year, make, model, mileage, condition, and anything else useful.' : 'Your priorities, budget, a listing link, or any deadline. “Not sure yet” is fine.' });
-    inputs.location = field(form, { id: 'location', label: 'Your city or ZIP code (optional)', value: saved.location, autocomplete: 'address-level2' });
-    inputs.vehicleLocation = field(form, { id: 'vehicle-location', label: 'Where is the car? (optional)', value: saved.vehicleLocation, hint: 'City or ZIP code, if known. You can live elsewhere and ask about a car near San Luis Obispo.' });
-    inputs.heardAbout = field(form, { id: 'heard-about', label: 'How did you hear about me? (optional)', value: saved.heardAbout, hint: 'A search, a person, OttO, social media, or somewhere else.' });
+    if (answers.directEntry) {
+      const offer = packages[answers.package];
+      content.append(node('p', offer.title + ' — ' + offer.price, 'result-kicker'));
+      content.append(node('p', offer.caption, 'input-hint'));
+    }
     inputs.name = field(form, { id: 'name', label: 'Your name', value: saved.name, required: true, autocomplete: 'name' });
     const methodLabel = node('label', 'How should I reach you?', 'flow-label');
     methodLabel.htmlFor = 'contact-method';
@@ -283,6 +292,26 @@
     inputs.method.value = saved.method || 'Email me';
     form.append(methodLabel, inputs.method);
     inputs.reply = field(form, { id: 'reply', label: 'Email', type: 'text', value: saved.reply, required: true, hint: 'Isaac will use this to reply about your inquiry. Please don’t include payment details or sensitive documents.' });
+    inputs.reply.setAttribute('autocapitalize', 'none');
+    inputs.reply.spellcheck = false;
+    if (answers.directEntry) {
+      const timingLabel = node('label', 'When would you like help? (optional)', 'flow-label');
+      timingLabel.htmlFor = 'timing';
+      inputs.timing = node('select', undefined, 'flow-input');
+      inputs.timing.id = 'timing';
+      inputs.timing.name = 'timing';
+      ['', 'As soon as practical', 'Within a month', 'Later / just planning'].forEach(value => {
+        const option = node('option', value || 'No timing selected');
+        option.value = value;
+        inputs.timing.append(option);
+      });
+      inputs.timing.value = saved.timing || '';
+      form.append(timingLabel, inputs.timing);
+    }
+    inputs.context = field(form, { id: 'context', label: selling ? 'What are you selling? (optional)' : answers.package === 'localAssessment' ? 'The listing, offer, or question (optional)' : 'What should I know? (optional)', type: 'textarea', value: saved.context, hint: selling ? 'Year, make, model, mileage, condition, and anything else useful.' : 'Your priorities, budget, a listing link, or any deadline. “Not sure yet” is fine.' });
+    inputs.location = field(form, { id: 'location', label: 'Your city or ZIP code (optional)', value: saved.location, autocomplete: 'address-level2' });
+    inputs.vehicleLocation = field(form, { id: 'vehicle-location', label: 'Where is the car? (optional)', value: saved.vehicleLocation, hint: 'City or ZIP code, if known. You can live elsewhere and ask about a car near San Luis Obispo.' });
+    inputs.heardAbout = field(form, { id: 'heard-about', label: 'How did you hear about me? (optional)', value: saved.heardAbout, hint: 'A search, a person, OttO, social media, or somewhere else.' });
     const honey = node('div', undefined, 'form-honey');
     honey.setAttribute('aria-hidden', 'true');
     inputs.website = field(honey, { id: 'website', label: 'Leave this field empty', value: saved.website });
@@ -297,8 +326,12 @@
       form.querySelector('label[for="reply"]').textContent = useEmail ? 'Email' : 'Phone number';
     };
     updateReply();
-    const save = () => { answers.contact = Object.fromEntries(Object.entries(inputs).map(([key, input]) => [key, input.value.trim()])); };
+    const save = () => {
+      answers.contact = Object.fromEntries(Object.entries(inputs).map(([key, input]) => [key, input.value.trim()]));
+      if (inputs.timing) answers.timing = inputs.timing.value;
+    };
     form.addEventListener('input', save);
+    inputs.timing?.addEventListener('change', save);
     inputs.method.addEventListener('change', () => { updateReply(); save(); });
     form.addEventListener('submit', event => {
       event.preventDefault();
@@ -314,11 +347,13 @@
         return;
       }
       save();
-      go('summary');
+      if (answers.directEntry && answers.package === 'complete') {
+        go('local', { directDetailsReviewed: true });
+      } else go('summary');
     });
     inputs.name.addEventListener('input', () => inputs.name.setCustomValidity(''));
     inputs.reply.addEventListener('input', () => inputs.reply.setCustomValidity(''));
-    const submit = node('button', 'Review my inquiry →', 'button');
+    const submit = node('button', answers.directEntry && answers.package === 'complete' ? 'Continue to local arrangements →' : 'Review my inquiry →', 'button');
     submit.type = 'submit';
     form.append(submit);
     content.append(form);
@@ -338,6 +373,7 @@
       ['Payment and terms', offer.terms],
       ['Timing', answers.timing],
       ['Review type', answers.reviewType],
+      ['SLO shop arrangements', answers.local],
       ['Details', answers.contact.context],
       ['Your location', answers.contact.location],
       ['Vehicle location', answers.contact.vehicleLocation],
@@ -454,6 +490,10 @@
         answers.package = packageKey;
         current = 'result';
       } else current = step === 'all' ? 'start' : step;
+      if (directPackages.has(packageKey)) {
+        answers.directEntry = true;
+        current = 'details';
+      }
     }
     dialog.showModal();
     document.body.style.overflow = 'hidden';
@@ -479,7 +519,7 @@
     ['#inquire-sell', 'sell'],
     ['#inquire-local-check', 'localAssessment'],
     ['#inquire-new-buy', 'newBuy'],
-    ['#inquire-found-buy', 'local'],
+    ['#inquire-found-buy', 'complete'],
     ['#inquire-remote', 'remote'],
     ['#inquire-second-opinion', 'evaluateResult'],
     ['#inquire-new-review', 'newReview'],
@@ -488,7 +528,7 @@
     ['#inquire-evaluate', 'evaluate'],
     ['#inquire-search', 'searchResult'],
     ['#inquire-buy', 'buy'],
-    ['#inquire-complete', 'local'],
+    ['#inquire-complete', 'complete'],
     ['#inquire-assisted-sale', 'assistedSell'],
     ['#inquire-full-sale', 'fullSell'],
   ]);

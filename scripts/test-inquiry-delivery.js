@@ -112,3 +112,16 @@ test('purchase preference is retained only for buying inquiries and known choice
     assert.equal(buildPayload({ ...answers, intent, purchasePreference: 'Open to Either' }, offer, '805-preference').purchase_preference, '');
   }
 });
+
+
+test('shop arrangements carry only the existing explicit choice without inferring eligibility', () => {
+  for (const local of ['Yes, that should work', 'No, the car is elsewhere', 'Not sure yet']) {
+    const data = buildPayload({ ...answers, local }, offer, '805-local');
+    assert.equal(data.local_shop_arrangements, local);
+    assert.equal(data.service, offer.title);
+    assert.equal(data.displayed_price, offer.price);
+  }
+  for (const local of [undefined, '', 'unknown choice', 'customer@example.invalid', { name: 'Customer' }]) {
+    assert.equal(buildPayload({ ...answers, local }, offer, '805-local').local_shop_arrangements, '');
+  }
+});

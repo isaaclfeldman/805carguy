@@ -277,3 +277,22 @@ dialog{border:1px solid var(--rule);border-radius:12px;padding:0;width:min(620px
  .coastal-direction .dashboard-hero .hero-location{position:static;max-width:18rem;margin:36px 0 0;font-size:.6875rem}
  .coastal-direction .dashboard-hero .path-label{font-size:1rem}
 }
+
+/* Keep action icons consistent across device fonts and leave room between choices. */
+.arrow-icon{display:inline-block;width:1em;height:1em;flex:0 0 1em;vertical-align:-.1em;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+.flow-secondary-actions{display:grid;gap:12px;justify-items:start;margin-top:16px}
+.flow-secondary-actions .text-button{max-width:100%}
+.flow-actions{gap:12px}
+.pricing-overview{margin-block:34px}
+.pricing-overview h2{font-size:30px;margin-bottom:20px}
+.pricing-comparison{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+.pricing-comparison article{display:flex;flex-direction:column;padding:22px;background:var(--paper);border:1px solid var(--rule);border-radius:5px}
+.pricing-comparison h3{font-size:16px;margin:0 0 12px;line-height:1.4}
+.pricing-comparison p{font-size:14px;line-height:1.6;margin:0 0 14px}
+.pricing-comparison .comparison-price{font-size:21px;font-weight:600;line-height:1.35}
+.pricing-comparison .comparison-payment{margin:auto 0 0;padding-top:14px;border-top:1px solid var(--rule);font-size:13px}
+.pricing-overview .comparison-note{font-size:13px;color:var(--muted)}
+@media(max-width:540px){.pricing-comparison{grid-template-columns:1fr}.pricing-comparison article{padding:20px}}
+
+/* Responsive sources should not introduce a line box around positioned artwork. */
+.dashboard-hero>picture,.wordmark-modern>picture{display:contents}

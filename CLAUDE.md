@@ -38,3 +38,13 @@ GitHub: `https://github.com/isaaclfeldman/805carguy`. Main auto-deploys to Railw
 Isaac approved a simpler, friendly personal 805CarGuy site: “Buying or selling a car? I can help.” with Buy new / Buy used / Sell paths and his existing portrait. OttO remains the supporting nationwide remote guidance/search destination. New-car help covers choosing/comparing models, understanding dealer quotes and discussing next steps; agree on scope, fee and payment timing before work. No new fixed-price new-car package or new broker, financing, sourcing or delivery promise is authorized. Preserve the established used-car/selling offers and terms.
 
 The approved modern-plate logo-only snapshot was published as `6dd0860`. The broader personal homepage, imagery and inquiry changes on `codex/805-personal-preview` are LOCAL PREVIEW ONLY pending separate publication approval. No inquiry sends or payments are authorized.
+
+
+## November 4 review candidate
+
+User explicitly retained $249 used-car inspection and $350 assisted sale, with other prices/scopes unchanged, and requested the modern license-plate mobile bookmark icon. The audit changes are prepared on an isolated branch based on published `0fa0633`. Contact-first direct inquiries, pricing comparison, OttO explanation, action spacing/icons, responsive assets and cache headers are local only. Do not treat older publication approvals as approval for this candidate. No push, merge, deployment, third-party account mutation or real inquiry send is authorized in this task.
+
+
+## November 5 publication authorization
+
+Isaac explicitly requested “publish please” after being asked whether to publish the prepared changes to 805carguy.com. This supersedes the November 4 candidate-only restriction for this exact reviewed implementation. Publish through the existing GitHub main → Railway workflow; preserve all prices and service scope. Verify live pages, inquiry review and bookmark assets without sending an inquiry. No unrelated service/account changes are authorized.
