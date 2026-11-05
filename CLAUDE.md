@@ -48,3 +48,16 @@ User explicitly retained $249 used-car inspection and $350 assisted sale, with o
 ## November 5 publication authorization
 
 Isaac explicitly requested “publish please” after being asked whether to publish the prepared changes to 805carguy.com. This supersedes the November 4 candidate-only restriction for this exact reviewed implementation. Publish through the existing GitHub main → Railway workflow; preserve all prices and service scope. Verify live pages, inquiry review and bookmark assets without sending an inquiry. No unrelated service/account changes are authorized.
+
+
+## November 5 follow-up polish — local review only
+
+The audit release `36f24a9` is already published. Isaac requested further polishing; this follow-up on `codex/polish-20261105` is **not authorized for publication** until he asks. Do not reuse the earlier publication approval for these new changes.
+
+The pricing overview now links directly to each service inquiry. Name/contact and an optional car question stay visible; optional timing/location/referral fields are in a native disclosure, reopening when a saved draft contains those values. Existing email/Instagram contact links are available before review, with email also shown on Home/About. Remaining intake arrows use decorative CSS strokes. All prices, service scope, delivery destination, review/Send separation and in-memory-only contact handling remain unchanged.
+
+No sample report, testimonials, response-time commitment, phone number, real inquiry delivery test or upstream account change was invented or performed. Those items require actual material, business decisions or specific authorization. Review evidence is in the task's `outputs/polish-20261105/` directory.
+
+## November 5 follow-up publication authorization
+
+Isaac answered “yes” when asked whether to publish the tested shorter inquiry form, direct pricing-card buttons, earlier contact options and cleaner arrows. This supersedes the follow-up local-only restriction for this exact reviewed candidate. Publish through the existing GitHub main → Railway workflow and verify the live site without sending an inquiry. The $249 assessment, $350 assisted sale and all other prices and service terms remain unchanged. No unrelated account or domain changes are authorized.

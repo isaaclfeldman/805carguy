@@ -133,8 +133,23 @@
     return item;
   }
 
+  function setActionLabel(item, text) {
+    const backArrow = text.startsWith('← ');
+    const forwardArrow = text.endsWith(' →');
+    if (!backArrow && !forwardArrow) {
+      item.textContent = text;
+      return;
+    }
+    const arrow = node('span', backArrow ? '←' : '→', backArrow ? 'action-arrow action-arrow--back' : 'action-arrow');
+    arrow.setAttribute('aria-hidden', 'true');
+    // The CSS draws the arrow; its hidden text keeps copied labels intelligible.
+    const label = document.createTextNode(backArrow ? text.slice(1) : text.slice(0, -1));
+    item.replaceChildren(...(backArrow ? [arrow, label] : [label, arrow]));
+  }
+
   function button(text, action, className = 'button') {
-    const item = node('button', text, className);
+    const item = node('button', undefined, className);
+    setActionLabel(item, text);
     item.type = 'button';
     item.addEventListener('click', action);
     return item;
@@ -190,6 +205,7 @@
   function renderQuestion() {
     const question = questions[current];
     heading(question.title, question.lede);
+    if (current === 'start') appendContactFallback();
     const options = node('div', undefined, 'flow-options');
     question.options.forEach(([label, detail, next]) => {
       const option = button('', () => pick(label, next), 'flow-option');
@@ -228,7 +244,8 @@
     const [label, url] = remoteEntries[answers.remoteEntry] || remoteEntries.remote;
     heading('Nationwide help is with OttO.', label + ' from the 805CarGuy team.');
     content.append(node('p', '805CarGuy is for local hands-on work. OttO handles remote guidance and search, with the scope and price agreed before work starts.', 'flow-lede'));
-    const link = node('a', 'Continue to OttO →', 'button');
+    const link = node('a', undefined, 'button');
+    setActionLabel(link, 'Continue to OttO →');
     link.href = url;
     content.append(link);
     content.append(node('p', 'This opens OttO. No inquiry details are sent or transferred by this link.', 'input-hint'));
@@ -278,6 +295,7 @@
       content.append(node('p', offer.title + ' — ' + offer.price, 'result-kicker'));
       content.append(node('p', offer.caption, 'input-hint'));
     }
+    appendContactFallback();
     inputs.name = field(form, { id: 'name', label: 'Your name', value: saved.name, required: true, autocomplete: 'name' });
     const methodLabel = node('label', 'How should I reach you?', 'flow-label');
     methodLabel.htmlFor = 'contact-method';
@@ -294,6 +312,12 @@
     inputs.reply = field(form, { id: 'reply', label: 'Email', type: 'text', value: saved.reply, required: true, hint: 'Isaac will use this to reply about your inquiry. Please don’t include payment details or sensitive documents.' });
     inputs.reply.setAttribute('autocapitalize', 'none');
     inputs.reply.spellcheck = false;
+    inputs.context = field(form, { id: 'context', label: selling ? 'What are you selling? (optional)' : answers.package === 'localAssessment' ? 'The listing, offer, or question (optional)' : 'What should I know? (optional)', type: 'textarea', value: saved.context, hint: selling ? 'Year, make, model, mileage, condition, and anything else useful.' : 'Your priorities, budget, a listing link, or any deadline. “Not sure yet” is fine.' });
+    const optional = node('details', undefined, 'optional-details');
+    const optionalKeys = ['location', 'vehicleLocation', 'heardAbout'];
+    if (answers.directEntry) optionalKeys.push('timing');
+    optional.open = optionalKeys.some(key => Boolean(saved[key]?.trim()));
+    optional.append(node('summary', answers.directEntry ? 'Timing, location & referral (optional)' : 'Location & referral (optional)'));
     if (answers.directEntry) {
       const timingLabel = node('label', 'When would you like help? (optional)', 'flow-label');
       timingLabel.htmlFor = 'timing';
@@ -306,18 +330,17 @@
         inputs.timing.append(option);
       });
       inputs.timing.value = saved.timing || '';
-      form.append(timingLabel, inputs.timing);
+      optional.append(timingLabel, inputs.timing);
     }
-    inputs.context = field(form, { id: 'context', label: selling ? 'What are you selling? (optional)' : answers.package === 'localAssessment' ? 'The listing, offer, or question (optional)' : 'What should I know? (optional)', type: 'textarea', value: saved.context, hint: selling ? 'Year, make, model, mileage, condition, and anything else useful.' : 'Your priorities, budget, a listing link, or any deadline. “Not sure yet” is fine.' });
-    inputs.location = field(form, { id: 'location', label: 'Your city or ZIP code (optional)', value: saved.location, autocomplete: 'address-level2' });
-    inputs.vehicleLocation = field(form, { id: 'vehicle-location', label: 'Where is the car? (optional)', value: saved.vehicleLocation, hint: 'City or ZIP code, if known. You can live elsewhere and ask about a car near San Luis Obispo.' });
-    inputs.heardAbout = field(form, { id: 'heard-about', label: 'How did you hear about me? (optional)', value: saved.heardAbout, hint: 'A search, a person, OttO, social media, or somewhere else.' });
+    inputs.location = field(optional, { id: 'location', label: 'Your city or ZIP code (optional)', value: saved.location, autocomplete: 'address-level2' });
+    inputs.vehicleLocation = field(optional, { id: 'vehicle-location', label: 'Where is the car? (optional)', value: saved.vehicleLocation, hint: 'City or ZIP code, if known. You can live elsewhere and ask about a car near San Luis Obispo.' });
+    inputs.heardAbout = field(optional, { id: 'heard-about', label: 'How did you hear about me? (optional)', value: saved.heardAbout, hint: 'A search, a person, OttO, social media, or somewhere else.' });
     const honey = node('div', undefined, 'form-honey');
     honey.setAttribute('aria-hidden', 'true');
     inputs.website = field(honey, { id: 'website', label: 'Leave this field empty', value: saved.website });
     inputs.website.tabIndex = -1;
     inputs.website.autocomplete = 'off';
-    form.append(honey);
+    form.append(honey, optional);
     const updateReply = () => {
       const useEmail = inputs.method.value === 'Email me';
       inputs.reply.type = useEmail ? 'email' : 'tel';
@@ -353,7 +376,8 @@
     });
     inputs.name.addEventListener('input', () => inputs.name.setCustomValidity(''));
     inputs.reply.addEventListener('input', () => inputs.reply.setCustomValidity(''));
-    const submit = node('button', answers.directEntry && answers.package === 'complete' ? 'Continue to local arrangements →' : 'Review my inquiry →', 'button');
+    const submit = node('button', undefined, 'button');
+    setActionLabel(submit, answers.directEntry && answers.package === 'complete' ? 'Continue to local arrangements →' : 'Review my inquiry →');
     submit.type = 'submit';
     form.append(submit);
     content.append(form);
@@ -407,7 +431,7 @@
       content.setAttribute('aria-busy', 'true');
       content.querySelectorAll('button').forEach(item => { item.disabled = true; });
       document.querySelector('#close-flow').disabled = true;
-      send.textContent = 'Sending…';
+      setActionLabel(send, 'Sending…');
       status.textContent = 'Sending your inquiry. Please keep this page open.';
       try {
         const payload = delivery.buildPayload({ ...answers, attribution: window.InquiryAttribution?.get() }, offer, reference);
@@ -417,7 +441,7 @@
         history = [];
         render();
       } catch {
-        send.textContent = 'Try sending again';
+        setActionLabel(send, 'Try sending again');
         status.className = 'send-status error';
         status.textContent = 'We couldn’t confirm that your inquiry was sent. Your details are still here. Retrying may send a duplicate; you can also email or message Isaac below.';
         content.querySelectorAll('button').forEach(item => { item.disabled = false; });
@@ -434,7 +458,7 @@
   }
 
   function appendContactFallback() {
-    const fallback = node('p', 'Prefer another way? ', 'input-hint');
+    const fallback = node('p', 'Prefer another way? ', 'input-hint contact-fallback');
     const email = node('a', 'Email Isaac');
     email.href = 'mailto:isaac@carofslo.com';
     const instagram = node('a', 'Message on Instagram');

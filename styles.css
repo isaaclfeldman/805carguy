@@ -296,3 +296,23 @@ dialog{border:1px solid var(--rule);border-radius:12px;padding:0;width:min(620px
 
 /* Responsive sources should not introduce a line box around positioned artwork. */
 .dashboard-hero>picture,.wordmark-modern>picture{display:contents}
+
+/* Keep the first inquiry short; optional context stays available without a long scroll. */
+.optional-details{margin-block:16px 20px;border-block:1px solid var(--rule)}
+.optional-details>summary{padding:12px 2px;min-height:44px;font-size:13px;font-weight:600;cursor:pointer;line-height:1.5}
+.optional-details>summary:focus-visible{outline:3px solid #a87d3f;outline-offset:4px}
+.optional-details[open]{padding-bottom:8px}
+.optional-details .flow-label:first-of-type{margin-top:8px}
+.optional-details .input-hint:last-child{margin-bottom:8px}
+.contact-fallback{font-size:12px;line-height:1.7;margin-block:12px 20px}
+.contact-fallback a{display:inline-block;padding-block:4px}
+.direct-contact{font-size:14px;overflow-wrap:anywhere}
+.direct-contact a{display:inline-block;padding-block:6px}
+.personal-contact .direct-contact{margin-bottom:0}
+.pricing-comparison .comparison-cta{align-self:stretch;margin-top:18px;text-align:left;justify-content:space-between;font-size:13px;gap:12px}
+/* Draw directional arrows with strokes, independent of the system font. */
+.action-arrow{display:inline-block;position:relative;flex:0 0 14px;width:14px;height:14px;font-size:0;vertical-align:middle}
+.action-arrow::before{content:"";position:absolute;top:6px;left:1px;width:11px;border-top:1.5px solid currentColor}
+.action-arrow::after{content:"";position:absolute;right:1px;top:3px;width:6px;height:6px;border-top:1.5px solid currentColor;border-right:1.5px solid currentColor;transform:rotate(45deg)}
+.action-arrow--back{transform:rotate(180deg)}
+.back-button{display:inline-flex;align-items:center;gap:6px}

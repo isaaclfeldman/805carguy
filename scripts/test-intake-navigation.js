@@ -599,3 +599,103 @@ test('direct entry restart clears the draft and previous service selection', asy
   assert.equal(ui.title, 'How can I help?');
   assert.equal(ui.calls.length, 0);
 });
+
+test('optional details are folded below visible contact and context with review immediately after', async () => {
+  for (const hash of ['#inquire-local-check', '#inquire-complete', '#inquire-assisted-sale', '#inquire-full-sale']) {
+    const ui = fixture(hash);
+    const form = ui.document.querySelector('form');
+    const optional = form.querySelector('details');
+    assert.equal(optional.className, 'optional-details');
+    assert.equal(optional.open, false);
+    assert.equal(optional.querySelector('summary').textContent, 'Timing, location & referral (optional)');
+    assert.deepEqual(form.children.filter(child => ['input', 'select', 'textarea'].includes(child.tagName)).map(child => child.id), ['name', 'contact-method', 'reply', 'context']);
+    assert.deepEqual(optional.children.filter(child => ['input', 'select'].includes(child.tagName)).map(child => child.id), ['timing', 'location', 'vehicle-location', 'heard-about']);
+    for (const control of optional.children.filter(child => ['input', 'select'].includes(child.tagName))) assert.equal(Boolean(control.required), false);
+    assert.equal(form.children[form.children.indexOf(optional) + 1].type, 'submit');
+    await fillContact(ui);
+    await ui.review();
+    if (hash === '#inquire-complete') await ui.click('Yes, that should work');
+    assert.equal(ui.title, 'Your inquiry, at a glance.');
+    assert.equal(ui.calls.length, 0);
+  }
+});
+
+test('folded optional fields retain values through review and Back, and reopen only when populated', async () => {
+  const ui = fixture('#inquire-local-check', { production: true });
+  const optional = ui.document.querySelector('details');
+  optional.open = true;
+  await fillContact(ui);
+  await ui.fill('context', 'Visible question stays outside optional details.');
+  await ui.select('timing', 'Within a month');
+  await ui.fill('location', '93401');
+  await ui.fill('vehicle-location', 'San Luis Obispo');
+  await ui.fill('heard-about', 'A friend');
+  optional.open = false;
+  await ui.review();
+  assert.match(ui.text, /TimingWithin a month/);
+  assert.match(ui.text, /Your location93401/);
+  assert.match(ui.text, /Vehicle locationSan Luis Obispo/);
+  assert.match(ui.text, /How you found meA friend/);
+  await ui.click('← Back');
+  assert.equal(ui.document.querySelector('details').open, true);
+  for (const [id, value] of [['timing', 'Within a month'], ['location', '93401'], ['vehicle-location', 'San Luis Obispo'], ['heard-about', 'A friend']]) {
+    assert.equal(ui.document.querySelector('#' + id).value, value);
+  }
+  await ui.select('timing', '');
+  for (const id of ['location', 'vehicle-location', 'heard-about']) await ui.fill(id, '');
+  await ui.review();
+  await ui.click('← Back');
+  assert.equal(ui.document.querySelector('details').open, false);
+  assert.equal(ui.document.querySelector('#context').value, 'Visible question stays outside optional details.');
+  await ui.review();
+  await ui.click('Send my inquiry');
+  assert.equal(ui.calls.length, 1);
+  for (const key of ['timing', 'location', 'vehicle_location', 'how_you_found_me']) assert.equal(ui.calls[0][key], '');
+});
+
+test('guided contact keeps its chosen timing while optional locations remain folded', async () => {
+  const ui = fixture('#inquire-general');
+  await ui.click('Within a month');
+  const optional = ui.document.querySelector('details');
+  assert.equal(optional.open, false);
+  assert.equal(optional.querySelector('summary').textContent, 'Location & referral (optional)');
+  assert.equal(optional.querySelector('#timing'), null);
+  await fillContact(ui);
+  await ui.review();
+  assert.match(ui.text, /TimingWithin a month/);
+  await ui.click('← Back');
+  assert.equal(ui.document.querySelector('details').open, false);
+  assert.equal(ui.calls.length, 0);
+});
+
+test('email and Instagram alternatives are available before choices and before contact fields', () => {
+  for (const hash of ['#inquire', '#inquire-local-check']) {
+    const ui = fixture(hash);
+    const content = ui.document.querySelector('#flow-content');
+    const fallback = content.children.find(child => child.className === 'input-hint contact-fallback');
+    assert.ok(fallback);
+    assert.deepEqual(fallback.querySelectorAll('a').map(link => link.href), ['mailto:isaac@carofslo.com', 'https://ig.me/m/805carguy']);
+    const nextControls = content.children.find(child => child.tagName === 'form' || child.className === 'flow-options');
+    assert.ok(content.children.indexOf(fallback) < content.children.indexOf(nextControls));
+    assert.equal(ui.calls.length, 0);
+  }
+});
+
+test('action arrows are decorative spans while readable labels and navigation remain intact', async () => {
+  const ui = fixture('#inquire-local-check');
+  const submit = ui.document.querySelector('form').querySelectorAll('button')[0];
+  assert.equal(submit.textContent, 'Review my inquiry →');
+  const arrow = submit.querySelector('span');
+  assert.equal(arrow.className, 'action-arrow');
+  assert.equal(arrow.attributes['aria-hidden'], 'true');
+  await ui.click('← See all starting points');
+  await ui.click('Explore remote help with OttO');
+  const remote = ui.links()[0];
+  assert.equal(remote.textContent, 'Continue to OttO →');
+  assert.equal(remote.querySelector('span').attributes['aria-hidden'], 'true');
+  const back = ui.document.querySelector('#flow-content').querySelectorAll('button').find(button => button.textContent === '← Back');
+  assert.equal(back.querySelector('span').className, 'action-arrow action-arrow--back');
+  assert.equal(back.querySelector('span').attributes['aria-hidden'], 'true');
+  await back.click();
+  assert.equal(ui.title, 'How can I help?');
+});
