@@ -36,6 +36,8 @@ const server = app.listen(0, '127.0.0.1');
   try {
     const publicRoutes = [
       '/', '/about', '/services', '/pricing', '/terms', '/privacy', '/robots.txt', '/sitemap.xml',
+      '/contact', '/faq', '/service-area', '/contact.js', '/assets/og-805carguy-v1.png',
+      ...[120, 480, 720].flatMap(size => ['webp', 'jpg'].map(ext => `/assets/isaac-v2-${size}.${ext}`)),
       '/new-car-buying-help', '/used-car-evaluation', '/inquiry-attribution.js',
       '/styles.css', '/intake.js', '/inquiry-delivery.js', '/assets/isaac.jpg',
       '/isaac.jpg', '/logo.png', '/logo.jpg', '/logo-header.png', '/og.png',
@@ -58,6 +60,9 @@ const server = app.listen(0, '127.0.0.1');
       ['/used-car-evaluation.html', '/used-car-evaluation'], ['/used-car-evaluation/', '/used-car-evaluation'],
       ['/terms.html', '/terms'], ['/terms/', '/terms'],
       ['/privacy.html', '/privacy'], ['/privacy/', '/privacy'],
+      ['/contact.html', '/contact'], ['/contact/', '/contact'],
+      ['/faq.html', '/faq'], ['/faq/', '/faq'],
+      ['/service-area.html', '/service-area'], ['/service-area/', '/service-area'],
       ['/services.html?ref=old-link', '/services?ref=old-link'],
     ]) {
       const response = await check(route, 301);
@@ -75,7 +80,9 @@ const server = app.listen(0, '127.0.0.1');
       '/terms/missing', '/styles.css/missing', '/unknown.html',
     ]) {
       const response = await check(route, 404);
-      assert.match(await response.text(), /Page not found/);
+      const notFound = await response.text();
+      assert.match(notFound, /Page not found/);
+      assert.match(notFound, /href="\/contact"/);
     }
     for (const route of ['/terms', '/privacy', '/pricing', '/styles.css']) {
       const response = await check(route, 200, { method: 'HEAD' });
@@ -103,7 +110,7 @@ const server = app.listen(0, '127.0.0.1');
     assert.match(sitemap.headers.get('content-type'), /xml/);
     const locations = [...(await sitemap.text()).matchAll(/<loc>(.*?)<\/loc>/g)].map(match => match[1]);
     assert.equal(new Set(locations).size, locations.length);
-    assert.deepEqual(locations.map(url => new URL(url).pathname).sort(), ['/', '/about', '/new-car-buying-help', '/pricing', '/privacy', '/services', '/terms', '/used-car-evaluation']);
+    assert.deepEqual(locations.map(url => new URL(url).pathname).sort(), ['/', '/about', '/contact', '/faq', '/new-car-buying-help', '/pricing', '/privacy', '/service-area', '/services', '/terms', '/used-car-evaluation']);
     for (const url of locations) {
       const page = await check(new URL(url).pathname, 200, { headers: productionHeaders });
       assert.equal(page.headers.get('x-robots-tag'), null);
@@ -176,7 +183,7 @@ const server = app.listen(0, '127.0.0.1');
       assert.doesNotMatch(html, /One agreed quote|No \$249 tier is approved|Pickup and delivery are not included/, name);
     }
     for (const fragment of serviceEntries) assert.ok(intake.includes(`['${fragment}',`), fragment);
-    for (const route of ['/new-car-buying-help', '/used-car-evaluation', '/pricing']) {
+    for (const route of ['/new-car-buying-help', '/used-car-evaluation', '/pricing', '/faq', '/contact', '/service-area']) {
       const html = await (await check(route, 200)).text();
       for (const link of html.matchAll(/href="(\/[^\"]*)"/g)) {
         const url = new URL(link[1], origin);
@@ -210,7 +217,7 @@ const server = app.listen(0, '127.0.0.1');
     assert.deepEqual(manifest.icons.map(icon => icon.sizes), ['192x192', '512x512']);
     for (const icon of manifest.icons) await check(icon.src, 200);
     assert.deepEqual(fs.readFileSync(path.join(__dirname, '../apple-touch-icon.png')), fs.readFileSync(path.join(__dirname, '../assets/modern-plate-icon-v1-180.png')));
-    for (const asset of ['/assets/coastal-brighter-v3-1536.webp', '/assets/modern-plate-v1-800.webp', '/assets/modern-plate-icon-v1-180.png']) {
+    for (const asset of ['/assets/coastal-brighter-v3-1536.webp', '/assets/modern-plate-v1-800.webp', '/assets/modern-plate-icon-v1-180.png', '/assets/isaac-v2-480.webp', '/assets/og-805carguy-v1.png']) {
       const response = await check(asset, 200);
       assert.equal(response.headers.get('cache-control'), 'public, max-age=31536000, immutable');
     }

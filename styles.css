@@ -316,3 +316,33 @@ dialog{border:1px solid var(--rule);border-radius:12px;padding:0;width:min(620px
 .action-arrow::after{content:"";position:absolute;right:1px;top:3px;width:6px;height:6px;border-top:1.5px solid currentColor;border-right:1.5px solid currentColor;transform:rotate(45deg)}
 .action-arrow--back{transform:rotate(180deg)}
 .back-button{display:inline-flex;align-items:center;gap:6px}
+
+/* Easy contact: the address is visible and copyable even on a device with no mail app. */
+.copy-button{display:inline-flex;align-items:center;min-height:32px;padding:4px 10px;border:1px solid #c9c2b2;border-radius:4px;background:var(--paper);color:var(--navy);font-size:12px;font-weight:600;line-height:1.2;vertical-align:middle;cursor:pointer}
+.copy-button:hover{background:#f1ede4}
+.copy-button.copied{background:#edf1e8;border-color:#b7c7a8}
+.contact-fallback{font-size:13px;line-height:1.8}
+.contact-fallback a{overflow-wrap:anywhere}
+.contact-fallback .copy-button{margin-inline:2px 4px}
+.direct-contact .copy-button{margin-left:6px}
+.direct-contact{line-height:1.9}
+.area-note{font-size:13px;max-width:550px}
+.contact-options{display:grid;gap:14px;max-width:620px;margin-block:22px 10px}
+.contact-option{display:grid;gap:8px;padding:22px 24px;background:var(--paper);border:1px solid var(--rule);border-radius:5px}
+.contact-option h2{font-size:24px;margin:0;letter-spacing:-.5px}
+.contact-option p{margin:0;font-size:14px}
+.contact-option .row{display:flex;flex-wrap:wrap;align-items:center;gap:12px;margin-top:6px}
+.contact-option .row a:not(.button){font-size:17px;font-weight:600;overflow-wrap:anywhere}
+.contact-option .row .copy-button{min-height:36px}
+.service-guide .contact-option .button{margin-top:0}
+.faq-page details{border-bottom:1px solid var(--rule);padding:16px 0}
+.faq-page summary{font-size:17px;font-weight:600;line-height:1.45;cursor:pointer;padding-right:8px}
+.faq-page details p{margin:12px 0 0;font-size:15px;max-width:760px}
+.faq-page details p+p{margin-top:8px;font-size:14px}
+.visually-hidden{position:absolute;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;clip:rect(0 0 0 0);clip-path:inset(50%);white-space:nowrap;border:0}
+.personal-contact>picture{display:contents}
+.not-found{max-width:760px;padding-block:64px 80px}
+.not-found h1{font-family:var(--serif);font-size:clamp(36px,6vw,54px);font-weight:400;line-height:1.12;letter-spacing:-1.5px;margin:0 0 18px}
+.not-found p{margin:0 0 18px}
+@media(max-width:700px){.contact-option{padding:18px}.contact-option h2{font-size:22px}.faq-page summary{font-size:16px}}
+.send-fallback{margin:4px 0 18px}.send-fallback .button{font-size:13px;padding:12px 16px;gap:12px}

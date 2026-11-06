@@ -6,6 +6,7 @@
   else root.InquiryDelivery = api;
 })(typeof globalThis === 'object' ? globalThis : this, function (attribution) {
   const endpoint = 'https://formsubmit.co/ajax/3bee3a7c1f40b430ff307881c018db32';
+  const relayEndpoint = '/inquiry';
   const productionHosts = new Set(['www.805carguy.com', '805carguy.com']);
 
   function isProduction(location) {
@@ -64,12 +65,12 @@
     };
   }
 
-  async function submit(payload, options = {}) {
+  async function request(url, payload, options, accepted) {
     const fetchImpl = options.fetchImpl || fetch;
     const controller = new AbortController();
     const timer = setTimeout(() => controller.abort(), options.timeoutMs || 20000);
     try {
-      const response = await fetchImpl(endpoint, {
+      const response = await fetchImpl(url, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
         body: JSON.stringify(payload),
@@ -78,12 +79,21 @@
       });
       if (!response.ok) throw new Error('Submission not accepted');
       const result = await response.json();
-      if (!result || (result.success !== true && result.success !== 'true')) {
-        throw new Error('Submission not confirmed');
-      }
-      return { accepted: true };
+      if (!accepted(result)) throw new Error('Submission not confirmed');
     } finally {
       clearTimeout(timer);
+    }
+  }
+
+  async function submit(payload, options = {}) {
+    try {
+      await request(endpoint, payload, options, result => Boolean(result) && (result.success === true || result.success === 'true'));
+      return { accepted: true, channel: 'formsubmit' };
+    } catch (directError) {
+      if (options.relay === false) throw directError;
+      // When the form service cannot be reached from the browser, the site's own server retries delivery.
+      await request(options.relayUrl || relayEndpoint, payload, options, result => Boolean(result) && result.accepted === true);
+      return { accepted: true, channel: 'relay' };
     }
   }
 

@@ -61,3 +61,14 @@ No sample report, testimonials, response-time commitment, phone number, real inq
 ## November 5 follow-up publication authorization
 
 Isaac answered “yes” when asked whether to publish the tested shorter inquiry form, direct pricing-card buttons, earlier contact options and cleaner arrows. This supersedes the follow-up local-only restriction for this exact reviewed candidate. Publish through the existing GitHub main → Railway workflow and verify the live site without sending an inquiry. The $249 assessment, $350 assisted sale and all other prices and service terms remain unchanged. No unrelated account or domain changes are authorized.
+
+## November 5 (evening) — easy contact, lead-delivery backup, local SEO pages
+
+Isaac asked to make contacting him really easy without publishing personal information, after reporting that the “Email Isaac” mailto link did nothing on his device. Changes in this release:
+
+- Email is shown as the address itself with a Copy button (homepage, About, Contact, inside the intake dialog), so it works on devices without a mail app. `contact.js` handles any `[data-copy]` control. No phone number is published; Call/Text buttons wait on a non-personal number (Google Voice is the proposal).
+- New pages: `/contact`, `/faq` (FAQPage schema, local-intent questions in Isaac’s voice) and `/service-area` (SLO city vs. SLO County vs. Santa Maria by quote; OttO beyond). All three are in the sitemap, footer links and the attribution allowlists.
+- Homepage: local-intent title/description, `AutomotiveBusiness` schema (SLO address locality only, areaServed cities, four offers), Open Graph image `assets/og-805carguy-v1.png` (1200×630), tagline “Your car guy in San Luis Obispo and across the Central Coast”, responsive portrait variants `assets/isaac-v2-{120,480,720}` (the full-size portrait was the largest mobile download).
+- Lead delivery: FormSubmit returned HTTP 522 from about 23:40 UTC on 2026-11-05 and was still down 45 minutes later, which made the live form fail. The browser now falls back to `POST /inquiry` on the site’s own server, which retries FormSubmit server-side and then Resend when `RESEND_API_KEY` (optional `INQUIRY_TO`, `INQUIRY_FROM`) is set in Railway. If every channel fails, the inquiry is written to the deployment log (`inquiry-undelivered`) so the lead survives, and the dialog offers “Email this inquiry instead” (prefilled mailto) and “Copy inquiry details”. `/privacy` describes this. Only form fields are relayed; origin check, honeypot and a 12/hour per-IP limit apply.
+- 404 page now carries the site header, footer and links.
+- All prices and service scopes are unchanged. Tests: `npm test` covers the relay (`scripts/test-inquiry-relay.js`).

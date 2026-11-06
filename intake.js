@@ -11,6 +11,7 @@
   let submitted = false;
   let reference;
   const delivery = window.InquiryDelivery;
+  const contactEmail = 'isaac@carofslo.com';
   const canSend = delivery.isProduction(window.location);
   document.querySelector('#preview-banner').hidden = canSend;
 
@@ -421,6 +422,10 @@
     content.append(privacy);
     const status = node('p', '', 'send-status');
     status.setAttribute('role', 'status');
+    const fallbackActions = node('div', undefined, 'flow-actions send-fallback');
+    fallbackActions.hidden = true;
+    const personalLabels = new Set(['Looking to', 'Car preference', 'Interested in', 'Timing', 'Review type', 'SLO shop arrangements', 'Details', 'Your location', 'Vehicle location', 'How you found me', 'Name', 'Preferred reply', 'Email', 'Phone']);
+    const inquiryText = () => rows.filter(([label, value]) => value && personalLabels.has(label)).map(([label, value]) => label + ': ' + value).join('\n') + '\nInquiry reference: ' + reference;
     const send = button('Send my inquiry →', async () => {
       if (sending || submitted || !canSend) return;
       if (answers.contact.website) {
@@ -443,7 +448,19 @@
       } catch {
         setActionLabel(send, 'Try sending again');
         status.className = 'send-status error';
-        status.textContent = 'We couldn’t confirm that your inquiry was sent. Your details are still here. Retrying may send a duplicate; you can also email or message Isaac below.';
+        status.textContent = 'We couldn’t confirm that your inquiry was sent. Your details are still here. Send it by email in one tap below, or try again (a retry may send a duplicate).';
+        if (!fallbackActions.children.length) {
+          // Nothing is lost: the same details can go by email or be pasted anywhere.
+          const text = inquiryText();
+          const mail = node('a', undefined, 'button secondary');
+          setActionLabel(mail, 'Email this inquiry instead →');
+          mail.href = 'mailto:' + contactEmail + '?subject=' + encodeURIComponent('Inquiry from ' + answers.contact.name) + '&body=' + encodeURIComponent(text);
+          const copyAll = node('button', 'Copy inquiry details', 'button secondary');
+          copyAll.type = 'button';
+          copyAll.dataset.copy = text;
+          fallbackActions.append(mail, copyAll);
+        }
+        fallbackActions.hidden = false;
         content.querySelectorAll('button').forEach(item => { item.disabled = false; });
       } finally {
         sending = false;
@@ -453,19 +470,24 @@
     });
     send.disabled = !canSend;
     if (!canSend) status.textContent = 'Release preview: sending is disabled. Your inquiry has not been sent.';
-    content.append(send, status);
+    content.append(send, status, fallbackActions);
     appendContactFallback();
   }
 
   function appendContactFallback() {
-    const fallback = node('p', 'Prefer another way? ', 'input-hint contact-fallback');
-    const email = node('a', 'Email Isaac');
-    email.href = 'mailto:isaac@carofslo.com';
+    // The address stays visible and copyable: a mailto link alone does nothing on devices without a mail app.
+    const fallback = node('p', 'Prefer another way? Email ', 'input-hint contact-fallback');
+    const email = node('a', contactEmail);
+    email.href = 'mailto:' + contactEmail;
+    const copy = node('button', 'Copy', 'copy-button');
+    copy.type = 'button';
+    copy.dataset.copy = contactEmail;
+    copy.setAttribute('aria-label', 'Copy email address');
     const instagram = node('a', 'Message on Instagram');
     instagram.href = 'https://ig.me/m/805carguy';
     instagram.target = '_blank';
     instagram.rel = 'noopener noreferrer';
-    fallback.append(email, document.createTextNode(' · '), instagram);
+    fallback.append(email, document.createTextNode(' '), copy, document.createTextNode(' · '), instagram);
     content.append(fallback);
   }
 

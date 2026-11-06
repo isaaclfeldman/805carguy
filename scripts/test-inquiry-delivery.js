@@ -46,7 +46,7 @@ test('incomplete or invalid preferences are never posted', () => {
   assert.throws(()=>buildPayload({...answers,contact:{name:'A',reply:'b',method:'Carrier pigeon'}},offer,'id'));
 });
 test('only explicit provider acceptance is success', async () => {
-  for(const success of [true,'true']) assert.deepEqual(await submit({name:'QA'},{fetchImpl:async()=>({ok:true,json:async()=>({success})})}),{accepted:true});
+  for(const success of [true,'true']) assert.deepEqual(await submit({name:'QA'},{fetchImpl:async()=>({ok:true,json:async()=>({success})})}),{accepted:true,channel:'formsubmit'});
   for(const result of [{success:false},{success:'false'},{message:'Please activate'},null,{}]) await assert.rejects(submit({}, {fetchImpl:async()=>({ok:true,json:async()=>result})}));
 });
 test('4xx, 5xx, malformed bodies and network errors do not claim success', async () => {
@@ -124,4 +124,20 @@ test('shop arrangements carry only the existing explicit choice without inferrin
   for (const local of [undefined, '', 'unknown choice', 'customer@example.invalid', { name: 'Customer' }]) {
     assert.equal(buildPayload({ ...answers, local }, offer, '805-local').local_shop_arrangements, '');
   }
+});
+
+test('the site relay is used only after the direct form service fails, and must confirm acceptance', async () => {
+  const urls = [];
+  const relayed = await submit({ name: 'QA' }, { fetchImpl: async url => {
+    urls.push(url);
+    if (url.startsWith('https://formsubmit.co/')) return { ok: false, status: 522 };
+    return { ok: true, json: async () => ({ accepted: true, channel: 'formsubmit' }) };
+  } });
+  assert.deepEqual(relayed, { accepted: true, channel: 'relay' });
+  assert.deepEqual(urls, ['https://formsubmit.co/ajax/3bee3a7c1f40b430ff307881c018db32', '/inquiry']);
+  await assert.rejects(submit({}, { fetchImpl: async url => url.startsWith('https://formsubmit.co/') ? { ok: false, status: 503 } : { ok: true, json: async () => ({ accepted: false }) } }));
+  await assert.rejects(submit({}, { fetchImpl: async url => url.startsWith('https://formsubmit.co/') ? { ok: false, status: 503 } : { ok: false, status: 502 } }));
+  await assert.rejects(submit({}, { relay: false, fetchImpl: async () => ({ ok: false, status: 503 }) }));
+  const direct = await submit({}, { fetchImpl: async () => ({ ok: true, json: async () => ({ success: true }) }) });
+  assert.deepEqual(direct, { accepted: true, channel: 'formsubmit' });
 });
