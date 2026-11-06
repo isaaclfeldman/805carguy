@@ -11,7 +11,7 @@
   let submitted = false;
   let reference;
   const delivery = window.InquiryDelivery;
-  const contactEmail = 'isaac@carofslo.com';
+  const contactEmail = 'isaac@805carguy.com';
   const canSend = delivery.isProduction(window.location);
   document.querySelector('#preview-banner').hidden = canSend;
 
