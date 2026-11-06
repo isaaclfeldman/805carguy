@@ -674,7 +674,7 @@ test('email and Instagram alternatives are available before choices and before c
     const content = ui.document.querySelector('#flow-content');
     const fallback = content.children.find(child => child.className === 'input-hint contact-fallback');
     assert.ok(fallback);
-    assert.deepEqual(fallback.querySelectorAll('a').map(link => link.href), ['mailto:isaac@carofslo.com', 'https://ig.me/m/805carguy']);
+    assert.deepEqual(fallback.querySelectorAll('a').map(link => link.href), ['tel:+14242354525', 'mailto:isaac@carofslo.com', 'https://ig.me/m/805carguy']);
     const nextControls = content.children.find(child => child.tagName === 'form' || child.className === 'flow-options');
     assert.ok(content.children.indexOf(fallback) < content.children.indexOf(nextControls));
     assert.equal(ui.calls.length, 0);
