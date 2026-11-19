@@ -477,8 +477,8 @@
   function appendContactFallback() {
     // The address stays visible and copyable: a mailto link alone does nothing on devices without a mail app.
     const fallback = node('p', 'Prefer another way? ', 'input-hint contact-fallback');
-    const call = node('a', 'Call or text 424.235.4525');
-    call.href = 'tel:+14242354525';
+    const call = node('a', 'Text Isaac');
+    call.href = 'sms:+14242354525';
     fallback.append(call, document.createTextNode(' · Email '));
     const email = node('a', contactEmail);
     email.href = 'mailto:' + contactEmail;
