@@ -77,7 +77,6 @@ dialog{border:1px solid var(--rule);border-radius:12px;padding:0;width:min(620px
 .personal-contact{display:grid;grid-template-columns:220px minmax(0,640px);gap:60px;align-items:center;justify-content:center;padding-block:64px}
 .isaac-portrait{display:block;width:100%;height:auto;border-radius:5px}
 .personal-contact h2{margin-bottom:20px}
-.personal-contact .otto-note{font-size:12px;max-width:550px;margin:22px 0 0}
 @media(max-width:1000px){.personal-hero{gap:32px}.personal-hero h1{font-size:50px}.automotive-detail{height:350px}.personal-paths .button{padding-inline:12px;gap:6px}.buy-options{gap:30px}.used-car-option{padding-left:28px}.personal-contact{gap:40px;grid-template-columns:190px minmax(0,1fr)}}
 @media(max-width:760px){.personal-hero{grid-template-columns:1fr;gap:28px;padding-block:32px 38px}.personal-hero-copy{max-width:600px}.personal-hero h1{font-size:clamp(40px,7.4vw,54px);letter-spacing:-1.8px;max-width:560px;margin-bottom:20px}.personal-hero .intro{font-size:16px;max-width:560px;margin-bottom:22px}.personal-hero .eyebrow{font-size:10px}.automotive-detail{height:220px;object-position:50% 57%}.personal-paths{max-width:500px}.personal-paths .button{font-size:13px;padding:14px 12px}.home-section{padding-block:38px}.home-section-heading{margin-bottom:25px}.buy-options,.sell-options{grid-template-columns:1fr;gap:27px}.used-car-option,.sell-options article+article{border-left:0;padding-left:0;border-top:1px solid var(--rule);padding-top:27px}.home-section p{font-size:14px}.used-offer p{font-size:14px}.used-offer .offer-detail{font-size:12px}.personal-contact{grid-template-columns:100px minmax(0,1fr);gap:22px;align-items:start}.personal-contact>div{display:contents}.personal-contact .isaac-portrait{grid-column:1;grid-row:1 / span 2}.personal-contact .eyebrow{grid-column:2;align-self:end;margin:0;font-size:9px}.personal-contact h2{grid-column:2;align-self:start;margin:0}.personal-contact p:not(.eyebrow),.personal-contact .button{grid-column:1 / -1}.personal-contact p{margin-bottom:0}.personal-contact .button{justify-self:start}.personal-contact .otto-note{margin-top:0}.selling-next{align-items:flex-start;flex-direction:column;gap:16px}.selling-next>a{min-height:36px;display:inline-flex;align-items:center}}
 @media(max-width:360px){.personal-paths{gap:7px}.personal-paths .button{font-size:12px;padding-inline:10px}.personal-hero h1{font-size:40px}.automotive-detail{height:185px}.home-section h2{font-size:29px}.personal-contact{gap:18px}}
@@ -352,3 +351,39 @@ dialog{border:1px solid var(--rule);border-radius:12px;padding:0;width:min(620px
 body{padding-bottom:84px}
 @media(prefers-reduced-motion:reduce){.text-isaac-fab{transition:none}.text-isaac-fab:hover{transform:none}}
 @media print{.text-isaac-fab{display:none}body{padding-bottom:0}}
+
+/* Services page, shopper-first layout (Nov 19, 2026): personal hero with portrait, "Where are you right now?" chooser, three reach-out steps, and scope notes folded into "The details" disclosures. No prices or terms live only in CSS. */
+.guide-hero{display:grid;grid-template-columns:minmax(0,1fr) 250px;gap:52px;align-items:start;margin-bottom:40px}
+.guide-hero h1{margin-bottom:22px}
+.service-guide .guide-hero .intro{max-width:620px;margin-bottom:0}
+.guide-assurances{list-style:none;margin:24px 0 0;padding:0;display:grid;gap:8px;font-size:15px;font-weight:600;line-height:1.45}
+.guide-assurances li,.guide-section .guide-checklist li{position:relative;padding-left:26px}
+.guide-assurances li::before,.guide-section .guide-checklist li::before{content:"";position:absolute;left:3px;top:.42em;width:11px;height:6px;border-left:2px solid #a87d3f;border-bottom:2px solid #a87d3f;transform:rotate(-45deg)}
+.guide-portrait{margin:4px 0 0}
+.guide-portrait img{display:block;width:100%;height:auto;aspect-ratio:4/5;object-fit:cover;object-position:50% 18%;border-radius:6px;background:#e9e4d8}
+.guide-portrait figcaption{margin-top:12px;font-size:13px;line-height:1.5;color:var(--muted)}
+.guide-portrait figcaption strong{display:block;font-size:15px;color:var(--navy)}
+.guide-paths{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-block:4px 20px}
+.guide-paths a{display:flex;flex-direction:column;gap:6px;min-height:132px;padding:20px 22px;background:var(--paper);border:1px solid var(--rule);border-radius:6px;text-decoration:none;transition:border-color .15s,box-shadow .15s}
+.guide-paths a:hover{border-color:var(--navy);box-shadow:0 4px 16px rgba(18,32,52,.08)}
+.guide-paths .path-situation{font-family:var(--serif);font-size:22px;line-height:1.3;letter-spacing:-.3px}
+.guide-paths .path-answer{font-size:14px;line-height:1.5;color:#4b5662}
+.guide-paths .path-price{margin-top:auto;padding-top:10px;font-size:14px;font-weight:650}
+.service-guide .guide-start-note{font-size:14px;margin:8px 0 0;color:#4b5662}
+.guide-section .guide-steps{list-style:none;counter-reset:guide-step;margin:6px 0 0;padding:0;max-width:none;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:28px}
+.guide-section .guide-steps li{counter-increment:guide-step;margin:0;font-size:14px;line-height:1.6}
+.guide-section .guide-steps li::before{content:counter(guide-step);display:flex;align-items:center;justify-content:center;width:30px;height:30px;margin-bottom:12px;border-radius:50%;background:var(--navy);color:var(--ivory);font-size:14px;font-weight:650}
+.guide-section .guide-steps strong{display:block;font-size:16px;margin-bottom:4px}
+.service-guide .guide-lead{font-size:18px;line-height:1.6;margin-top:0}
+.guide-section .guide-checklist{list-style:none;padding-left:0;margin-block:18px}
+.guide-section .guide-checklist li{margin-block:9px}
+.service-guide .guide-reassure{font-size:13px;color:var(--muted);margin:10px 0 0}
+.service-guide details.guide-fine{margin-top:22px;padding:14px 0 0;border-top:1px solid var(--rule);border-bottom:0}
+.service-guide details.guide-fine summary{font-size:14px;min-height:32px;color:#4b5662}
+.service-guide details.guide-fine p{color:#4b5662}
+@media(max-width:860px){.guide-hero{grid-template-columns:minmax(0,1fr) 190px;gap:32px}.guide-section .guide-steps{gap:20px}}
+@media(max-width:700px){.guide-hero{grid-template-columns:1fr;gap:18px;margin-bottom:28px}.guide-portrait{order:-1;display:flex;align-items:center;gap:12px;margin:0}.guide-portrait picture{flex:0 0 64px}.guide-portrait img{width:64px;height:64px;aspect-ratio:1;border-radius:50%;object-position:50% 12%}.guide-portrait figcaption{margin:0}.service-guide .guide-hero .intro{font-size:16px}.guide-assurances{font-size:14px;margin-top:20px}.guide-paths{grid-template-columns:1fr;gap:10px}.guide-paths a{min-height:0;padding:16px 18px}.guide-paths .path-situation{font-size:20px}.guide-section .guide-steps{grid-template-columns:1fr;gap:18px}.guide-section .guide-steps li{position:relative;padding-left:44px}.guide-section .guide-steps li::before{position:absolute;left:0;top:0;margin:0}.service-guide .guide-lead{font-size:16px}.service-guide .guide-checklist li{font-size:14px}}
+@media(prefers-reduced-motion:reduce){.guide-paths a{transition:none}}
+.about-hero .hero-promise{border-left:3px solid #a87d3f;padding-left:14px}
+.about-hero .hero-start{display:flex;flex-wrap:wrap;align-items:center;gap:10px 16px;margin:22px 0 0}
+.about-hero .hero-start span{font-size:13px;color:#59626b}
