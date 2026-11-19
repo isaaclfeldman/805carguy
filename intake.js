@@ -71,14 +71,14 @@
   const directPackages = new Set(['localAssessment', 'complete', 'assistedSell', 'fullSell']);
 
   const remoteEntries = {
-    choose: ['Help choosing a car', 'https://www.yourotto.com/expert-help#inquire-choose'],
-    search: ['A nationwide used-car search', 'https://www.yourotto.com/expert-help#inquire-search'],
-    searchResult: ['A nationwide used-car search', 'https://www.yourotto.com/expert-help#inquire-search'],
-    newBuy: ['Nationwide remote car-buying guidance', 'https://www.yourotto.com/services'],
-    newReview: ['A written second opinion', 'https://www.yourotto.com/expert-help#inquire-evaluate'],
-    usedReview: ['A written second opinion', 'https://www.yourotto.com/expert-help#inquire-evaluate'],
-    evaluateResult: ['A written second opinion', 'https://www.yourotto.com/expert-help#inquire-evaluate'],
-    remote: ['Nationwide remote guidance and search', 'https://www.yourotto.com/services']
+    choose: 'Remote help choosing a car',
+    search: 'A nationwide used-car search',
+    searchResult: 'A nationwide used-car search',
+    newBuy: 'Nationwide remote car-buying guidance',
+    newReview: 'A remote written second opinion',
+    usedReview: 'A remote written second opinion',
+    evaluateResult: 'A remote written second opinion',
+    remote: 'Nationwide remote help'
   };
 
   const questions = {
@@ -99,11 +99,11 @@
     ]},
     buy: { title: 'Where is the help needed?', options: [
       ['Complete local used-car help', 'Choosing through purchase, with one SLO shop inspection.', 'local'],
-      ['Remote guidance or search', 'Continue with OttO’s nationwide services.', 'remote']
+      ['Remote guidance or search', 'In development. Ask what I can do now.', 'remote']
     ]},
     local: { title: 'Could the car come to San Luis Obispo?', lede: 'The $1,000 complete local package includes one inspection at Certified Auto Repair. Seller permission, access, travel and scheduling still need to be confirmed. Transport is not included.', options: [
       ['Yes, that should work', 'Plan around an inspection at the SLO shop.', 'complete'],
-      ['No, the car is elsewhere', 'Explore remote guidance through OttO.', 'remote'],
+      ['No, the car is elsewhere', 'Ask whether I can help where the car is.', 'inquiry'],
       ['Not sure yet', 'Ask about the location and local arrangements first.', 'inquiry']
     ]},
     sell: { title: 'How much of the sale should I handle?', options: [
@@ -112,7 +112,7 @@
     ]},
     evaluate: { title: 'What would you like checked?', options: [
       ['A local car and the deal', '$249 total for one car in SLO city; elsewhere requires a separate quote.', 'localAssessment'],
-      ['Listings or written offers remotely', 'Ask OttO about a written second opinion.', 'evaluateResult']
+      ['Listings or written offers remotely', 'In development. Ask what I can do now.', 'evaluateResult']
     ]}
   };
 
@@ -217,7 +217,6 @@
     if (current === 'start') {
       const secondary = node('div', undefined, 'flow-secondary-actions');
       secondary.append(button('I’d rather just tell you what I need', () => pick('General inquiry', 'inquiry'), 'text-button'));
-      secondary.append(button('Explore remote help with OttO →', () => pick('Remote help with OttO', 'remote'), 'text-button'));
       content.append(secondary);
     }
   }
@@ -242,15 +241,11 @@
   }
 
   function renderRemoteHandoff() {
-    const [label, url] = remoteEntries[answers.remoteEntry] || remoteEntries.remote;
-    heading('Nationwide help is with OttO.', label + ' from the 805CarGuy team.');
-    content.append(node('p', '805CarGuy is for local hands-on work. OttO handles remote guidance and search, with the scope and price agreed before work starts.', 'flow-lede'));
-    const link = node('a', undefined, 'button');
-    setActionLabel(link, 'Continue to OttO →');
-    link.href = url;
-    content.append(link);
-    content.append(node('p', 'This opens OttO. No inquiry details are sent or transferred by this link.', 'input-hint'));
-    content.append(button('Ask about local arrangements instead', () => pick('Local arrangements inquiry', 'inquiry'), 'text-button'));
+    const label = remoteEntries[answers.remoteEntry] || remoteEntries.remote;
+    heading('Remote help is in development.', label + ' isn’t available yet.');
+    content.append(node('p', '805CarGuy is local, hands-on work in and around San Luis Obispo. If you or the car are farther away, ask and I’ll tell you whether I can help.', 'flow-lede'));
+    content.append(button('Ask me anyway →', () => pick('Local arrangements inquiry', 'inquiry')));
+    content.append(node('p', 'No payment or commitment to send an inquiry.', 'input-hint'));
   }
 
   function renderTiming() {
@@ -335,7 +330,7 @@
     }
     inputs.location = field(optional, { id: 'location', label: 'Your city or ZIP code (optional)', value: saved.location, autocomplete: 'address-level2' });
     inputs.vehicleLocation = field(optional, { id: 'vehicle-location', label: 'Where is the car? (optional)', value: saved.vehicleLocation, hint: 'City or ZIP code, if known. You can live elsewhere and ask about a car near San Luis Obispo.' });
-    inputs.heardAbout = field(optional, { id: 'heard-about', label: 'How did you hear about me? (optional)', value: saved.heardAbout, hint: 'A search, a person, OttO, social media, or somewhere else.' });
+    inputs.heardAbout = field(optional, { id: 'heard-about', label: 'How did you hear about me? (optional)', value: saved.heardAbout, hint: 'A search, a person, social media, or somewhere else.' });
     const honey = node('div', undefined, 'form-honey');
     honey.setAttribute('aria-hidden', 'true');
     inputs.website = field(honey, { id: 'website', label: 'Leave this field empty', value: saved.website });

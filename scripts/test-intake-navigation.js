@@ -97,28 +97,26 @@ function fixture(hash = '#inquire', { production = false } = {}) {
   };
 }
 
-test('legacy remote deep links offer exact OttO destinations without redirecting or sending', () => {
-  const entries = [
-    ['#inquire-choose', '#inquire-choose'], ['#inquire-search', '#inquire-search'],
-    ['#inquire-new-review', '#inquire-evaluate'], ['#inquire-used-review', '#inquire-evaluate'],
-    ['#inquire-second-opinion', '#inquire-evaluate'], ['#inquire-new-buy', null], ['#inquire-remote', null]
-  ];
-  for (const [hash, target] of entries) {
+test('legacy remote deep links show the in-development notice without linking out or sending', () => {
+  const entries = ['#inquire-choose', '#inquire-search', '#inquire-new-review', '#inquire-used-review', '#inquire-second-opinion', '#inquire-new-buy', '#inquire-remote'];
+  for (const hash of entries) {
     const ui = fixture(hash);
-    assert.equal(ui.title, 'Nationwide help is with OttO.');
-    assert.equal(ui.links()[0].href, target ? 'https://www.yourotto.com/expert-help' + target : 'https://www.yourotto.com/services');
+    assert.equal(ui.title, 'Remote help is in development.');
+    assert.equal(ui.links().length, 0);
     assert.equal(ui.location.hash, hash);
-    assert.match(ui.text, /No inquiry details are sent or transferred/);
+    assert.match(ui.text, /isn’t available yet/);
+    assert.doesNotMatch(ui.text, /OttO/i);
     assert.equal(ui.document.querySelectorAll('form').length, 0);
     assert.equal(ui.calls.length, 0);
   }
 });
 
-test('legacy evaluation allows a local assessment or explicit remote handoff with working Back', async () => {
+test('legacy evaluation allows a local assessment or the in-development notice with working Back', async () => {
   const ui = fixture('#inquire-evaluate');
   assert.equal(ui.title, 'What would you like checked?');
   await ui.click('Listings or written offers remotely');
-  assert.equal(ui.links()[0].href, 'https://www.yourotto.com/expert-help#inquire-evaluate');
+  assert.equal(ui.title, 'Remote help is in development.');
+  assert.equal(ui.links().length, 0);
   await ui.click('← Back');
   assert.equal(ui.title, 'What would you like checked?');
   await ui.click('A local car and the deal');
@@ -148,13 +146,14 @@ test('complete local entry requires shop eligibility and preserves inspection an
   assert.equal(ui.calls.length, 0);
 });
 
-test('nonlocal car goes to OttO choice; uncertain location remains a local inquiry', async () => {
+test('nonlocal car and uncertain location both remain a local inquiry', async () => {
   const outside = fixture('#inquire-complete');
   await fillContact(outside);
   await outside.review();
   await outside.click('No, the car is elsewhere');
-  assert.equal(outside.title, 'Nationwide help is with OttO.');
-  assert.equal(outside.links()[0].href, 'https://www.yourotto.com/services');
+  assert.equal(outside.title, 'Your inquiry, at a glance.');
+  assert.match(outside.text, /SLO shop arrangementsNo, the car is elsewhere/);
+  assert.doesNotMatch(outside.text, /OttO/i);
   const unknown = fixture('#inquire-complete');
   await fillContact(unknown);
   await unknown.review();
@@ -250,13 +249,12 @@ async function finishDraft(ui, context = 'Synthetic draft, never sent to a provi
   await ui.review();
 }
 
-test('starting choices are Buy, Sell and Research, with a secondary explicit OttO handoff', async () => {
+test('starting choices are Buy, Sell and Research, with no remote handoff offered', async () => {
   const ui = fixture();
   const choices = ui.document.querySelector('#flow-content').querySelectorAll('button').filter(button => button.className === 'flow-option');
   assert.deepEqual(choices.map(button => button.children[0].textContent), ['Buy', 'Sell', 'Research']);
-  await ui.click('Explore remote help with OttO');
-  assert.equal(ui.title, 'Nationwide help is with OttO.');
-  assert.equal(ui.links()[0].href, 'https://www.yourotto.com/services');
+  assert.doesNotMatch(ui.text, /OttO|remote/i);
+  assert.equal(ui.links().filter(link => /yourotto/.test(link.href || '')).length, 0);
   assert.equal(ui.calls.length, 0);
 });
 
@@ -451,7 +449,8 @@ test('close and reopen reset Research and Either drafts; legacy Buy location cho
   await ui.changeHash('#inquire-buy');
   assert.equal(ui.title, 'Where is the help needed?');
   await ui.click('Remote guidance or search');
-  assert.equal(ui.links()[0].href, 'https://www.yourotto.com/services');
+  assert.equal(ui.title, 'Remote help is in development.');
+  assert.equal(ui.links().length, 0);
   assert.equal(ui.calls.length, 0);
 });
 
@@ -689,10 +688,7 @@ test('action arrows are decorative spans while readable labels and navigation re
   assert.equal(arrow.className, 'action-arrow');
   assert.equal(arrow.attributes['aria-hidden'], 'true');
   await ui.click('← See all starting points');
-  await ui.click('Explore remote help with OttO');
-  const remote = ui.links()[0];
-  assert.equal(remote.textContent, 'Continue to OttO →');
-  assert.equal(remote.querySelector('span').attributes['aria-hidden'], 'true');
+  await ui.click('Buy');
   const back = ui.document.querySelector('#flow-content').querySelectorAll('button').find(button => button.textContent === '← Back');
   assert.equal(back.querySelector('span').className, 'action-arrow action-arrow--back');
   assert.equal(back.querySelector('span').attributes['aria-hidden'], 'true');

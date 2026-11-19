@@ -164,7 +164,7 @@ const server = app.listen(0, '127.0.0.1');
     const intake = fs.readFileSync(path.join(__dirname, '../intake.js'), 'utf8');
     const serviceEntries = [...(services + pricing).matchAll(/href="\/(?:\?[^"#]*)?(#inquire-[a-z-]+)"/g)].map(match => match[1]);
     assert.ok(serviceEntries.length >= 4);
-    assert.match(services, /https:\/\/www\.yourotto\.com\/services/);
+    assert.doesNotMatch(services + pricing, /yourotto|OttO/);
     assert.match(services, /at least three qualifying, seller-confirmed cars unless you choose one sooner/);
     assert.match(services, /extension or refund/);
     assert.match(services, /\$500 to start and \$500 when you purchase/);
