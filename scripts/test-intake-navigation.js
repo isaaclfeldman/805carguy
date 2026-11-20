@@ -285,7 +285,7 @@ test('new-car entry retains conversation scope and explicit intent through revie
   assert.equal(ui.calls[0].purchase_preference, 'New');
   assert.equal(ui.calls[0].service, 'Let’s talk about your new car.');
   assert.equal(ui.calls[0].displayed_price, 'Scope and fee agreed first');
-  assert.equal(ui.calls[0].scope, 'New-car guidance · start with a conversation');
+  assert.equal(ui.calls[0].scope, 'New-car help · start with a conversation');
   assert.equal(ui.calls[0].timing, 'Within a month');
 });
 
