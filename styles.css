@@ -411,3 +411,5 @@ body{padding-bottom:84px}
 }
 @media(forced-colors:active){.dashboard-hero .hero-primary{color:ButtonText;background:ButtonFace;border-color:ButtonText;box-shadow:none}}
 .service-guide>.guide-assurances{margin:20px 0 28px}
+/* The <source> inside a display:contents <picture> would otherwise take the first grid cell and push the portrait and bio out of place. */
+.personal-contact>picture>source{display:none}
