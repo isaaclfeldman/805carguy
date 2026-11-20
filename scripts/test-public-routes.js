@@ -139,9 +139,10 @@ const server = app.listen(0, '127.0.0.1');
     }
     const homepage = await (await check('/', 200)).text();
     assert.match(homepage, /href="\/services"/);
-    for (const intent of ['buyStart', 'sell', 'research']) {
+    for (const intent of ['introCall', 'buyStart', 'sell', 'research', 'newCar', 'openToEither']) {
       assert.ok(homepage.includes('data-start="' + intent + '"'), 'Homepage offers ' + intent);
     }
+    assert.match(homepage, /class="button hero-primary" type="button" data-start="introCall"/, 'the free intro call is the primary homepage action');
     assert.match(homepage, /src="\/assets\/coastal-brighter-v3-1536\.jpg"/);
     for (const [file, budget] of [['gearshift-600.jpg', 70000], ['gearshift-1200.jpg', 200000]]) {
       assert.ok(fs.statSync(path.join(__dirname, '../assets', file)).size < budget, file + ' transfer budget');
@@ -183,6 +184,16 @@ const server = app.listen(0, '127.0.0.1');
       assert.doesNotMatch(html, /One agreed quote|No \$249 tier is approved|Pickup and delivery are not included/, name);
     }
     for (const fragment of serviceEntries) assert.ok(intake.includes(`['${fragment}',`), fragment);
+    // Every homepage starting point and every inquiry link on Home, About and Services must reach a real intake entry.
+    for (const [, start] of homepage.matchAll(/data-start="([A-Za-z]+)"/g)) {
+      assert.ok(start === 'all' || intake.includes(`, '${start}'],`), 'Homepage data-start ' + start);
+    }
+    for (const route of ['/', '/about', '/services']) {
+      const html = await (await check(route, 200)).text();
+      for (const [, hash] of html.matchAll(/href="\/(?:\?[^"#]*)?(#inquire[a-z-]*)"/g)) {
+        assert.ok(intake.includes(`['${hash}',`), `${route} -> ${hash}`);
+      }
+    }
     for (const route of ['/new-car-buying-help', '/used-car-evaluation', '/pricing', '/faq', '/contact', '/service-area']) {
       const html = await (await check(route, 200)).text();
       for (const link of html.matchAll(/href="(\/[^\"]*)"/g)) {

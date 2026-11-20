@@ -55,7 +55,7 @@ function fixture(hash = '#inquire', { production = false } = {}) {
   add('button', 'close-flow', dialog);
   add('div', 'preview-banner');
   const triggers = {};
-  for (const step of ['all', 'buyStart', 'newCar', 'usedCar', 'sell', 'research', 'openToEither']) {
+  for (const step of ['all', 'buyStart', 'newCar', 'usedCar', 'sell', 'research', 'openToEither', 'introCall']) {
     triggers[step] = add('button', 'entry-' + step);
     triggers[step].dataset.start = step;
   }
@@ -242,17 +242,19 @@ async function fillContact(ui) {
 }
 
 async function finishDraft(ui, context = 'Synthetic draft, never sent to a provider.') {
-  await ui.click('Within a month');
+  // Conversation entries open on the form with timing optional; priced guided entries ask for timing first.
+  if (ui.document.querySelector('#timing')) await ui.select('timing', 'Within a month');
+  else await ui.click('Within a month');
   await ui.fill('context', context);
   await ui.fill('name', 'Synthetic Preview');
   await ui.fill('reply', 'sample@example.invalid');
   await ui.review();
 }
 
-test('starting choices are Buy, Sell and Research, with no remote handoff offered', async () => {
+test('starting choices lead with the free intro call, then Buy, Sell and a question, with no remote handoff offered', async () => {
   const ui = fixture();
   const choices = ui.document.querySelector('#flow-content').querySelectorAll('button').filter(button => button.className === 'flow-option');
-  assert.deepEqual(choices.map(button => button.children[0].textContent), ['Buy', 'Sell', 'Research']);
+  assert.deepEqual(choices.map(button => button.children[0].textContent), ['Not sure where to start', 'Buy', 'Sell', 'Just a question']);
   assert.doesNotMatch(ui.text, /OttO|remote/i);
   assert.equal(ui.links().filter(link => /yourotto/.test(link.href || '')).length, 0);
   assert.equal(ui.calls.length, 0);
@@ -261,16 +263,22 @@ test('starting choices are Buy, Sell and Research, with no remote handoff offere
 test('new-car entry retains conversation scope and explicit intent through review and mocked delivery', async () => {
   const ui = fixture('#inquire-new-car', { production: true });
   assert.equal(ui.title, 'Let’s talk about your new car.');
-  assert.match(ui.text, /Scope and fee agreed first/);
-  assert.match(ui.text, /Help choosing and comparing models/);
-  assert.match(ui.text, /Help understanding a dealer quote/);
-  assert.match(ui.text, /agree on the scope, fee and payment timing before work begins/);
-  assert.doesNotMatch(ui.text, /\$249|\$1,000|guarantee|financing/);
-  await ui.click('Ask about this service');
+  // The new-car entry opens on the short form: no price card and no separate timing screen first.
+  assert.ok(ui.document.querySelector('#name'));
+  assert.equal(ui.document.querySelector('#timing').required || false, false);
+  assert.match(ui.text, /The first call is free/);
+  assert.match(ui.text, /agree on what I’ll do, what it costs and when you pay before I start/);
+  assert.match(ui.text, /I’ll reply the way you ask/);
+  assert.doesNotMatch(ui.text, /Scope and fee agreed first|\$\d|guarantee|financing/);
   await finishDraft(ui);
   assert.match(ui.text, /Looking toBuy new/);
-  assert.match(ui.text, /New-car guidance · start with a conversation/);
-  assert.match(ui.text, /Scope and fee agreed first/);
+  assert.match(ui.text, /Asking forNew-car help/);
+  // The review states the cost terms once, in plain words, with no contract-style rows or scope list under "free".
+  assert.match(ui.text, /CostThe first call is free\. If you want more after that, we agree on what I’ll do, what it costs and when you pay before I start\./);
+  assert.doesNotMatch(ui.text, /Scope and pricing|Arrangements and extras|Payment and terms|Included|Interested in/);
+  assert.match(ui.text, /does not book it or commit you to paying/);
+  assert.match(ui.text, /TimingWithin a month/);
+  assert.doesNotMatch(ui.text, /\$249|\$1,000|guarantee|financing/);
   await ui.click('Send my inquiry');
   assert.equal(ui.calls.length, 1);
   assert.equal(ui.calls[0].intent, 'Buy new');
@@ -278,6 +286,7 @@ test('new-car entry retains conversation scope and explicit intent through revie
   assert.equal(ui.calls[0].service, 'Let’s talk about your new car.');
   assert.equal(ui.calls[0].displayed_price, 'Scope and fee agreed first');
   assert.equal(ui.calls[0].scope, 'New-car guidance · start with a conversation');
+  assert.equal(ui.calls[0].timing, 'Within a month');
 });
 
 test('used-car entry preserves each package and eligibility gate and carries its intent', async () => {
@@ -326,23 +335,22 @@ test('Back preserves contact draft while replacing new-car intent with used-car 
   const ui = fixture('#inquire', { production: true });
   await ui.click('Buy');
   await ui.click('New');
-  await ui.click('Ask about this service');
-  await ui.click('Within a month');
+  assert.equal(ui.title, 'Let’s talk about your new car.');
   await ui.fill('name', 'Draft Name');
   await ui.fill('reply', 'draft@example.invalid');
   await ui.fill('context', 'Draft context');
-  for (let i = 0; i < 4; i++) await ui.click('← Back');
+  for (let i = 0; i < 2; i++) await ui.click('← Back');
   assert.equal(ui.title, 'How can I help?');
   await ui.click('Buy');
   await ui.click('Used');
   await ui.click('Not sure yet');
-  await ui.click('Within a month');
+  assert.equal(ui.title, 'Tell me what you need.');
   assert.equal(ui.document.querySelector('#name').value, 'Draft Name');
   assert.equal(ui.document.querySelector('#context').value, 'Draft context');
   await ui.review();
   assert.match(ui.text, /Looking toBuy used/);
   assert.doesNotMatch(ui.text, /Buy new|New-car guidance/);
-  for (let i = 0; i < 5; i++) await ui.click('← Back');
+  for (let i = 0; i < 4; i++) await ui.click('← Back');
   assert.equal(ui.title, 'How can I help?');
   await ui.click('I’d rather just tell you');
   await finishDraft(ui);
@@ -359,19 +367,19 @@ test('Buy chooser carries New, Used or Open to Either through review and mocked 
     const options = ui.document.querySelector('#flow-content').querySelectorAll('button').filter(button => button.className === 'flow-option');
     assert.deepEqual(options.map(button => button.children[0].textContent), ['New', 'Used', 'Open to Either']);
     await ui.click(preference);
-    if (preference === 'New') await ui.click('Ask about this service');
-    else if (preference === 'Used') await ui.click('Not sure yet');
-    else {
+    if (preference === 'Used') await ui.click('Not sure yet');
+    else if (preference === 'Open to Either') {
       assert.equal(ui.title, 'You can stay open to either.');
       assert.match(ui.text, /don’t need to choose new or used/);
-      assert.match(ui.text, /scope, fee and payment timing before any work begins/);
+      assert.match(ui.text, /what I’ll do, what it costs and when you pay before I start/);
       assert.doesNotMatch(ui.text, /\$249|\$1,000|guarantee/);
-      await ui.click('Continue');
     }
+    // Every Buy choice now reaches the contact form without a separate timing screen.
+    assert.ok(ui.document.querySelector('#name'), preference + ' opens the form');
     await finishDraft(ui);
     assert.ok(ui.text.includes('Looking to' + intent));
     assert.ok(ui.text.includes('Car preference' + preference));
-    if (preference === 'Open to Either') assert.match(ui.text, /Buying · open to new or used/);
+    if (preference === 'Open to Either') assert.match(ui.text, /Asking forBuying help · open to new or used/);
     await ui.click('Send my inquiry');
     assert.equal(ui.calls.length, 1);
     assert.equal(ui.calls[0].intent, intent);
@@ -381,20 +389,23 @@ test('Buy chooser carries New, Used or Open to Either through review and mocked 
 
 test('Research stays an unpriced conversation through review and mocked delivery', async () => {
   const ui = fixture('#inquire-research', { production: true });
-  assert.equal(ui.title, 'What are you researching?');
+  assert.equal(ui.title, 'What’s your question?');
   assert.match(ui.text, /still gathering information/);
-  assert.match(ui.text, /agree on the scope, fee and payment timing before any work begins/);
-  assert.match(ui.text, /does not book a service or take payment/);
+  assert.match(ui.text, /agree on what I’ll do, what it costs and when you pay before I start/);
   assert.doesNotMatch(ui.text, /\$\d|guarantee|report|30-day/);
-  await ui.click('Continue');
   await finishDraft(ui, 'Compare EV and hybrid ownership.');
-  assert.match(ui.text, /Looking toResearch/);
-  assert.match(ui.text, /Research inquiry · start with a conversation/);
-  assert.match(ui.text, /Scope and fee agreed first/);
+  // The visitor chose "Just a question", so the review never calls it Research; the lead still records that intent.
+  assert.match(ui.text, /Asking forA car question/);
+  assert.doesNotMatch(ui.text, /Looking to|Research/);
+  assert.match(ui.text, /The first call is free/);
+  assert.match(ui.text, /does not book it or commit you to paying/);
+  assert.doesNotMatch(ui.text, /\$\d|guarantee|report|30-day/);
   assert.doesNotMatch(ui.text, /Car preference|Buy new|Buy used|Open to Either/);
   await ui.click('Send my inquiry');
   assert.equal(ui.calls.length, 1);
   assert.equal(ui.calls[0].intent, 'Research');
+  assert.equal(ui.calls[0].scope, 'A question · start with a conversation');
+  assert.equal(ui.calls[0].displayed_price, 'Scope and fee agreed first');
   assert.equal(ui.calls[0].purchase_preference, '');
   assert.equal(ui.calls[0].message, 'Compare EV and hybrid ownership.');
 });
@@ -403,28 +414,24 @@ test('Back can replace Either with Used while keeping contact draft, then Resear
   const ui = fixture('#inquire', { production: true });
   await ui.click('Buy');
   await ui.click('Open to Either');
-  await ui.click('Continue');
-  await ui.click('Within a month');
   await ui.fill('name', 'Still exploring');
   await ui.fill('reply', 'draft@example.invalid');
   await ui.fill('context', 'Keep my priorities while I change direction.');
-  for (let i = 0; i < 3; i++) await ui.click('← Back');
+  await ui.click('← Back');
   assert.equal(ui.title, 'New, used, or open to either?');
   await ui.click('Used');
   await ui.click('Not sure yet');
-  await ui.click('Within a month');
   assert.equal(ui.document.querySelector('#name').value, 'Still exploring');
   await ui.review();
   assert.match(ui.text, /Car preferenceUsed/);
   assert.doesNotMatch(ui.text, /Open to Either|open to new or used/);
-  for (let i = 0; i < 5; i++) await ui.click('← Back');
+  for (let i = 0; i < 4; i++) await ui.click('← Back');
   assert.equal(ui.title, 'How can I help?');
-  await ui.click('Research');
-  await ui.click('Continue');
-  await ui.click('Within a month');
+  await ui.click('Just a question');
+  assert.equal(ui.title, 'What’s your question?');
   assert.equal(ui.document.querySelector('#context').value, 'Keep my priorities while I change direction.');
   await ui.review();
-  assert.match(ui.text, /Looking toResearch/);
+  assert.match(ui.text, /Asking forA car question/);
   assert.doesNotMatch(ui.text, /Car preference|Buy used|Open to Either/);
   await ui.click('Send my inquiry');
   assert.equal(ui.calls[0].intent, 'Research');
@@ -433,13 +440,11 @@ test('Back can replace Either with Used while keeping contact draft, then Resear
 
 test('close and reopen reset Research and Either drafts; legacy Buy location chooser remains intact', async () => {
   const ui = fixture('#inquire-open-to-either');
-  await ui.click('Continue');
   await finishDraft(ui, 'Old either draft');
   await ui.close();
   await ui.open('research');
-  assert.equal(ui.title, 'What are you researching?');
-  await ui.click('Continue');
-  await ui.click('Within a month');
+  assert.equal(ui.title, 'What’s your question?');
+  assert.equal(ui.document.querySelector('#timing').value, '');
   assert.equal(ui.document.querySelector('#name').value, '');
   assert.equal(ui.document.querySelector('#context').value, '');
   await ui.close();
@@ -468,8 +473,7 @@ test('reset and close/reopen do not reuse prior route intent or contact informat
   assert.equal(ui.document.body.style.overflow, '');
   await ui.open('newCar');
   assert.equal(ui.title, 'Let’s talk about your new car.');
-  await ui.click('Ask about this service');
-  await ui.click('Within a month');
+  assert.equal(ui.document.querySelector('#timing').value, '');
   assert.equal(ui.document.querySelector('#name').value, '');
   assert.equal(ui.document.querySelector('#context').value, '');
   await ui.fill('name', 'Fresh draft');
@@ -493,7 +497,6 @@ test('reset and close/reopen do not reuse prior route intent or contact informat
 test('switching a numeric email to Text or Call blocks review without losing the draft', async () => {
   for (const method of ['Text me', 'Call me']) {
     const ui = fixture('#inquire-general', { production: true });
-    await ui.click('Within a month');
     await ui.fill('name', 'Synthetic contact');
     await ui.fill('context', 'Keep my question while I correct my contact.');
     await ui.fill('reply', 'buyer1234567@example.invalid');
@@ -522,7 +525,6 @@ test('switching a numeric email to Text or Call blocks review without losing the
 
 test('returning to Email clears the phone error and retains the entered email', async () => {
   const ui = fixture('#inquire-general', { production: true });
-  await ui.click('Within a month');
   await ui.fill('name', 'Synthetic contact');
   await ui.fill('reply', 'buyer1234567@example.invalid');
   await ui.select('contact-method', 'Text me');
@@ -652,8 +654,10 @@ test('folded optional fields retain values through review and Back, and reopen o
   for (const key of ['timing', 'location', 'vehicle_location', 'how_you_found_me']) assert.equal(ui.calls[0][key], '');
 });
 
-test('guided contact keeps its chosen timing while optional locations remain folded', async () => {
-  const ui = fixture('#inquire-general');
+test('guided priced contact keeps its chosen timing while optional locations remain folded', async () => {
+  const ui = fixture('#inquire-sell');
+  await ui.click('Get it listed and screen buyers');
+  await ui.click('Ask about this service');
   await ui.click('Within a month');
   const optional = ui.document.querySelector('details');
   assert.equal(optional.open, false);
@@ -694,4 +698,88 @@ test('action arrows are decorative spans while readable labels and navigation re
   assert.equal(back.querySelector('span').attributes['aria-hidden'], 'true');
   await back.click();
   assert.equal(ui.title, 'How can I help?');
+});
+
+test('free intro call opens straight on the form and reaches review and mocked delivery with no price', async () => {
+  for (const enter of [
+    async ui => {},
+    async ui => { await ui.click('← See all starting points'); await ui.click('Not sure where to start'); }
+  ]) {
+    const ui = fixture('#inquire-intro-call', { production: true });
+    await enter(ui);
+    assert.equal(ui.title, 'Let’s start with a free call.');
+    assert.match(ui.text, /You don’t need to have anything decided/);
+    assert.match(ui.text, /I’ll reply the way you ask, and we’ll set up a time to talk/);
+    assert.match(ui.text, /The first call is free/);
+    assert.match(ui.text, /agree on what I’ll do, what it costs and when you pay before I start/);
+    assert.doesNotMatch(ui.text, /\$\d|guarantee|OttO/);
+    const form = ui.document.querySelector('form');
+    assert.deepEqual(form.children.filter(child => ['input', 'select', 'textarea'].includes(child.tagName)).map(child => child.id), ['name', 'contact-method', 'reply', 'context']);
+    const optional = form.querySelector('details');
+    assert.equal(optional.open, false);
+    assert.equal(optional.querySelector('summary').textContent, 'Timing, location & referral (optional)');
+    await fillContact(ui);
+    await ui.review();
+    assert.equal(ui.title, 'Your inquiry, at a glance.');
+    assert.match(ui.text, /Asking forFree intro call/);
+    assert.match(ui.text, /CostThe first call is free/);
+    assert.doesNotMatch(ui.text, /Looking to|Car preference|Timing|Scope and pricing|Payment and terms/);
+    await ui.click('Send my inquiry');
+    assert.equal(ui.calls.length, 1);
+    assert.equal(ui.calls[0].service, 'Let’s start with a free call.');
+    assert.equal(ui.calls[0].displayed_price, 'First call is free');
+    assert.equal(ui.calls[0].scope, 'Free intro call · no commitment');
+    assert.equal(ui.calls[0].intent, '');
+    assert.equal(ui.calls[0].timing, '');
+  }
+});
+
+test('conversation entries never show a price card or a separate timing screen', async () => {
+  for (const hash of ['#inquire-intro-call', '#inquire-general', '#inquire-new-car', '#inquire-open-to-either', '#inquire-research']) {
+    const ui = fixture(hash);
+    assert.ok(ui.document.querySelector('#name'), hash + ' opens on the form');
+    assert.ok(ui.document.querySelector('#timing'), hash + ' keeps timing as an optional field');
+    assert.doesNotMatch(ui.text, /Your starting point|Ask about this service/);
+    assert.notEqual(ui.title, 'When would you like help?');
+    assert.equal(ui.calls.length, 0);
+  }
+});
+
+test('timing follows the latest answer when switching between conversation forms and priced guided paths', async () => {
+  // (a) A conversation form's optional timing is replaced by a later answer on a priced path's timing screen.
+  const ui = fixture('#inquire', { production: true });
+  await ui.click('Buy');
+  await ui.click('New');
+  await fillContact(ui);
+  await ui.select('timing', 'Later / just planning');
+  for (let i = 0; i < 2; i++) await ui.click('← Back');
+  await ui.click('Sell');
+  await ui.click('Get it listed and screen buyers');
+  await ui.click('Ask about this service');
+  await ui.click('As soon as practical');
+  assert.equal(ui.document.querySelector('#name').value, 'Synthetic Preview');
+  // Typing on the guided form must not drop the timing just chosen.
+  await ui.fill('context', 'Keep the newest timing.');
+  for (let i = 0; i < 4; i++) await ui.click('← Back');
+  assert.equal(ui.title, 'How can I help?');
+  // (b) Returning to a conversation form shows that latest answer, never the older one.
+  await ui.click('Not sure where to start');
+  assert.equal(ui.document.querySelector('#timing').value, 'As soon as practical');
+  assert.equal(ui.document.querySelector('details').open, true);
+  await ui.review();
+  assert.match(ui.text, /TimingAs soon as practical/);
+  assert.doesNotMatch(ui.text, /Later \/ just planning/);
+  await ui.click('Send my inquiry');
+  assert.equal(ui.calls.length, 1);
+  assert.equal(ui.calls[0].timing, 'As soon as practical');
+
+  // (c) Clearing the optional timing on a conversation form sends no timing.
+  const cleared = fixture('#inquire-new-car', { production: true });
+  await fillContact(cleared);
+  await cleared.select('timing', 'Within a month');
+  await cleared.select('timing', '');
+  await cleared.review();
+  assert.doesNotMatch(cleared.text, /Timing/);
+  await cleared.click('Send my inquiry');
+  assert.equal(cleared.calls[0].timing, '');
 });

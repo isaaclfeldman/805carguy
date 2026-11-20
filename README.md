@@ -79,3 +79,11 @@ No sample report, testimonials, response-time commitment, phone number, real inq
 ## November 5 follow-up publication authorization
 
 Isaac answered “yes” when asked whether to publish the tested shorter inquiry form, direct pricing-card buttons, earlier contact options and cleaner arrows. This supersedes the follow-up local-only restriction for this exact reviewed candidate. Publish through the existing GitHub main → Railway workflow and verify the live site without sending an inquiry. The $249 assessment, $350 assisted sale and all other prices and service terms remain unchanged. No unrelated account or domain changes are authorized.
+
+
+## November 19 intro-call-first homepage and form-first conversations — published on Isaac’s “Yes, publish”
+
+Supersedes the October 29 note that the primary prompt is “Where should we start?” and the earlier note that the starting choices are Buy, Sell and Research. The homepage’s primary action is “Start with a free intro call” (`data-start="introCall"`, deep link `#inquire-intro-call`), with Buy, Sell and “Just a question” beneath it. In the dialog, the start screen lists “Not sure where to start”, Buy, Sell and “Just a question”.
+
+Conversation entries (`inquiry`, `introCall`, `newCar`, `openToEither`, `research`) open on the contact form, with timing as an optional folded field; only priced services show a service card and, on guided paths, the timing screen. Timing has one source of truth: the timing screen writes its answer into the contact draft, so a later answer always replaces an earlier one. The review screen for a conversation shows “Asking for” and “Cost” rather than scope, arrangements and terms rows; the delivered payload fields are unchanged in shape. `npm test` covers the intro-call path, the form-first entries, timing across path switches, and that every homepage `data-start` and every `#inquire-*` link on Home, About and Services maps to a real intake entry.
+
