@@ -81,7 +81,7 @@ No sample report, testimonials, response-time commitment, phone number, real inq
 Isaac answered “yes” when asked whether to publish the tested shorter inquiry form, direct pricing-card buttons, earlier contact options and cleaner arrows. This supersedes the follow-up local-only restriction for this exact reviewed candidate. Publish through the existing GitHub main → Railway workflow and verify the live site without sending an inquiry. The $249 assessment, $350 assisted sale and all other prices and service terms remain unchanged. No unrelated account or domain changes are authorized.
 
 
-## November 19 intro-call-first homepage and form-first conversations — prepared, not published
+## November 19 intro-call-first homepage and form-first conversations — published on Isaac’s “Yes, publish”
 
 Supersedes the October 29 note that the primary prompt is “Where should we start?” and the earlier note that the starting choices are Buy, Sell and Research. The homepage’s primary action is “Start with a free intro call” (`data-start="introCall"`, deep link `#inquire-intro-call`), with Buy, Sell and “Just a question” beneath it. In the dialog, the start screen lists “Not sure where to start”, Buy, Sell and “Just a question”.
 

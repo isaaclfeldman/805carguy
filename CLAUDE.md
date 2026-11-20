@@ -120,3 +120,8 @@ Isaac asked for a review of the live site as a car-clueless SLO shopper who want
 - What he does for a new-car buyer beyond advice. The copy stays inside the October 15 scope (choosing and comparing models, understanding dealer quotes, next steps). Whether he contacts dealers, negotiates or attends a signing for a new car, and whether there is a fixed fee, is undecided; do not add either without his answer.
 - Proof. The site has no reviews, client quotes, shop address or photos of him at the shop. These need real material from him; none were invented. `805carguy-master.md` records “no personal phone number or address published”, so the shop’s street address was not added without asking.
 
+## November 19 (night) — intro-call-first release published
+
+Isaac answered “Yes, publish the home page changes to 805carguy.com” and asked that the latest main be pulled first so pull request #4 was not undone. Main (`920c3b5`) was merged into `services-shopper-rewrite` before publication; its changes are kept: About says he bought into Certified Auto Repair and co-owns it, the Services upgrade example is the $350 assisted sale counting toward a full-service sale of the same car, and the Services and used-car footers link to Pricing. The new-car page footer gained the same Pricing link. The “LOCAL ONLY” wording in the evening section above is historical, and the “My shop, Certified Auto Repair” wording recorded in the About notes is superseded by “the shop I co-own”.
+
+Published through a pull request into main (Railway auto-deploy), then checked live without sending an inquiry. No prices, scopes, payment terms or account settings changed. The two open decisions above (new-car scope beyond advice, proof material) are still open.
