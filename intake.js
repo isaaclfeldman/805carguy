@@ -19,23 +19,29 @@
     inquiry: {
       title: 'Talk with Isaac.', price: 'Scope agreed first', caption: 'General inquiry · no commitment'
     },
+    introCall: {
+      title: 'Let’s start with a free call.', price: 'First call is free', caption: 'Free intro call · no commitment', conversation: true, reviewLabel: 'Free intro call',
+      intro: 'Leave your name and the best way to reach you. I’ll reply the way you ask, and we’ll set up a time to talk. You don’t need to have anything decided.',
+      boundary: 'The first call is free. If you want more after that, we agree on what I’ll do, what it costs and when you pay before I start.',
+      terms: 'Sending this inquiry does not book a service or take payment.'
+    },
     openToEither: {
-      title: 'You can stay open to either.', price: 'Scope and fee agreed first', caption: 'Buying · open to new or used', conversation: true,
+      title: 'You can stay open to either.', price: 'Scope and fee agreed first', caption: 'Buying · open to new or used', conversation: true, reviewLabel: 'Buying help · open to new or used',
       intro: 'You don’t need to choose new or used before reaching out. Tell me what matters to you and what you’re considering.',
-      boundary: 'We’ll discuss what you need and agree on the scope, fee and payment timing before any work begins.',
+      boundary: 'The first call is free. If you want more after that, we agree on what I’ll do, what it costs and when you pay before I start.',
       terms: 'Sending this inquiry does not book a service or take payment.'
     },
     research: {
-      title: 'What are you researching?', price: 'Scope and fee agreed first', caption: 'Research inquiry · start with a conversation', conversation: true,
+      title: 'What’s your question?', price: 'Scope and fee agreed first', caption: 'A question · start with a conversation', conversation: true, reviewLabel: 'A car question',
       intro: 'Tell me the car question you’re exploring. It’s fine if you’re still gathering information.',
-      boundary: 'We’ll discuss what you need and agree on the scope, fee and payment timing before any work begins.',
+      boundary: 'The first call is free. If you want more after that, we agree on what I’ll do, what it costs and when you pay before I start.',
       terms: 'Sending this inquiry does not book a service or take payment.'
     },
     newCar: {
-      title: 'Let’s talk about your new car.', price: 'Scope and fee agreed first', caption: 'New-car guidance · start with a conversation',
-      intro: 'Tell me what you’re considering and where you could use a hand.',
+      title: 'Let’s talk about your new car.', price: 'Scope and fee agreed first', caption: 'New-car guidance · start with a conversation', conversation: true, reviewLabel: 'New-car help',
+      intro: 'Tell me what you’re considering, or that you don’t know yet. I’ll reply the way you ask, and we’ll set up a time to talk.',
       includes: ['Help choosing and comparing models.', 'Help understanding a dealer quote and your options.', 'Help deciding on your next step.'],
-      boundary: 'We’ll talk about what you need and agree on the scope, fee and payment timing before work begins.',
+      boundary: 'The first call is free. If you want more after that, we agree on what I’ll do, what it costs and when you pay before I start.',
       terms: 'Sending this inquiry does not book a service or take payment.'
     },
     localAssessment: {
@@ -69,6 +75,8 @@
   };
 
   const directPackages = new Set(['localAssessment', 'complete', 'assistedSell', 'fullSell']);
+  // Conversations have no price card to read first, so they open on the short form with timing optional.
+  const formFirstPackages = new Set(['inquiry', 'introCall', 'newCar', 'openToEither', 'research']);
 
   const remoteEntries = {
     choose: 'Remote help choosing a car',
@@ -83,9 +91,10 @@
 
   const questions = {
     start: { title: 'How can I help?', lede: 'Choose a starting point. We’ll work out the details together.', options: [
+      ['Not sure where to start', 'Start with a free intro call. Nothing to decide first.', 'introCall'],
       ['Buy', 'New, used, or open to either.', 'buyStart'],
       ['Sell', 'Help with the listing or with managing the sale.', 'sell'],
-      ['Research', 'Start with a question, even if you’re not ready to buy or sell.', 'research']
+      ['Just a question', 'Ask, even if you’re not ready to buy or sell.', 'research']
     ]},
     buyStart: { title: 'New, used, or open to either?', lede: 'You don’t need to decide before asking for help.', options: [
       ['New', 'Choosing a model, understanding a dealer quote, or deciding what comes next.', 'newCar'],
@@ -191,7 +200,7 @@
         go('summary', { ...selection, package: 'inquiry', reviewType: 'Local arrangements inquiry' });
         return;
       }
-      go('timing', { ...selection, package: 'inquiry' });
+      go('details', { ...selection, package: 'inquiry' });
       return;
     }
     if (remoteEntries[next]) {
@@ -199,7 +208,7 @@
       return;
     }
     if (!questions[next] && packages[next]) {
-      go(answers.directDetailsReviewed ? 'summary' : 'result', { ...selection, package: next });
+      go(answers.directDetailsReviewed ? 'summary' : formFirstPackages.has(next) ? 'details' : 'result', { ...selection, package: next });
     } else go(next, selection);
   }
 
@@ -223,13 +232,6 @@
 
   function renderResult() {
     const offer = packages[answers.package];
-    if (offer.conversation) {
-      heading(offer.title, offer.intro);
-      content.append(node('p', offer.boundary, 'result-boundary'));
-      content.append(button('Continue →', () => go('timing')));
-      content.append(node('p', offer.terms, 'input-hint'));
-      return;
-    }
     content.append(node('p', 'Your starting point', 'result-kicker'));
     heading(offer.title, offer.intro);
     content.append(node('p', offer.price, 'result-price'), node('p', offer.caption, 'flow-lede'));
@@ -254,6 +256,7 @@
     const times = answers.package === 'evaluate' ? ['Today, if possible', 'Within a few days', 'No firm deadline'] : ['As soon as practical', 'Within a month', 'Later / just planning'];
     times.forEach(time => options.append(button(time, () => {
       answers.timing = time;
+      answers.contact = { ...(answers.contact || {}), timing: time };
       go('details');
     }, 'flow-option')));
     content.append(options);
@@ -281,13 +284,16 @@
   }
 
   function renderDetails() {
-    heading('Tell me what you need.', 'A few details and a way to reach you. You don’t need to have it all figured out.');
+    const offer = packages[answers.package];
+    const conversation = offer.conversation ? offer : null;
+    const timingInForm = answers.directEntry || formFirstPackages.has(answers.package);
+    heading(conversation ? conversation.title : 'Tell me what you need.', conversation ? conversation.intro : 'A few details and a way to reach you. You don’t need to have it all figured out.');
+    if (conversation) content.append(node('p', conversation.boundary, 'result-boundary'));
     const form = node('form');
     const saved = answers.contact || {};
     const inputs = {};
     const selling = answers.intent === 'Sell';
     if (answers.directEntry) {
-      const offer = packages[answers.package];
       content.append(node('p', offer.title + ' — ' + offer.price, 'result-kicker'));
       content.append(node('p', offer.caption, 'input-hint'));
     }
@@ -311,10 +317,10 @@
     inputs.context = field(form, { id: 'context', label: selling ? 'What are you selling? (optional)' : answers.package === 'localAssessment' ? 'The listing, offer, or question (optional)' : 'What should I know? (optional)', type: 'textarea', value: saved.context, hint: selling ? 'Year, make, model, mileage, condition, and anything else useful.' : 'Your priorities, budget, a listing link, or any deadline. “Not sure yet” is fine.' });
     const optional = node('details', undefined, 'optional-details');
     const optionalKeys = ['location', 'vehicleLocation', 'heardAbout'];
-    if (answers.directEntry) optionalKeys.push('timing');
+    if (timingInForm) optionalKeys.push('timing');
     optional.open = optionalKeys.some(key => Boolean(saved[key]?.trim()));
-    optional.append(node('summary', answers.directEntry ? 'Timing, location & referral (optional)' : 'Location & referral (optional)'));
-    if (answers.directEntry) {
+    optional.append(node('summary', timingInForm ? 'Timing, location & referral (optional)' : 'Location & referral (optional)'));
+    if (timingInForm) {
       const timingLabel = node('label', 'When would you like help? (optional)', 'flow-label');
       timingLabel.htmlFor = 'timing';
       inputs.timing = node('select', undefined, 'flow-input');
@@ -346,8 +352,10 @@
     };
     updateReply();
     const save = () => {
+      const draftTiming = answers.contact?.timing;
       answers.contact = Object.fromEntries(Object.entries(inputs).map(([key, input]) => [key, input.value.trim()]));
       if (inputs.timing) answers.timing = inputs.timing.value;
+      else if (draftTiming) answers.contact.timing = draftTiming;
     };
     form.addEventListener('input', save);
     inputs.timing?.addEventListener('change', save);
@@ -383,14 +391,15 @@
     const offer = packages[answers.package];
     heading('Your inquiry, at a glance.', 'Asking about a service does not book it or commit you to paying.');
     const list = node('ul', undefined, 'review-list');
+    const conversation = Boolean(offer.conversation);
     const rows = [
-      ['Looking to', answers.intent],
+      ['Looking to', answers.intent === 'Research' ? undefined : answers.intent],
       ['Car preference', answers.purchasePreference],
-      ['Interested in', offer.title + ' — ' + offer.price],
-      ['Scope and pricing', offer.caption],
-      ['Included', offer.includes?.join(' ')],
-      ['Arrangements and extras', offer.boundary],
-      ['Payment and terms', offer.terms],
+      conversation ? ['Asking for', offer.reviewLabel] : ['Interested in', offer.title + ' — ' + offer.price],
+      ['Scope and pricing', conversation ? undefined : offer.caption],
+      ['Included', conversation ? undefined : offer.includes?.join(' ')],
+      [conversation ? 'Cost' : 'Arrangements and extras', offer.boundary],
+      ['Payment and terms', conversation ? undefined : offer.terms],
       ['Timing', answers.timing],
       ['Review type', answers.reviewType],
       ['SLO shop arrangements', answers.local],
@@ -419,7 +428,7 @@
     status.setAttribute('role', 'status');
     const fallbackActions = node('div', undefined, 'flow-actions send-fallback');
     fallbackActions.hidden = true;
-    const personalLabels = new Set(['Looking to', 'Car preference', 'Interested in', 'Timing', 'Review type', 'SLO shop arrangements', 'Details', 'Your location', 'Vehicle location', 'How you found me', 'Name', 'Preferred reply', 'Email', 'Phone']);
+    const personalLabels = new Set(['Looking to', 'Car preference', 'Interested in', 'Asking for', 'Timing', 'Review type', 'SLO shop arrangements', 'Details', 'Your location', 'Vehicle location', 'How you found me', 'Name', 'Preferred reply', 'Email', 'Phone']);
     const inquiryText = () => rows.filter(([label, value]) => value && personalLabels.has(label)).map(([label, value]) => label + ': ' + value).join('\n') + '\nInquiry reference: ' + reference;
     const send = button('Send my inquiry →', async () => {
       if (sending || submitted || !canSend) return;
@@ -525,14 +534,11 @@
     if (remoteEntries[step]) {
       answers.remoteEntry = step;
       current = 'remoteHandoff';
-    } else if (step === 'inquiry') {
-      answers.package = 'inquiry';
-      current = 'timing';
     } else {
       const packageKey = step;
       if (!questions[step] && packages[packageKey]) {
         answers.package = packageKey;
-        current = 'result';
+        current = formFirstPackages.has(packageKey) ? 'details' : 'result';
       } else current = step === 'all' ? 'start' : step;
       if (directPackages.has(packageKey)) {
         answers.directEntry = true;
@@ -555,6 +561,7 @@
   const inquiryLinks = new Map([
     ['#inquire', 'all'],
     ['#inquire-general', 'inquiry'],
+    ['#inquire-intro-call', 'introCall'],
     ['#inquire-buy-start', 'buyStart'],
     ['#inquire-open-to-either', 'openToEither'],
     ['#inquire-research', 'research'],

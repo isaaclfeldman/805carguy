@@ -387,3 +387,27 @@ body{padding-bottom:84px}
 .about-hero .hero-promise{border-left:3px solid #a87d3f;padding-left:14px}
 .about-hero .hero-start{display:flex;flex-wrap:wrap;align-items:center;gap:10px 16px;margin:22px 0 0}
 .about-hero .hero-start span{font-size:13px;color:#59626b}
+
+/* Homepage: the free intro call is the primary start; Buy, Sell and a question sit beneath it. */
+.dashboard-hero .hero-primary{display:flex;width:100%;max-width:450px;min-height:58px;justify-content:space-between;align-items:center;gap:14px;padding:16px 20px;background:#e6c8a0;border-color:#e6c8a0;color:#1d2a2c;font-size:1rem;font-weight:650;line-height:1.3;text-align:left;border-radius:2px;box-shadow:0 2px 12px #0003}
+.dashboard-hero .hero-primary:hover{background:#faf6ed;border-color:#faf6ed;transform:none}
+.coastal-direction .dashboard-hero .hero-primary{margin-left:auto;margin-right:0}
+.coastal-direction .dashboard-hero .path-label-secondary{font-size:.8125rem;font-weight:500;margin:20px 0 10px}
+.dashboard-hero .personal-paths .button{justify-content:center;text-align:center}
+.home-section-heading .undecided-note{margin:14px 0 0;font-size:15px;max-width:620px}
+.home-section-heading .undecided-note .text-button{margin-top:0;font-size:15px}
+@media(max-width:760px){
+ /* Tighter top spacing keeps the primary button clear of the fixed Text Isaac pill on short phones. */
+ .coastal-direction .dashboard-hero{padding-top:200px;min-height:892px}
+ .coastal-direction .dashboard-hero .intro{margin-bottom:16px}
+ .coastal-direction .dashboard-hero .path-label:not(.path-label-secondary){margin-bottom:9px}
+ .coastal-direction .dashboard-hero .hero-primary{max-width:460px}
+ .coastal-direction .dashboard-hero .personal-paths .button{padding-inline:8px}
+ .home-section-heading .undecided-note,.home-section-heading .undecided-note .text-button{font-size:14px}
+}
+@media(max-width:360px){
+ .coastal-direction .dashboard-hero{padding-top:192px;min-height:887px}
+ .coastal-direction .dashboard-hero .personal-paths .button{font-size:11.5px;padding-inline:6px}
+}
+@media(forced-colors:active){.dashboard-hero .hero-primary{color:ButtonText;background:ButtonFace;border-color:ButtonText;box-shadow:none}}
+.service-guide>.guide-assurances{margin:20px 0 28px}
