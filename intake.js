@@ -38,9 +38,9 @@
       terms: 'Sending this inquiry does not book a service or take payment.'
     },
     newCar: {
-      title: 'Let’s talk about your new car.', price: 'Scope and fee agreed first', caption: 'New-car guidance · start with a conversation', conversation: true, reviewLabel: 'New-car help',
+      title: 'Let’s talk about your new car.', price: 'Scope and fee agreed first', caption: 'New-car help · start with a conversation', conversation: true, reviewLabel: 'New-car help',
       intro: 'Tell me what you’re considering, or that you don’t know yet. I’ll reply the way you ask, and we’ll set up a time to talk.',
-      includes: ['Help choosing and comparing models.', 'Help understanding a dealer quote and your options.', 'Help deciding on your next step.'],
+      includes: ['Help finding the right car and the right version of it.', 'Shopping dealers and negotiating the price.', 'Going through the quote, add-ons and financing before you sign.'],
       boundary: 'The first call is free. If you want more after that, we agree on what I’ll do, what it costs and when you pay before I start.',
       terms: 'Sending this inquiry does not book a service or take payment.'
     },
@@ -97,7 +97,7 @@
       ['Just a question', 'Ask, even if you’re not ready to buy or sell.', 'research']
     ]},
     buyStart: { title: 'New, used, or open to either?', lede: 'You don’t need to decide before asking for help.', options: [
-      ['New', 'Choosing a model, understanding a dealer quote, or deciding what comes next.', 'newCar'],
+      ['New', 'Finding the right car, negotiating the price, or reading a dealer quote.', 'newCar'],
       ['Used', 'Check a car you found or get help with the whole purchase.', 'usedCar'],
       ['Open to Either', 'Keep both possibilities open and tell me what matters to you.', 'openToEither']
     ]},

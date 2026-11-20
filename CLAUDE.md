@@ -125,3 +125,13 @@ Isaac asked for a review of the live site as a car-clueless SLO shopper who want
 Isaac answered “Yes, publish the home page changes to 805carguy.com” and asked that the latest main be pulled first so pull request #4 was not undone. Main (`920c3b5`) was merged into `services-shopper-rewrite` before publication; its changes are kept: About says he bought into Certified Auto Repair and co-owns it, the Services upgrade example is the $350 assisted sale counting toward a full-service sale of the same car, and the Services and used-car footers link to Pricing. The new-car page footer gained the same Pricing link. The “LOCAL ONLY” wording in the evening section above is historical, and the “My shop, Certified Auto Repair” wording recorded in the About notes is superseded by “the shop I co-own”.
 
 Published through a pull request into main (Railway auto-deploy), then checked live without sending an inquiry. No prices, scopes, payment terms or account settings changed. The two open decisions above (new-car scope beyond advice, proof material) are still open.
+
+## November 20 — used vs new made clear — LOCAL ONLY (draft PR)
+
+Isaac said the site reads "very used car oriented" and was confusing for a new-car shopper. His words on the two services: used is "search and negotiate and logistics"; new is "search, negotiate, help find the best deal, help find the right car." This supersedes the October 15 line that new-car help covers only advice: the copy now says Isaac searches dealer inventory, gets out-the-door quotes and negotiates the price for new-car buyers. No delivery, financing-arrangement or savings promise was added.
+
+- Pricing: the comparison is grouped into Buying used, Buying new and Selling, with a one-line explainer (used is about the car, new is about the deal). New-car help has its own card ("Price agreed up front") and a full section (`#new-car`, moved up between used and selling; the old `#guidance` anchor had no inbound links). Used items are labelled used in card titles, jump links and eyebrows.
+- Services: hero line covers used or new; chooser cards prefixed Used:/New:, same explainer line; `#new` section lists what new-car help includes.
+- New-car page "How it works" gains "I shop it and negotiate" and "We go through the deal before you sign". Home, FAQ (visible and schema) and intake new-car wording match. Intake scope caption is "New-car help · start with a conversation".
+- No prices changed. New-car help still has no fixed fee ("Scope, fee and payment timing agreed first"); a number needs Isaac's decision.
+- Not authorized for publication until Isaac says so.
