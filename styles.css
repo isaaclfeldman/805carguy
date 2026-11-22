@@ -291,6 +291,10 @@ dialog{border:1px solid var(--rule);border-radius:12px;padding:0;width:min(620px
 .pricing-comparison .comparison-price{font-size:21px;font-weight:600;line-height:1.35}
 .pricing-comparison .comparison-payment{margin:auto 0 0;padding-top:14px;border-top:1px solid var(--rule);font-size:13px}
 .pricing-overview .comparison-note{font-size:13px;color:var(--muted)}
+/* Pricing and Services, used vs new (Nov 20, 2026): the comparison is grouped into Buying used, Buying new and Selling, with one line explaining how used and new differ. */
+.pricing-overview .comparison-lead,.guide-start-lead{font-size:16px;line-height:1.6;max-width:62ch;margin:0 0 16px}
+.pricing-overview .comparison-group{font-size:13px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin:26px 0 12px}
+.pricing-overview .comparison-group+.pricing-comparison{margin-bottom:6px}
 @media(max-width:540px){.pricing-comparison{grid-template-columns:1fr}.pricing-comparison article{padding:20px}}
 
 /* Responsive sources should not introduce a line box around positioned artwork. */
@@ -411,8 +415,3 @@ body{padding-bottom:84px}
 }
 @media(forced-colors:active){.dashboard-hero .hero-primary{color:ButtonText;background:ButtonFace;border-color:ButtonText;box-shadow:none}}
 .service-guide>.guide-assurances{margin:20px 0 28px}
-
-/* Pricing and Services, used vs new (Nov 20, 2026): the comparison is grouped into Buying used, Buying new and Selling, with one line explaining how used and new differ. */
-.pricing-overview .comparison-lead,.guide-start-lead{font-size:16px;line-height:1.6;max-width:62ch;margin:0 0 16px}
-.pricing-overview .comparison-group{font-size:13px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin:26px 0 12px}
-.pricing-overview .comparison-group+.pricing-comparison{margin-bottom:6px}
