@@ -119,6 +119,8 @@ const server = app.listen(0, '127.0.0.1');
       assert.ok(html.includes(`rel="canonical" href="${url}"`));
       assert.doesNotMatch(html, /<meta[^>]+name="robots"[^>]+noindex/i);
       assert.equal((html.match(/<h1\b/g) || []).length, 1);
+      // No phone number or email address is printed anywhere; the number exists only inside sms: links.
+      assert.doesNotMatch(html, /@805carguy\.com|mailto:|tel:|\(\d{3}\) \d{3}-\d{4}/, url + ' prints no contact address');
       assert.match(html, /rel="icon"[^>]*sizes="96x96"[^>]*href="\/assets\/modern-plate-icon-v1-96\.png"/);
       assert.match(html, /rel="apple-touch-icon"[^>]*href="\/assets\/modern-plate-icon-v1-180\.png"/);
       assert.match(html, /rel="manifest" href="\/site\.webmanifest"/);

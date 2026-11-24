@@ -11,7 +11,8 @@
   let submitted = false;
   let reference;
   const delivery = window.InquiryDelivery;
-  const contactEmail = 'isaac@805carguy.com';
+  // Used only for the send-failure fallback link. The address is never printed on the page.
+  const contactEmail = ['isaac', '805carguy.com'].join('@');
   const canSend = delivery.isProduction(window.location);
   document.querySelector('#preview-banner').hidden = canSend;
 
@@ -38,11 +39,18 @@
       terms: 'Sending this inquiry does not book a service or take payment.'
     },
     newCar: {
-      title: 'Let’s talk about your new car.', price: 'Scope and fee agreed first', caption: 'New-car guidance · start with a conversation', conversation: true, reviewLabel: 'New-car help',
+      title: 'Let’s talk about your new car.', price: 'First call is free', caption: 'New-car advice · start with a conversation', conversation: true, reviewLabel: 'New-car help',
       intro: 'Tell me what you’re considering, or that you don’t know yet. I’ll reply the way you ask, and we’ll set up a time to talk.',
       includes: ['Help choosing and comparing models.', 'Help understanding a dealer quote and your options.', 'Help deciding on your next step.'],
-      boundary: 'The first call is free. If you want more after that, we agree on what I’ll do, what it costs and when you pay before I start.',
+      boundary: 'The first call is free. After that, a 30-minute phone consultation is $50 and the new-car concierge is $1,000 flat. Nothing is charged until we agree on the work.',
       terms: 'Sending this inquiry does not book a service or take payment.'
+    },
+    newCarConcierge: {
+      title: 'Your new car, handled.', price: '$1,000', caption: 'New-car concierge · one purchase · $500 to start, $500 when you buy',
+      intro: 'One flat fee for choosing, pricing, negotiating and checking the deal on one new car.',
+      includes: ['We choose the model and trim together.', 'I get out-the-door quotes from dealers and negotiate the price, fees and add-ons.', 'I check the paperwork before you sign. If the dealership is local, I’ll go with you.'],
+      boundary: 'You buy the car directly from the dealer. The car’s price, taxes and dealer fees are paid to the dealer, and no dealer pays me. Going to the dealership with you is for local dealerships and depends on scheduling.',
+      terms: '$500 to start and $500 when you buy, less applicable prior payments credited once. This covers one purchase. Our written agreement confirms the included work, timeframe, cancellation or refund terms, and when the balance is due. Sending this inquiry does not book the service or take payment.'
     },
     localAssessment: {
       title: 'Check the car and the deal.', price: '$249 total', caption: 'One car in SLO city · payment due when booking · elsewhere in SLO County or beyond: separate quote',
@@ -74,7 +82,7 @@
     },
   };
 
-  const directPackages = new Set(['localAssessment', 'complete', 'assistedSell', 'fullSell']);
+  const directPackages = new Set(['localAssessment', 'complete', 'newCarConcierge', 'assistedSell', 'fullSell']);
   // Conversations have no price card to read first, so they open on the short form with timing optional.
   const formFirstPackages = new Set(['inquiry', 'introCall', 'newCar', 'openToEither', 'research']);
 
@@ -97,9 +105,13 @@
       ['Just a question', 'Ask, even if you’re not ready to buy or sell.', 'research']
     ]},
     buyStart: { title: 'New, used, or open to either?', lede: 'You don’t need to decide before asking for help.', options: [
-      ['New', 'Choosing a model, understanding a dealer quote, or deciding what comes next.', 'newCar'],
+      ['New', 'The $1,000 new-car concierge, or advice on a model or a dealer quote.', 'newCarStart'],
       ['Used', 'Check a car you found or get help with the whole purchase.', 'usedCar'],
       ['Open to Either', 'Keep both possibilities open and tell me what matters to you.', 'openToEither']
+    ]},
+    newCarStart: { title: 'How much should I handle?', lede: 'Hand me the legwork, or start with advice. You can decide after we talk.', options: [
+      ['Handle the purchase with me', '$1,000 new-car concierge: dealer quotes, negotiation and a paperwork check.', 'newCarConcierge'],
+      ['I’d like advice first', 'Start with a free intro call about a model or a dealer quote.', 'newCar']
     ]},
     usedCar: { title: 'Where are you with your used-car search?', options: [
       ['Check a car I found', '$249 total in SLO city: pickup, test drive, transport, full inspection and deal analysis.', 'localAssessment'],
@@ -127,12 +139,12 @@
 
   const intents = {
     buyStart: 'Buy', openToEither: 'Buy', research: 'Research',
-    newCar: 'Buy new', usedCar: 'Buy used', local: 'Buy used',
+    newCar: 'Buy new', newCarStart: 'Buy new', newCarConcierge: 'Buy new', usedCar: 'Buy used', local: 'Buy used',
     localAssessment: 'Buy used', complete: 'Buy used',
     sell: 'Sell', assistedSell: 'Sell', fullSell: 'Sell'
   };
   const purchasePreferences = {
-    newCar: 'New', usedCar: 'Used', local: 'Used',
+    newCar: 'New', newCarStart: 'New', newCarConcierge: 'New', usedCar: 'Used', local: 'Used',
     localAssessment: 'Used', complete: 'Used', openToEither: 'Open to Either'
   };
 
@@ -479,22 +491,15 @@
   }
 
   function appendContactFallback() {
-    // The address stays visible and copyable: a mailto link alone does nothing on devices without a mail app.
+    // No phone number or email address is printed: the text link opens the visitor's messages app.
     const fallback = node('p', 'Prefer another way? ', 'input-hint contact-fallback');
     const call = node('a', 'Text Isaac');
     call.href = 'sms:+14242354525';
-    fallback.append(call, document.createTextNode(' · Email '));
-    const email = node('a', contactEmail);
-    email.href = 'mailto:' + contactEmail;
-    const copy = node('button', 'Copy', 'copy-button');
-    copy.type = 'button';
-    copy.dataset.copy = contactEmail;
-    copy.setAttribute('aria-label', 'Copy email address');
     const instagram = node('a', 'Message on Instagram');
     instagram.href = 'https://ig.me/m/805carguy';
     instagram.target = '_blank';
     instagram.rel = 'noopener noreferrer';
-    fallback.append(email, document.createTextNode(' '), copy, document.createTextNode(' · '), instagram);
+    fallback.append(call, document.createTextNode(' · '), instagram);
     content.append(fallback);
   }
 
@@ -566,6 +571,8 @@
     ['#inquire-open-to-either', 'openToEither'],
     ['#inquire-research', 'research'],
     ['#inquire-new-car', 'newCar'],
+    ['#inquire-new-car-concierge', 'newCarConcierge'],
+    ['#inquire-new-car-start', 'newCarStart'],
     ['#inquire-used-car', 'usedCar'],
     ['#inquire-sell', 'sell'],
     ['#inquire-local-check', 'localAssessment'],

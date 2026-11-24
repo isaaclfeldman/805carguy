@@ -411,3 +411,64 @@ body{padding-bottom:84px}
 }
 @media(forced-colors:active){.dashboard-hero .hero-primary{color:ButtonText;background:ButtonFace;border-color:ButtonText;box-shadow:none}}
 .service-guide>.guide-assurances{margin:20px 0 28px}
+
+/* Concierge refinement and new-car concierge pricing, November 24, 2026. Navy tier cards, gold hairlines, serif prices. */
+:root{--gold-deep:#8a6237;--gold-soft:#e6c8a0}
+.service-guide .eyebrow,.home-section .eyebrow{letter-spacing:.17em;color:var(--gold-deep)}
+.concierge-promise{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:44px;padding-block:46px 48px}
+.concierge-promise>div{border-top:1px solid var(--gold);padding-top:18px}
+.concierge-promise h2{font-family:var(--serif);font-size:22px;font-weight:400;line-height:1.3;letter-spacing:-.2px;margin:0 0 8px}
+.concierge-promise p{font-size:14px;line-height:1.6;color:#4b5662;margin:0}
+.concierge-tiers{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:22px}
+.concierge-card{display:flex;flex-direction:column;align-items:flex-start;background:var(--navy);color:var(--ivory);border-top:3px solid var(--gold);border-radius:3px;padding:34px 34px 30px;box-shadow:0 18px 44px rgba(19,31,51,.16)}
+.concierge-card .tier-label{font-size:11px;letter-spacing:.17em;text-transform:uppercase;font-weight:650;line-height:1.6;color:var(--gold-soft);margin:0 0 14px}
+.concierge-card h2,.concierge-card h3,.home-section .concierge-card h3{font-family:var(--serif);font-size:30px;font-weight:400;line-height:1.15;letter-spacing:-.6px;margin:0 0 18px;color:var(--ivory)}
+.concierge-card .tier-price{display:flex;flex-wrap:wrap;align-items:baseline;gap:6px 12px;align-self:stretch;max-width:none;font-size:13px;line-height:1.5;color:#d5dae0;margin:0 0 20px;padding-bottom:20px;border-bottom:1px solid #ffffff26}
+.concierge-card .tier-price strong{font-family:var(--serif);font-size:44px;font-weight:400;line-height:1;letter-spacing:-1px;color:var(--ivory)}
+.concierge-card .tier-list{list-style:none;margin:0 0 24px;padding:0;display:grid;gap:10px;font-size:15px;line-height:1.5}
+.concierge-card .tier-list li{position:relative;margin:0;padding-left:26px}
+.concierge-card .tier-list li::before{content:"";position:absolute;left:3px;top:.42em;width:11px;height:6px;border-left:2px solid var(--gold);border-bottom:2px solid var(--gold);transform:rotate(-45deg)}
+.concierge-card .tier-note{font-size:13px;line-height:1.55;color:#c3cad3;margin:0 0 22px}
+.concierge-card .button,.service-guide .concierge-card .button{margin-top:auto;background:var(--gold-soft);border-color:var(--gold-soft);color:#1d2a2c}
+.concierge-card .button:hover{background:var(--ivory);border-color:var(--ivory)}
+.concierge-card .tier-foot{font-size:13px;line-height:1.55;color:#c3cad3;margin:16px 0 0}
+.concierge-card .tier-foot a{color:var(--ivory)}
+.concierge-card .text-button,.home-section .concierge-card .text-button{color:var(--ivory);border-bottom-color:var(--gold);margin-top:6px}
+.concierge-card .text-button:hover{color:var(--gold-soft)}
+.concierge-card a:focus-visible,.concierge-card button:focus-visible{outline-color:var(--gold-soft)}
+.single-check{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:20px 40px;align-items:center;margin-top:22px;padding:28px 34px;background:var(--paper);border:1px solid var(--rule);border-radius:3px}
+.single-check .tier-label{font-size:11px;letter-spacing:.17em;text-transform:uppercase;font-weight:650;color:var(--gold-deep);margin:0 0 10px}
+.home-section .single-check h3{font-size:25px;margin-bottom:12px}
+.single-check h3 span{white-space:nowrap;color:var(--gold-deep)}
+.home-section .single-check p{font-size:14px;margin-bottom:8px}
+.home-section .single-check .offer-detail{font-size:12px;color:#5c6266;margin-bottom:0}
+.single-check-actions{display:grid;gap:12px;justify-items:start}
+.single-check-actions .quiet-link{font-size:12px}
+.service-guide .concierge-offer{border-top:0;padding-top:6px}
+.service-guide .concierge-card p{max-width:none}
+.service-guide .concierge-card h2{font-size:clamp(27px,4vw,34px)}
+.pricing-comparison article{border-top:2px solid var(--gold);border-radius:3px}
+.pricing-comparison .comparison-price{font-family:var(--serif);font-size:30px;font-weight:400;line-height:1.15;letter-spacing:-.6px;margin-bottom:12px}
+.pricing-comparison .comparison-price small{font-family:var(--sans);font-size:13px;letter-spacing:0;color:var(--muted);margin-left:4px}
+.guide-paths a{border-radius:3px}
+.guide-paths .path-price{color:var(--gold-deep)}
+@media(min-width:861px){.guide-section .guide-steps.guide-steps-4{grid-template-columns:repeat(4,minmax(0,1fr));gap:24px}}
+@media(min-width:701px) and (max-width:860px){.guide-section .guide-steps.guide-steps-4{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:900px){.concierge-promise{gap:28px}.concierge-card{padding:28px 26px 26px}.concierge-card .tier-price strong{font-size:40px}}
+@media(max-width:760px){.concierge-promise{grid-template-columns:1fr;gap:22px;padding-block:32px 34px}.concierge-tiers{grid-template-columns:1fr;gap:16px}.concierge-card{padding:26px 22px 24px}.concierge-card h2,.concierge-card h3,.home-section .concierge-card h3{font-size:27px}.concierge-card .button{align-self:stretch;justify-content:space-between;text-align:left}.single-check{grid-template-columns:1fr;padding:24px 22px;margin-top:16px}.single-check-actions .button{width:100%;justify-content:space-between;text-align:left}}
+@media(forced-colors:active){.concierge-card{border:1px solid CanvasText}.concierge-card .button{color:ButtonText;background:ButtonFace;border-color:ButtonText}}
+.pricing-comparison .comparison-price-long{font-size:25px;line-height:1.38}
+/* The homepage theme colors every paragraph in a section; restate the card text colors above it. */
+body .home-section .concierge-card p.tier-label{font-size:11px;color:var(--gold-soft);margin-bottom:14px}
+body .home-section .concierge-card p.tier-price{font-size:13px;color:#d5dae0;margin-bottom:20px}
+body .home-section .concierge-card p.tier-note{font-size:13px;color:#c3cad3;margin-bottom:22px}
+body .home-section .concierge-card p.tier-foot{font-size:13px;color:#c3cad3;margin:16px 0 0}
+body .home-section .single-check p.tier-label{font-size:11px;color:var(--gold-deep);margin-bottom:10px}
+/* Review fixes, November 24: tap targets, consistent card navy, homepage eyebrow color, phone eyebrow size. */
+:root{--concierge-navy:#1a2942}
+.concierge-card{background:var(--concierge-navy)}
+.concierge-card .tier-link a,.single-check-actions .quiet-link,.guide-portrait figcaption a,.service-guide .guide-reassure a{display:inline-flex;align-items:center;min-height:44px}
+body .home-section .concierge-card p.tier-link{margin:6px 0 0}
+body .home-section .eyebrow{color:var(--gold-deep);letter-spacing:.17em}
+body .personal-sell .eyebrow{color:#7d5830}
+@media(max-width:700px){.service-guide p.eyebrow{font-size:11px}}

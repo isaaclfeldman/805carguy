@@ -267,25 +267,25 @@ test('new-car entry retains conversation scope and explicit intent through revie
   assert.ok(ui.document.querySelector('#name'));
   assert.equal(ui.document.querySelector('#timing').required || false, false);
   assert.match(ui.text, /The first call is free/);
-  assert.match(ui.text, /agree on what I’ll do, what it costs and when you pay before I start/);
+  assert.match(ui.text, /30-minute phone consultation is \$50 and the new-car concierge is \$1,000 flat/);
   assert.match(ui.text, /I’ll reply the way you ask/);
-  assert.doesNotMatch(ui.text, /Scope and fee agreed first|\$\d|guarantee|financing/);
+  assert.doesNotMatch(ui.text, /Scope and fee agreed first|\$249|guarantee|financing/);
   await finishDraft(ui);
   assert.match(ui.text, /Looking toBuy new/);
   assert.match(ui.text, /Asking forNew-car help/);
   // The review states the cost terms once, in plain words, with no contract-style rows or scope list under "free".
-  assert.match(ui.text, /CostThe first call is free\. If you want more after that, we agree on what I’ll do, what it costs and when you pay before I start\./);
+  assert.match(ui.text, /CostThe first call is free\. After that, a 30-minute phone consultation is \$50 and the new-car concierge is \$1,000 flat\. Nothing is charged until we agree on the work\./);
   assert.doesNotMatch(ui.text, /Scope and pricing|Arrangements and extras|Payment and terms|Included|Interested in/);
   assert.match(ui.text, /does not book it or commit you to paying/);
   assert.match(ui.text, /TimingWithin a month/);
-  assert.doesNotMatch(ui.text, /\$249|\$1,000|guarantee|financing/);
+  assert.doesNotMatch(ui.text, /\$249|guarantee|financing/);
   await ui.click('Send my inquiry');
   assert.equal(ui.calls.length, 1);
   assert.equal(ui.calls[0].intent, 'Buy new');
   assert.equal(ui.calls[0].purchase_preference, 'New');
   assert.equal(ui.calls[0].service, 'Let’s talk about your new car.');
-  assert.equal(ui.calls[0].displayed_price, 'Scope and fee agreed first');
-  assert.equal(ui.calls[0].scope, 'New-car guidance · start with a conversation');
+  assert.equal(ui.calls[0].displayed_price, 'First call is free');
+  assert.equal(ui.calls[0].scope, 'New-car advice · start with a conversation');
   assert.equal(ui.calls[0].timing, 'Within a month');
 });
 
@@ -335,11 +335,13 @@ test('Back preserves contact draft while replacing new-car intent with used-car 
   const ui = fixture('#inquire', { production: true });
   await ui.click('Buy');
   await ui.click('New');
+  assert.equal(ui.title, 'How much should I handle?');
+  await ui.click('I’d like advice first');
   assert.equal(ui.title, 'Let’s talk about your new car.');
   await ui.fill('name', 'Draft Name');
   await ui.fill('reply', 'draft@example.invalid');
   await ui.fill('context', 'Draft context');
-  for (let i = 0; i < 2; i++) await ui.click('← Back');
+  for (let i = 0; i < 3; i++) await ui.click('← Back');
   assert.equal(ui.title, 'How can I help?');
   await ui.click('Buy');
   await ui.click('Used');
@@ -367,7 +369,8 @@ test('Buy chooser carries New, Used or Open to Either through review and mocked 
     const options = ui.document.querySelector('#flow-content').querySelectorAll('button').filter(button => button.className === 'flow-option');
     assert.deepEqual(options.map(button => button.children[0].textContent), ['New', 'Used', 'Open to Either']);
     await ui.click(preference);
-    if (preference === 'Used') await ui.click('Not sure yet');
+    if (preference === 'New') await ui.click('I’d like advice first');
+    else if (preference === 'Used') await ui.click('Not sure yet');
     else if (preference === 'Open to Either') {
       assert.equal(ui.title, 'You can stay open to either.');
       assert.match(ui.text, /don’t need to choose new or used/);
@@ -542,7 +545,7 @@ test('returning to Email clears the phone error and retains the entered email', 
 
 
 test('priced service entries start with essential contact controls and optional timing', async () => {
-  for (const hash of ['#inquire-local-check', '#inquire-complete', '#inquire-assisted-sale', '#inquire-full-sale']) {
+  for (const hash of ['#inquire-local-check', '#inquire-complete', '#inquire-new-car-concierge', '#inquire-assisted-sale', '#inquire-full-sale']) {
     const ui = fixture(hash);
     const form = ui.document.querySelector('form');
     const controls = form.children.filter(child => ['input', 'select', 'textarea'].includes(child.tagName));
@@ -602,7 +605,7 @@ test('direct entry restart clears the draft and previous service selection', asy
 });
 
 test('optional details are folded below visible contact and context with review immediately after', async () => {
-  for (const hash of ['#inquire-local-check', '#inquire-complete', '#inquire-assisted-sale', '#inquire-full-sale']) {
+  for (const hash of ['#inquire-local-check', '#inquire-complete', '#inquire-new-car-concierge', '#inquire-assisted-sale', '#inquire-full-sale']) {
     const ui = fixture(hash);
     const form = ui.document.querySelector('form');
     const optional = form.querySelector('details');
@@ -671,13 +674,14 @@ test('guided priced contact keeps its chosen timing while optional locations rem
   assert.equal(ui.calls.length, 0);
 });
 
-test('email and Instagram alternatives are available before choices and before contact fields', () => {
+test('text and Instagram alternatives are available before choices and before contact fields, with no address printed', () => {
   for (const hash of ['#inquire', '#inquire-local-check']) {
     const ui = fixture(hash);
     const content = ui.document.querySelector('#flow-content');
     const fallback = content.children.find(child => child.className === 'input-hint contact-fallback');
     assert.ok(fallback);
-    assert.deepEqual(fallback.querySelectorAll('a').map(link => link.href), ['sms:+14242354525', 'mailto:isaac@805carguy.com', 'https://ig.me/m/805carguy']);
+    assert.deepEqual(fallback.querySelectorAll('a').map(link => link.href), ['sms:+14242354525', 'https://ig.me/m/805carguy']);
+    assert.doesNotMatch(ui.text, /@805carguy\.com|\(?\d{3}\)?[ -]\d{3}-\d{4}/);
     const nextControls = content.children.find(child => child.tagName === 'form' || child.className === 'flow-options');
     assert.ok(content.children.indexOf(fallback) < content.children.indexOf(nextControls));
     assert.equal(ui.calls.length, 0);
@@ -750,9 +754,10 @@ test('timing follows the latest answer when switching between conversation forms
   const ui = fixture('#inquire', { production: true });
   await ui.click('Buy');
   await ui.click('New');
+  await ui.click('I’d like advice first');
   await fillContact(ui);
   await ui.select('timing', 'Later / just planning');
-  for (let i = 0; i < 2; i++) await ui.click('← Back');
+  for (let i = 0; i < 3; i++) await ui.click('← Back');
   await ui.click('Sell');
   await ui.click('Get it listed and screen buyers');
   await ui.click('Ask about this service');
@@ -782,4 +787,26 @@ test('timing follows the latest answer when switching between conversation forms
   assert.doesNotMatch(cleared.text, /Timing/);
   await cleared.click('Send my inquiry');
   assert.equal(cleared.calls[0].timing, '');
+});
+
+test('new-car concierge shows its flat fee and scope on the guided path and carries them to mocked delivery', async () => {
+  const ui = fixture('#inquire', { production: true });
+  await ui.click('Buy');
+  await ui.click('New');
+  await ui.click('Handle the purchase with me');
+  assert.equal(ui.title, 'Your new car, handled.');
+  assert.match(ui.text, /\$1,000/);
+  assert.match(ui.text, /\$500 to start and \$500 when you buy/);
+  assert.match(ui.text, /out-the-door quotes from dealers/);
+  assert.match(ui.text, /If the dealership is local, I’ll go with you/);
+  assert.doesNotMatch(ui.text, /guarantee|save you|deliver/i);
+  await ui.click('Ask about this service');
+  await finishDraft(ui);
+  assert.match(ui.text, /Looking toBuy new/);
+  assert.match(ui.text, /Interested inYour new car, handled\. — \$1,000/);
+  await ui.click('Send my inquiry');
+  assert.equal(ui.calls.length, 1);
+  assert.equal(ui.calls[0].intent, 'Buy new');
+  assert.equal(ui.calls[0].purchase_preference, 'New');
+  assert.equal(ui.calls[0].displayed_price, '$1,000');
 });
