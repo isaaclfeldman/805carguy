@@ -267,25 +267,25 @@ test('new-car entry retains conversation scope and explicit intent through revie
   assert.ok(ui.document.querySelector('#name'));
   assert.equal(ui.document.querySelector('#timing').required || false, false);
   assert.match(ui.text, /The first call is free/);
-  assert.match(ui.text, /agree on what I’ll do, what it costs and when you pay before I start/);
+  assert.match(ui.text, /30-minute phone consultation is \$50 and the new-car concierge is \$1,000 flat/);
   assert.match(ui.text, /I’ll reply the way you ask/);
-  assert.doesNotMatch(ui.text, /Scope and fee agreed first|\$\d|guarantee|financing/);
+  assert.doesNotMatch(ui.text, /Scope and fee agreed first|\$249|guarantee|financing/);
   await finishDraft(ui);
   assert.match(ui.text, /Looking toBuy new/);
   assert.match(ui.text, /Asking forNew-car help/);
   // The review states the cost terms once, in plain words, with no contract-style rows or scope list under "free".
-  assert.match(ui.text, /CostThe first call is free\. If you want more after that, we agree on what I’ll do, what it costs and when you pay before I start\./);
+  assert.match(ui.text, /CostThe first call is free\. After that, a 30-minute phone consultation is \$50 and the new-car concierge is \$1,000 flat\. Nothing is charged until we agree on the work\./);
   assert.doesNotMatch(ui.text, /Scope and pricing|Arrangements and extras|Payment and terms|Included|Interested in/);
   assert.match(ui.text, /does not book it or commit you to paying/);
   assert.match(ui.text, /TimingWithin a month/);
-  assert.doesNotMatch(ui.text, /\$249|\$1,000|guarantee|financing/);
+  assert.doesNotMatch(ui.text, /\$249|guarantee|financing/);
   await ui.click('Send my inquiry');
   assert.equal(ui.calls.length, 1);
   assert.equal(ui.calls[0].intent, 'Buy new');
   assert.equal(ui.calls[0].purchase_preference, 'New');
   assert.equal(ui.calls[0].service, 'Let’s talk about your new car.');
-  assert.equal(ui.calls[0].displayed_price, 'Scope and fee agreed first');
-  assert.equal(ui.calls[0].scope, 'New-car guidance · start with a conversation');
+  assert.equal(ui.calls[0].displayed_price, 'First call is free');
+  assert.equal(ui.calls[0].scope, 'New-car advice · start with a conversation');
   assert.equal(ui.calls[0].timing, 'Within a month');
 });
 
@@ -674,13 +674,14 @@ test('guided priced contact keeps its chosen timing while optional locations rem
   assert.equal(ui.calls.length, 0);
 });
 
-test('email and Instagram alternatives are available before choices and before contact fields', () => {
+test('text and Instagram alternatives are available before choices and before contact fields, with no address printed', () => {
   for (const hash of ['#inquire', '#inquire-local-check']) {
     const ui = fixture(hash);
     const content = ui.document.querySelector('#flow-content');
     const fallback = content.children.find(child => child.className === 'input-hint contact-fallback');
     assert.ok(fallback);
-    assert.deepEqual(fallback.querySelectorAll('a').map(link => link.href), ['sms:+14242354525', 'mailto:isaac@805carguy.com', 'https://ig.me/m/805carguy']);
+    assert.deepEqual(fallback.querySelectorAll('a').map(link => link.href), ['sms:+14242354525', 'https://ig.me/m/805carguy']);
+    assert.doesNotMatch(ui.text, /@805carguy\.com|\(?\d{3}\)?[ -]\d{3}-\d{4}/);
     const nextControls = content.children.find(child => child.tagName === 'form' || child.className === 'flow-options');
     assert.ok(content.children.indexOf(fallback) < content.children.indexOf(nextControls));
     assert.equal(ui.calls.length, 0);

@@ -464,3 +464,11 @@ body .home-section .concierge-card p.tier-price{font-size:13px;color:#d5dae0;mar
 body .home-section .concierge-card p.tier-note{font-size:13px;color:#c3cad3;margin-bottom:22px}
 body .home-section .concierge-card p.tier-foot{font-size:13px;color:#c3cad3;margin:16px 0 0}
 body .home-section .single-check p.tier-label{font-size:11px;color:var(--gold-deep);margin-bottom:10px}
+/* Review fixes, November 24: tap targets, consistent card navy, homepage eyebrow color, phone eyebrow size. */
+:root{--concierge-navy:#1a2942}
+.concierge-card{background:var(--concierge-navy)}
+.concierge-card .tier-link a,.single-check-actions .quiet-link,.guide-portrait figcaption a,.service-guide .guide-reassure a{display:inline-flex;align-items:center;min-height:44px}
+body .home-section .concierge-card p.tier-link{margin:6px 0 0}
+body .home-section .eyebrow{color:var(--gold-deep);letter-spacing:.17em}
+body .personal-sell .eyebrow{color:#7d5830}
+@media(max-width:700px){.service-guide p.eyebrow{font-size:11px}}

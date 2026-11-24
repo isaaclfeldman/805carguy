@@ -11,7 +11,8 @@
   let submitted = false;
   let reference;
   const delivery = window.InquiryDelivery;
-  const contactEmail = 'isaac@805carguy.com';
+  // Used only for the send-failure fallback link. The address is never printed on the page.
+  const contactEmail = ['isaac', '805carguy.com'].join('@');
   const canSend = delivery.isProduction(window.location);
   document.querySelector('#preview-banner').hidden = canSend;
 
@@ -38,10 +39,10 @@
       terms: 'Sending this inquiry does not book a service or take payment.'
     },
     newCar: {
-      title: 'Let’s talk about your new car.', price: 'Scope and fee agreed first', caption: 'New-car guidance · start with a conversation', conversation: true, reviewLabel: 'New-car help',
+      title: 'Let’s talk about your new car.', price: 'First call is free', caption: 'New-car advice · start with a conversation', conversation: true, reviewLabel: 'New-car help',
       intro: 'Tell me what you’re considering, or that you don’t know yet. I’ll reply the way you ask, and we’ll set up a time to talk.',
       includes: ['Help choosing and comparing models.', 'Help understanding a dealer quote and your options.', 'Help deciding on your next step.'],
-      boundary: 'The first call is free. If you want more after that, we agree on what I’ll do, what it costs and when you pay before I start.',
+      boundary: 'The first call is free. After that, a 30-minute phone consultation is $50 and the new-car concierge is $1,000 flat. Nothing is charged until we agree on the work.',
       terms: 'Sending this inquiry does not book a service or take payment.'
     },
     newCarConcierge: {
@@ -490,22 +491,15 @@
   }
 
   function appendContactFallback() {
-    // The address stays visible and copyable: a mailto link alone does nothing on devices without a mail app.
+    // No phone number or email address is printed: the text link opens the visitor's messages app.
     const fallback = node('p', 'Prefer another way? ', 'input-hint contact-fallback');
     const call = node('a', 'Text Isaac');
     call.href = 'sms:+14242354525';
-    fallback.append(call, document.createTextNode(' · Email '));
-    const email = node('a', contactEmail);
-    email.href = 'mailto:' + contactEmail;
-    const copy = node('button', 'Copy', 'copy-button');
-    copy.type = 'button';
-    copy.dataset.copy = contactEmail;
-    copy.setAttribute('aria-label', 'Copy email address');
     const instagram = node('a', 'Message on Instagram');
     instagram.href = 'https://ig.me/m/805carguy';
     instagram.target = '_blank';
     instagram.rel = 'noopener noreferrer';
-    fallback.append(email, document.createTextNode(' '), copy, document.createTextNode(' · '), instagram);
+    fallback.append(call, document.createTextNode(' · '), instagram);
     content.append(fallback);
   }
 
@@ -578,6 +572,7 @@
     ['#inquire-research', 'research'],
     ['#inquire-new-car', 'newCar'],
     ['#inquire-new-car-concierge', 'newCarConcierge'],
+    ['#inquire-new-car-start', 'newCarStart'],
     ['#inquire-used-car', 'usedCar'],
     ['#inquire-sell', 'sell'],
     ['#inquire-local-check', 'localAssessment'],
