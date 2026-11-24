@@ -335,11 +335,13 @@ test('Back preserves contact draft while replacing new-car intent with used-car 
   const ui = fixture('#inquire', { production: true });
   await ui.click('Buy');
   await ui.click('New');
+  assert.equal(ui.title, 'How much should I handle?');
+  await ui.click('I’d like advice first');
   assert.equal(ui.title, 'Let’s talk about your new car.');
   await ui.fill('name', 'Draft Name');
   await ui.fill('reply', 'draft@example.invalid');
   await ui.fill('context', 'Draft context');
-  for (let i = 0; i < 2; i++) await ui.click('← Back');
+  for (let i = 0; i < 3; i++) await ui.click('← Back');
   assert.equal(ui.title, 'How can I help?');
   await ui.click('Buy');
   await ui.click('Used');
@@ -367,7 +369,8 @@ test('Buy chooser carries New, Used or Open to Either through review and mocked 
     const options = ui.document.querySelector('#flow-content').querySelectorAll('button').filter(button => button.className === 'flow-option');
     assert.deepEqual(options.map(button => button.children[0].textContent), ['New', 'Used', 'Open to Either']);
     await ui.click(preference);
-    if (preference === 'Used') await ui.click('Not sure yet');
+    if (preference === 'New') await ui.click('I’d like advice first');
+    else if (preference === 'Used') await ui.click('Not sure yet');
     else if (preference === 'Open to Either') {
       assert.equal(ui.title, 'You can stay open to either.');
       assert.match(ui.text, /don’t need to choose new or used/);
@@ -542,7 +545,7 @@ test('returning to Email clears the phone error and retains the entered email', 
 
 
 test('priced service entries start with essential contact controls and optional timing', async () => {
-  for (const hash of ['#inquire-local-check', '#inquire-complete', '#inquire-assisted-sale', '#inquire-full-sale']) {
+  for (const hash of ['#inquire-local-check', '#inquire-complete', '#inquire-new-car-concierge', '#inquire-assisted-sale', '#inquire-full-sale']) {
     const ui = fixture(hash);
     const form = ui.document.querySelector('form');
     const controls = form.children.filter(child => ['input', 'select', 'textarea'].includes(child.tagName));
@@ -602,7 +605,7 @@ test('direct entry restart clears the draft and previous service selection', asy
 });
 
 test('optional details are folded below visible contact and context with review immediately after', async () => {
-  for (const hash of ['#inquire-local-check', '#inquire-complete', '#inquire-assisted-sale', '#inquire-full-sale']) {
+  for (const hash of ['#inquire-local-check', '#inquire-complete', '#inquire-new-car-concierge', '#inquire-assisted-sale', '#inquire-full-sale']) {
     const ui = fixture(hash);
     const form = ui.document.querySelector('form');
     const optional = form.querySelector('details');
@@ -750,9 +753,10 @@ test('timing follows the latest answer when switching between conversation forms
   const ui = fixture('#inquire', { production: true });
   await ui.click('Buy');
   await ui.click('New');
+  await ui.click('I’d like advice first');
   await fillContact(ui);
   await ui.select('timing', 'Later / just planning');
-  for (let i = 0; i < 2; i++) await ui.click('← Back');
+  for (let i = 0; i < 3; i++) await ui.click('← Back');
   await ui.click('Sell');
   await ui.click('Get it listed and screen buyers');
   await ui.click('Ask about this service');
@@ -782,4 +786,26 @@ test('timing follows the latest answer when switching between conversation forms
   assert.doesNotMatch(cleared.text, /Timing/);
   await cleared.click('Send my inquiry');
   assert.equal(cleared.calls[0].timing, '');
+});
+
+test('new-car concierge shows its flat fee and scope on the guided path and carries them to mocked delivery', async () => {
+  const ui = fixture('#inquire', { production: true });
+  await ui.click('Buy');
+  await ui.click('New');
+  await ui.click('Handle the purchase with me');
+  assert.equal(ui.title, 'Your new car, handled.');
+  assert.match(ui.text, /\$1,000/);
+  assert.match(ui.text, /\$500 to start and \$500 when you buy/);
+  assert.match(ui.text, /out-the-door quotes from dealers/);
+  assert.match(ui.text, /If the dealership is local, I’ll go with you/);
+  assert.doesNotMatch(ui.text, /guarantee|save you|deliver/i);
+  await ui.click('Ask about this service');
+  await finishDraft(ui);
+  assert.match(ui.text, /Looking toBuy new/);
+  assert.match(ui.text, /Interested inYour new car, handled\. — \$1,000/);
+  await ui.click('Send my inquiry');
+  assert.equal(ui.calls.length, 1);
+  assert.equal(ui.calls[0].intent, 'Buy new');
+  assert.equal(ui.calls[0].purchase_preference, 'New');
+  assert.equal(ui.calls[0].displayed_price, '$1,000');
 });

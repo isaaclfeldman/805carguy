@@ -44,6 +44,13 @@
       boundary: 'The first call is free. If you want more after that, we agree on what I’ll do, what it costs and when you pay before I start.',
       terms: 'Sending this inquiry does not book a service or take payment.'
     },
+    newCarConcierge: {
+      title: 'Your new car, handled.', price: '$1,000', caption: 'New-car concierge · one purchase · $500 to start, $500 when you buy',
+      intro: 'One flat fee for choosing, pricing, negotiating and checking the deal on one new car.',
+      includes: ['We choose the model and trim together.', 'I get out-the-door quotes from dealers and negotiate the price, fees and add-ons.', 'I check the paperwork before you sign. If the dealership is local, I’ll go with you.'],
+      boundary: 'You buy the car directly from the dealer. The car’s price, taxes and dealer fees are paid to the dealer, and no dealer pays me. Going to the dealership with you is for local dealerships and depends on scheduling.',
+      terms: '$500 to start and $500 when you buy, less applicable prior payments credited once. This covers one purchase. Our written agreement confirms the included work, timeframe, cancellation or refund terms, and when the balance is due. Sending this inquiry does not book the service or take payment.'
+    },
     localAssessment: {
       title: 'Check the car and the deal.', price: '$249 total', caption: 'One car in SLO city · payment due when booking · elsewhere in SLO County or beyond: separate quote',
       intro: 'For one car in the city of San Luis Obispo, whether you live nearby or are buying from farther away.',
@@ -74,7 +81,7 @@
     },
   };
 
-  const directPackages = new Set(['localAssessment', 'complete', 'assistedSell', 'fullSell']);
+  const directPackages = new Set(['localAssessment', 'complete', 'newCarConcierge', 'assistedSell', 'fullSell']);
   // Conversations have no price card to read first, so they open on the short form with timing optional.
   const formFirstPackages = new Set(['inquiry', 'introCall', 'newCar', 'openToEither', 'research']);
 
@@ -97,9 +104,13 @@
       ['Just a question', 'Ask, even if you’re not ready to buy or sell.', 'research']
     ]},
     buyStart: { title: 'New, used, or open to either?', lede: 'You don’t need to decide before asking for help.', options: [
-      ['New', 'Choosing a model, understanding a dealer quote, or deciding what comes next.', 'newCar'],
+      ['New', 'The $1,000 new-car concierge, or advice on a model or a dealer quote.', 'newCarStart'],
       ['Used', 'Check a car you found or get help with the whole purchase.', 'usedCar'],
       ['Open to Either', 'Keep both possibilities open and tell me what matters to you.', 'openToEither']
+    ]},
+    newCarStart: { title: 'How much should I handle?', lede: 'Hand me the legwork, or start with advice. You can decide after we talk.', options: [
+      ['Handle the purchase with me', '$1,000 new-car concierge: dealer quotes, negotiation and a paperwork check.', 'newCarConcierge'],
+      ['I’d like advice first', 'Start with a free intro call about a model or a dealer quote.', 'newCar']
     ]},
     usedCar: { title: 'Where are you with your used-car search?', options: [
       ['Check a car I found', '$249 total in SLO city: pickup, test drive, transport, full inspection and deal analysis.', 'localAssessment'],
@@ -127,12 +138,12 @@
 
   const intents = {
     buyStart: 'Buy', openToEither: 'Buy', research: 'Research',
-    newCar: 'Buy new', usedCar: 'Buy used', local: 'Buy used',
+    newCar: 'Buy new', newCarStart: 'Buy new', newCarConcierge: 'Buy new', usedCar: 'Buy used', local: 'Buy used',
     localAssessment: 'Buy used', complete: 'Buy used',
     sell: 'Sell', assistedSell: 'Sell', fullSell: 'Sell'
   };
   const purchasePreferences = {
-    newCar: 'New', usedCar: 'Used', local: 'Used',
+    newCar: 'New', newCarStart: 'New', newCarConcierge: 'New', usedCar: 'Used', local: 'Used',
     localAssessment: 'Used', complete: 'Used', openToEither: 'Open to Either'
   };
 
@@ -566,6 +577,7 @@
     ['#inquire-open-to-either', 'openToEither'],
     ['#inquire-research', 'research'],
     ['#inquire-new-car', 'newCar'],
+    ['#inquire-new-car-concierge', 'newCarConcierge'],
     ['#inquire-used-car', 'usedCar'],
     ['#inquire-sell', 'sell'],
     ['#inquire-local-check', 'localAssessment'],
